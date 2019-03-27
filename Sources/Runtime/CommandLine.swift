@@ -6,7 +6,7 @@
 
 import Foundation
 
-public extension CommandLine {
+extension CommandLine {
     typealias Option = (name: String, settings: [String])
 
     /// CommandLine.arguments.first ?? "n/a"

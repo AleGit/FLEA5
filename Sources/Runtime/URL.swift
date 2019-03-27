@@ -1,45 +1,10 @@
 import Foundation
 
 extension URL {
-    /// Search for the [TPTP library](http://www.cs.miami.edu/~tptp/) for
-    /// Automated Reasoning with problems and axioms on the local file system.
-    static var tptpDirectoryURL: URL? {
-
-        // --tptp_root has the highest priority
-        if let path = CommandLine.options["--tptp_root"]?.first,
-            path.isAccessibleDirectory {
-            return URL(fileURLWithPath: path)
-        }
-
-        // the environment has a high priority
-        if let path = CommandLine.Environment.getValue(for: "TPTP_ROOT"),
-            path.isAccessibleDirectory {
-            return URL(fileURLWithPath: path)
-        }
-
-        // ~/TPTP in the home directory has a medium priority
-        if let url = URL.homeDirectoryURL?.appending(component: "/TPTP"),
-            url.isAccessibleDirectory {
-            Syslog.notice { "fallback to \(url.relativeString)" }
-            return url
-        }
-
-        // ~/Downloads/TPTP has a very low priority
-        if let url = URL.homeDirectoryURL?.appending(component: "/Downloads/TPTP"),
-            url.isAccessibleDirectory {
-            Syslog.notice { "fallback to \(url.relativeString)" }
-            return url
-        }
-
-        Syslog.warning { "Accessible TPTP library directory path could not be found." }
-
-        return nil
-    }
-
     /// Get the home path from einvironment.
     static var homeDirectoryURL: URL? {
         guard let path = CommandLine.Environment.getValue(for: "HOME") else {
-            Syslog.warning { "HOME path variable was not available available." }
+            Syslog.warning { "HOME path variable was not available." }
             return nil
         }
         return URL(fileURLWithPath: path)
@@ -89,7 +54,6 @@ extension URL {
 /// with Swift 3 Preview 4/5 the URL signatures diverged between macOS and linux
 /// these workaround will not build when signatures change
 extension URL {
-
     fileprivate mutating func deleteLastComponents(downTo cmp: String) {
         var deleted = false
         while !deleted && lastPathComponent != "/" {
@@ -133,6 +97,52 @@ extension URL {
 }
 
 extension URL {
+    var isAccessible: Bool {
+        return self.path.isAccessible
+    }
+
+    var isAccessibleDirectory: Bool {
+        return self.path.isAccessibleDirectory
+    }
+}
+
+
+extension URL {
+    /// Search for the [TPTP library](http://www.cs.miami.edu/~tptp/) for
+    /// Automated Reasoning with problems and axioms on the local file system.
+    static var tptpDirectoryURL: URL? {
+
+        // --tptp_root has the highest priority
+        if let path = CommandLine.options["--tptp_root"]?.first,
+            path.isAccessibleDirectory {
+            return URL(fileURLWithPath: path)
+        }
+
+        // the environment has a high priority
+        if let path = CommandLine.Environment.getValue(for: "TPTP_ROOT"),
+            path.isAccessibleDirectory {
+            return URL(fileURLWithPath: path)
+        }
+
+        // ~/TPTP in the home directory has a medium priority
+        if let url = URL.homeDirectoryURL?.appending(component: "/TPTP"),
+            url.isAccessibleDirectory {
+            Syslog.notice { "fallback to \(url.relativeString)" }
+            return url
+        }
+
+        // ~/Downloads/TPTP has a very low priority
+        if let url = URL.homeDirectoryURL?.appending(component: "/Downloads/TPTP"),
+            url.isAccessibleDirectory {
+            Syslog.notice { "fallback to \(url.relativeString)" }
+            return url
+        }
+
+        Syslog.warning { "Accessible TPTP library directory path could not be found." }
+
+        return nil
+    }
+    
     fileprivate init?(fileURLWithTptp name: String, pex: String,
                       roots: URL?...,
                       foo: ((String) -> String)? = nil) {
@@ -168,9 +178,8 @@ extension URL {
         }
         return nil
     }
-}
 
-extension URL {
+
     /// a problem string is either
     /// - the name of a problem file, e.g. 'PUZ001-1[.p]'
     /// - the relative path to a file, e.g. 'relative/path/PUZ001-1[.p]'
@@ -219,13 +228,4 @@ extension URL {
     }
 }
 
-extension URL {
-    var isAccessible: Bool {
-        return self.path.isAccessible
-    }
-
-    var isAccessibleDirectory: Bool {
-        return self.path.isAccessibleDirectory
-    }
-}
 

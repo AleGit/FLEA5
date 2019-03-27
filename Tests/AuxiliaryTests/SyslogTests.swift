@@ -8,7 +8,7 @@ import Foundation
 
 import XCTest
 
-@testable import Auxiliary
+@testable import Runtime
 
 public class SyslogTests: FleaTestCase {
     static var allTests: [(String, (SyslogTests) -> () throws -> Void)] {

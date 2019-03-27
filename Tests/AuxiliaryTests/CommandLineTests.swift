@@ -1,6 +1,6 @@
 import XCTest
 import Foundation
-@testable import Auxiliary
+@testable import Runtime
 
 final class CommandLineTests: XCTestCase {
     func testName() {

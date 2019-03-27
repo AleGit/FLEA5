@@ -10,7 +10,7 @@ let nok = "❌ "
 import Foundation
 import XCTest
 
-@testable import Auxiliary
+@testable import Runtime
 
 public class FleaTestCase: XCTestCase {
 

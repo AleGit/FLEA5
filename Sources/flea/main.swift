@@ -1,4 +1,4 @@
-import Auxiliary
+import Runtime
 
 Syslog.openLog(options: .console, .pid, .perror)
 let logLevel = Syslog.maximalLogLevel
