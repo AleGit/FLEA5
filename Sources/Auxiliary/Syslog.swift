@@ -10,11 +10,11 @@ import Foundation
 
 /// Static wrapper for [syslog](https://en.wikipedia.org/wiki/Syslog),
 /// see [man 3 syslog]http://www.unix.com/man-page/POSIX/3posix/syslog/
-struct Syslog {
+public struct Syslog {
     static var carping = false
     static var failOnError = true // make this configurable
-
-    enum Priority: Comparable {
+    
+    public enum Priority: Comparable {
         case emergency // LOG_EMERG      system is unusable
         case alert // LOG_ALERT      action must be taken immediately
         case critical // LOG_CRIT       critical conditions
@@ -39,7 +39,7 @@ struct Syslog {
 
         /// Since `Syslog.Priority` is allready `Equatable`
         /// it is sufficient to implement < to adopt `Comparable`
-        static func <(_ lhs: Priority, rhs: Priority) -> Bool {
+        public static func <(_ lhs: Priority, rhs: Priority) -> Bool {
             return lhs.priority < rhs.priority
         }
 
@@ -63,7 +63,7 @@ struct Syslog {
         ]
     }
 
-    enum Option {
+    public enum Option {
         case console
         case immediately
         case nowait
@@ -157,9 +157,9 @@ struct Syslog {
         return cnfg
     }()
 
-    static var maximalLogLevel: Priority { return Syslog.configuration?["+++"] ?? Priority.error }
-    static var minimalLogLevel: Priority { return Syslog.configuration?["---"] ?? Priority.error }
-    static var defaultLogLevel: Priority { return Syslog.configuration?["***"] ?? Priority.error }
+    public static var maximalLogLevel: Priority { return Syslog.configuration?["+++"] ?? Priority.error }
+    public static var minimalLogLevel: Priority { return Syslog.configuration?["---"] ?? Priority.error }
+    public static var defaultLogLevel: Priority { return Syslog.configuration?["***"] ?? Priority.error }
 
     fileprivate static func loggable(
         _ priority: Priority, _ file: String, _ function: String, _: Int) -> Bool {
@@ -228,13 +228,13 @@ extension Syslog {
 
     /* void closelog(void); */
 
-    static func closeLog() {
+    public static func closeLog() {
         closelog()
     }
 
     /* void openlog(const char *ident, int logopt, int facility); */
 
-    static func openLog(ident: String? = nil, options: Syslog.Option..., facility: Int32 = LOG_USER) {
+    public static func openLog(ident: String? = nil, options: Syslog.Option..., facility: Int32 = LOG_USER) {
         let option = options.reduce(0) { $0 | $1.option }
         openlog(ident, option, facility)
         // ident == nil => use process name
@@ -248,19 +248,19 @@ extension Syslog {
         return setlogmask(mask)
     }
 
-    static func setLogMask(upTo: Syslog.Priority) -> Int32 {
+    public static func setLogMask(upTo: Syslog.Priority) -> Int32 {
         Syslog.activePriorities = Set(
             Syslog.Priority.all.filter { $0.priority <= upTo.priority }
         )
         return setLogMask()
     }
 
-    static func setLogMask(priorities: Syslog.Priority...) -> Int32 {
+    public static func setLogMask(priorities: Syslog.Priority...) -> Int32 {
         Syslog.activePriorities = Set(priorities)
         return setLogMask()
     }
 
-    static func clearLogMask() -> Int32 {
+    public static func clearLogMask() -> Int32 {
         Syslog.activePriorities = Set<Priority>()
         return setLogMask()
     }
@@ -311,7 +311,7 @@ extension Syslog {
         }
     }
 
-    static func multiple(errcode: Int32 = 0, condition: () -> Bool = { true },
+    public static func multiple(errcode: Int32 = 0, condition: () -> Bool = { true },
                          file: String = #file, function: String = #function, line: Int = #line, column: Int = #column,
                          message: () -> String
     ) {
@@ -323,7 +323,7 @@ extension Syslog {
         }
     }
 
-    static func fail(condition: @autoclosure () -> Bool = true,
+    public static func fail(condition: @autoclosure () -> Bool = true,
                      file: String = #file, function: String = #function, line: Int = #line, column: Int = #column,
                      message: () -> String
     ) {
@@ -335,7 +335,7 @@ extension Syslog {
         assert(false, "\(file)/\(function).\(line):\(column) \(message())")
     }
 
-    static func error(errcode: Int32 = 0, condition: @autoclosure () -> Bool = true,
+    public static func error(errcode: Int32 = 0, condition: @autoclosure () -> Bool = true,
                       file: String = #file, function: String = #function, line: Int = #line, column: Int = #column,
                       message: () -> String
     ) {
@@ -346,7 +346,7 @@ extension Syslog {
         assert(!failOnError, "\(file)/\(function).\(line):\(column) \(message())")
     }
 
-    static func warning(errcode: Int32 = 0, condition: @autoclosure () -> Bool = true,
+    public static func warning(errcode: Int32 = 0, condition: @autoclosure () -> Bool = true,
                         file: String = #file, function: String = #function, line: Int = #line, column: Int = #column,
                         message: () -> String
     ) {
@@ -355,7 +355,7 @@ extension Syslog {
             file: file, function: function, line: line, column: column, message: message)
     }
 
-    static func notice(errcode: Int32 = 0, condition: @autoclosure () -> Bool = true,
+    public static func notice(errcode: Int32 = 0, condition: @autoclosure () -> Bool = true,
                        file: String = #file, function: String = #function, line: Int = #line, column: Int = #column,
                        message: () -> String
     ) {
@@ -364,7 +364,7 @@ extension Syslog {
             file: file, function: function, line: line, column: column, message: message)
     }
 
-    static func info(errcode: Int32 = 0, condition: @autoclosure () -> Bool = true,
+    public static func info(errcode: Int32 = 0, condition: @autoclosure () -> Bool = true,
                      file: String = #file, function: String = #function, line: Int = #line, column: Int = #column,
                      message: () -> String
     ) {
@@ -388,7 +388,7 @@ extension Syslog {
             file: file, function: function, line: line, column: column, message: message)
     }
 
-    static func debug(errcode: Int32 = 0, condition: @autoclosure () -> Bool = true,
+    public static func debug(errcode: Int32 = 0, condition: @autoclosure () -> Bool = true,
                       file: String = #file, function: String = #function, line: Int = #line, column: Int = #column,
                       message: () -> String
     ) {
