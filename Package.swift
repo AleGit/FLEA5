@@ -15,8 +15,8 @@ let package = Package(
         .target(name: "Runtime", dependencies: []),
         .target(name: "Nodes", dependencies: []),
         .target(name: "Flea", dependencies: ["Runtime", "Nodes"]),
-        .testTarget(name: "RuntimeTests", dependencies: ["Runtime"]),
+        // .testTarget(name: "RuntimeTests", dependencies: ["Runtime"]),
         .testTarget(name: "NodesTests", dependencies: ["Nodes"]),
-        .testTarget(name: "FleaTests", dependencies: ["FleaCmd"])
+        // .testTarget(name: "FleaTests", dependencies: ["FleaCmd"])
     ]
 )

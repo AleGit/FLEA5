@@ -21,13 +21,13 @@ public class FleaTestCase: XCTestCase {
         let logLevel = Syslog.maximalLogLevel
 
         _ = Syslog.setLogMask(upTo: logLevel)
-        // print("+++ FleaTestCase.\(#function) +++")
+        print("+++ +++ FleaTestCase.\(#function) +++ \(#file) +++")
         Syslog.carping = false // off by default
     }
 
     /// teardown logging once _after_ all tests of a test class
     public override class func tearDown() {
-        // print("=== FleaTestCase.\(#function) ===")
+        print("--- --- FleaTestCase.\(#function) --- \(#file) ---")
         Syslog.closeLog()
         super.tearDown()
     }

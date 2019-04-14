@@ -11,12 +11,12 @@ import XCTest
 @testable import Runtime
 
 public class SyslogTests: FleaTestCase {
-    static var allTests: [(String, (SyslogTests) -> () throws -> Void)] {
-        return [
-            ("testSyslog", testSyslog),
-            ("testConfiguration", testConfiguration),
-        ]
-    }
+    // static var allTests: [(String, (SyslogTests) -> () throws -> Void)] {
+    //     return [
+    //         ("testSyslog", testSyslog),
+    //         ("testConfiguration", testConfiguration),
+    //     ]
+    // }
 
     // func syslog(priority : Int32, _ message : String, _ args : CVarArg...) {
     //   withVaList(args) { vsyslog(priority, message, $0) }
