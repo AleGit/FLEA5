@@ -1,5 +1,3 @@
-/*** This file could move to an own nodes module because Node.Symbol:Hashable only. ***/
-
 /// A tree data structure can be defined recursively as a collection of nodes
 /// (starting at a root node), where each node is a data structure consisting
 /// of a value, together with a list of references to nodes (the "children"),
@@ -21,24 +19,6 @@ protocol Node: Hashable,
     /// enables sharing of nodes at multiple positions within or between trees.
     static func share(node: Self) -> Self
 
-    /// calculated properties of terms
-    var subnodes: Set<Self> { get }
-    var variables: Set<Self> { get }
-
-    var height: Int { get }
-    var width: Int { get }
-    var size: Int { get }
-
-    var dimensions: (
-        // subnodes: Set<Self>,
-        // variables: Set<Self>,
-        height: Int,
-        width: Int,
-        size: Int
-    ) { get }
-
-    var defaultDescription: String { get }
-
     /// reset type, e.g. clear symbols, clear pool, etc.
     static func reset()
 }
@@ -52,7 +32,7 @@ extension Node {
     }
 
     static func reset() {
-        assert(false, "Class or Struct '\(self)' must bring its own implemtation of static func '\(#function)'.'")
+        assert(false, "Class or Struct '\(self)' must provide an implemtation of static func '\(#function)'.'")
     }
 }
 
