@@ -1,8 +1,8 @@
 import XCTest
 import Nodes
 
-final class SharingNodeTests : XCTestCase {
-    typealias N = SharingNode
+final class StringNodeTests : XCTestCase {
+    typealias N = StringNode
 
     let x = N.create(variable: "x")
     let c = N.create(constant: "c")

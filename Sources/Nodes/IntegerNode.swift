@@ -1,21 +1,21 @@
 
 
-public final class IntNode {
+public final class IntegerNode {
     public let symbol : Int
-    public let nodes : [IntNode]?
+    public let nodes : [IntegerNode]?
 
-    fileprivate static var shared = Set<IntNode>()
-    fileprivate static var symbols = ["*"]
-    fileprivate static var mapping = ["*" : 0]
+    private static var shared = Set<IntegerNode>()
+    private static var symbols = ["*"]
+    private static var mapping = ["*" : 0]
 
-    fileprivate init(symbol: Int, nodes: [IntNode]?) {
+    private init(symbol: Int, nodes: [IntegerNode]?) {
         self.symbol = symbol
         self.nodes = nodes
     }
 }
 
-extension IntNode : Node {
-    private static func share(_ node: IntNode) -> IntNode {
+extension IntegerNode : Node {
+    private static func share(_ node: IntegerNode) -> IntegerNode {
         return shared.insert(node).memberAfterInsert
     }
 
@@ -31,22 +31,22 @@ extension IntNode : Node {
         }
     }
 
-    public static func create(variable: String) -> IntNode {
+    public static func create(variable: String) -> IntegerNode {
         return share(
-            IntNode(
+            IntegerNode(
                 symbol: symbol(variable),
                 nodes: nil
             ) 
         )
     }
 
-    public static func create(constant: String) -> IntNode {
-        return create(function: constant, nodes: [IntNode]())
+    public static func create(constant: String) -> IntegerNode {
+        return create(function: constant, nodes: [IntegerNode]())
     }
 
-    public static func create(function: String, nodes: [IntNode]) -> IntNode {
+    public static func create(function: String, nodes: [IntegerNode]) -> IntegerNode {
         return share(
-            IntNode(
+            IntegerNode(
                 symbol: symbol(function),
                 nodes: nodes.map { share($0) }
             ) 

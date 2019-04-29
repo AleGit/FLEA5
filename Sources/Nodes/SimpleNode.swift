@@ -1,10 +1,10 @@
 
 
-public final class SimpleNode {
-    public let symbol : String
-    public let nodes : [SimpleNode]?
+public struct SimpleNode {
+    public var symbol : String
+    public var nodes : [SimpleNode]?
 
-    fileprivate init(symbol: String, nodes: [SimpleNode]?) {
+    private init(symbol: String, nodes: [SimpleNode]?) {
         self.symbol = symbol
         self.nodes = nodes
     }

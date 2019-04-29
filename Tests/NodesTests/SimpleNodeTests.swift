@@ -23,8 +23,7 @@ final class SimpleNodeTests : XCTestCase {
         XCTAssertEqual(fxc.nodes, [x, c])
         XCTAssertEqual(fxc.nodes?.count ?? -1, 2)
 
-        // sharing : false
-        XCTAssertFalse(fxc.nodes?.first === x)
-        XCTAssertFalse(fxc.nodes?.last === c)
+        XCTAssertTrue(fxc.nodes?.first == x)
+        XCTAssertTrue(fxc.nodes?.last == c)
     }
 }

@@ -1,8 +1,8 @@
 import XCTest
 import Nodes
 
-final class IntNodeTests : XCTestCase {
-    typealias N = IntNode
+final class IntegerNodeTests : XCTestCase {
+    typealias N = IntegerNode
 
     let x = N.create(variable: "x")
     let c = N.create(constant: "c")
@@ -23,7 +23,7 @@ final class IntNodeTests : XCTestCase {
         XCTAssertEqual(fxc.nodes, [x, c])
         XCTAssertEqual(fxc.nodes?.count ?? -1, 2)
 
-        // sharing : true
+        // sharing!
         XCTAssertTrue(fxc.nodes?.first === x)
         XCTAssertTrue(fxc.nodes?.last === c)
     }
