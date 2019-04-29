@@ -1,9 +1,9 @@
 import Foundation
 
-typealias FilePath = String
+public typealias FilePath = String
 
 extension FilePath {
-    var fileSize: Int? {
+    public var fileSize: Int? {
         var status = stat()
 
         let code = stat(self, &status)

@@ -1,0 +1,5 @@
+struct Tptp {
+    class Parser {
+
+    }
+}

@@ -186,7 +186,7 @@ extension URL {
     /// - the absolute path to a file, e.g. '/path/to/dir/PUZ001-1[.p]'
     /// with or without extension 'p'.
     /// If no resolved problem file path is accessible, nil is returned.
-    init?(fileURLWithProblem problem: String) {
+    public init?(fileURLWithProblem problem: String) {
         guard let url = URL(fileURLWithTptp: problem, pex: "p",
                             roots: // start search in ...
                                 // $TPTP_ROOT/
@@ -210,7 +210,7 @@ extension URL {
     /// If a problem URL is given, the axiom file is searches on a position in the
     /// file tree parallel to the problem file.
     /// If no resolved axiom file path is accessible, nil is returned.
-    init?(fileURLWithAxiom axiom: String, problemURL: URL? = nil) {
+    public init?(fileURLWithAxiom axiom: String, problemURL: URL? = nil) {
         guard let url = URL(fileURLWithTptp: axiom, pex: "ax",
                             roots: // start search in ...
                                 // $Y/problem.p -> $Y/
