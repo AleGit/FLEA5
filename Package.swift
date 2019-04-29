@@ -14,7 +14,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(name: "Runtime", dependencies: []),
         .target(name: "Nodes", dependencies: []),
-        .target(name: "Tptp", dependencies: ["Runtime", "Nodes"]),
+        .target(name: "Tptp", dependencies: ["Runtime"]),
         .target(name: "Flea", dependencies: ["Runtime", "Nodes"]),
         // .testTarget(name: "RuntimeTests", dependencies: ["Runtime"]),
         .testTarget(name: "NodesTests", dependencies: ["Nodes"]),

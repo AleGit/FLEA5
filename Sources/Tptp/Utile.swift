@@ -1,7 +1,6 @@
 //  Copyright © 2017 Alexander Maringele. All rights reserved.
 
 import Foundation
-import Runtime
 
 extension Collection {
     /// Split a collection in a pair of its first element and the remaining elements.
