@@ -2,6 +2,7 @@
 
 import Foundation
 
+/*
 extension Collection {
     /// Split a collection in a pair of its first element and the remaining elements.
     ///
@@ -45,32 +46,7 @@ extension Sequence where Element: Hashable {
         return d
     }
 }
-
-extension String {
-    /// check if the string has an uppercase character at given index.
-    // swiftlint:disable variable_name
-    func isUppercased(at: Index) -> Bool {
-        // swiftlint:enable variable_name
-
-        let range = at ..< index(after: at)
-        return rangeOfCharacter(from: .uppercaseLetters, options: [], range: range) != nil
-    }
-}
-
-extension String {
-    /// check if at least on member of a sequence is a substring of the string
-    func containsOne<S: Sequence>(_ strings: S) -> Bool
-        where S.Element == String {
-        return strings.reduce(false) { $0 || self.contains($1) }
-    }
-
-    /// check if all members of a sequence are substrings of the string
-    func containsAll<S: Sequence>(_ strings: S) -> Bool
-        where S.Element == String {
-        return strings.reduce(true) { $0 && self.contains($1) }
-    }
-}
-
+*/
 // MARK: - utile iterator and sequence /* ******************* */
 
 struct UtileIterator<S, T>: IteratorProtocol {
@@ -123,52 +99,3 @@ struct UtileSequence<S, T>: Sequence {
     }
 }
 
-// MARK: - utile time functions /* ************************** */
-
-/// Substitute for CFAbsoluteTime which does not seem to be available on Linux.
-public typealias AbsoluteTime = Double
-public typealias TimeInterval = Double
-
-/// Substitute for CFAbsoluteTimeGetCurrent() which does not seem to be available on Linux.
-func AbsoluteTimeGetCurrent() -> AbsoluteTime {
-    var atime = timeval() // initialize C struct
-    _ = gettimeofday(&atime, nil) // will return 0
-    return AbsoluteTime(atime.tv_sec) // s + µs
-        + AbsoluteTime(atime.tv_usec) / AbsoluteTime(1_000_000.0)
-}
-
-public typealias UtileTimes = (user: Double, system: Double, absolute: AbsoluteTime)
-
-private func ticksPerSecond() -> Double {
-    return Double(sysconf(Int32(_SC_CLK_TCK)))
-}
-
-private func UtileTimesGetCurrent() -> UtileTimes {
-    var ptime = tms()
-    _ = times(&ptime)
-
-    return (
-        user: Double(ptime.tms_utime) / ticksPerSecond(),
-        system: Double(ptime.tms_stime) / ticksPerSecond(),
-        absolute: AbsoluteTimeGetCurrent()
-    )
-}
-
-private func - (lhs: UtileTimes, rhs: UtileTimes) -> UtileTimes {
-    return (
-        user: lhs.user - rhs.user,
-        system: lhs.system - rhs.system,
-        absolute: lhs.absolute - rhs.absolute
-    )
-}
-
-/// Measure the absolute runtime of a code block.
-/// Usage: `let (result,runtime) = measure { *code to measure* }`
-// swiftlint:disable variable_name
-public func utileMeasure<R>(f: () -> R) -> (R, UtileTimes) {
-    // swiftlint:enable variable_name
-    let start = UtileTimesGetCurrent()
-    let result = f()
-    let end = UtileTimesGetCurrent()
-    return (result, end - start)
-}

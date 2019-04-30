@@ -13,8 +13,6 @@ extension FilePath {
         default:
             return nil
         }
-        // guard code == 0 else { return nil }
-        // return Int(status.st_size)
     }
 
     var isAccessible: Bool {

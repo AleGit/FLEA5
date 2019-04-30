@@ -54,7 +54,7 @@ extension URL {
 /// with Swift 3 Preview 4/5 the URL signatures diverged between macOS and linux
 /// these workaround will not build when signatures change
 extension URL {
-    fileprivate mutating func deleteLastComponents(downTo cmp: String) {
+    private mutating func deleteLastComponents(downTo cmp: String) {
         var deleted = false
         while !deleted && lastPathComponent != "/" {
             if lastPathComponent == cmp {
@@ -64,13 +64,13 @@ extension URL {
         }
     }
 
-    fileprivate func deletingLastComponents(downTo cmp: String) -> URL {
+    private func deletingLastComponents(downTo cmp: String) -> URL {
         var url = self
         url.deleteLastComponents(downTo: cmp)
         return url
     }
 
-    fileprivate mutating func append(extension pex: String, delete: Bool = true) {
+    private mutating func append(extension pex: String, delete: Bool = true) {
         let pe = pathExtension
         guard pe != pex else { return } // nothing to do
 
@@ -79,13 +79,13 @@ extension URL {
         appendPathExtension(pex)
     }
 
-    fileprivate func appending(extension pex: String, delete: Bool = true) -> URL {
+    private func appending(extension pex: String, delete: Bool = true) -> URL {
         var url = self
         url.append(extension: pex, delete: delete)
         return url
     }
 
-    fileprivate mutating func append(component cmp: String) {
+    private mutating func append(component cmp: String) {
         appendPathComponent(cmp)
     }
 

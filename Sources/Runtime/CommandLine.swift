@@ -56,11 +56,6 @@ extension CommandLine {
         return dictionary
     }()
 
-    // public static func option(name:String) -> Option? {
-    //   guard let settings = options[name] else { return nil }
-    //   return (name, settings)
-    // }
-
     struct Environment {
         static func getValue(for name: String) -> String? {
             guard let value = getenv(name) else { return nil }
