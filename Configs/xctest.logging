@@ -3,11 +3,10 @@
 # emergency < alert < critical < error < warning < notice < info < debug
 # for details see Project/Configs.
 
-"---"                           :: "error"   # global minimum log priority
-"+++"                           :: "debug"   # global maximal log priority
+"---" :: "error"   # global minimum log priority
+"+++" :: "notice"  # global maximal log priority
 
-"***"                           :: "info"   # global default log priority
-
+"***" :: "info"    # global default log priority
 "URL+FilePath.swift" :: "warning"
 
 

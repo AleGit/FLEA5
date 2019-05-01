@@ -3,8 +3,10 @@
 # emergency < alert < critical < error < warning < notice < info < debug
 # for details see Project/Configs/default.logging.
 
-"---" :: "error"    # minimal log priority, log everything up to error
-"***" :: "warning"  # default log priority
-"+++" :: "info"     # maximal log priority, log nothing above info
+"---" :: "error"          # -->    error ≤ minimal log priority, log everything up to.
+"+++" :: "warning"             # -->  minimal ≤ maximal log priority, log nothing above.
 
-"main.swift" :: "emergency"  # file specific log priority
+// default and file/function specific log levels
+
+"***" :: "warning"           # -->  minimal ≤ default log priority ≤ maximal
+"main.swift" :: "notice"      # -->  minimal ≤    file log priority ≤ maximal

@@ -15,13 +15,13 @@
 "***"                        :: "warning"   # default log level
 "+++"                        :: "notice"    # maximal log level
 
-# minimal log level - error: everything not higher will be logged (emergency, alert, critical, error)
-# maximal log level - notice: nothing higher than this will be logged (info, debug)
+# minimal log level - error: everything smaller MUST BE logged (emergency, alert, critical, error)
+# maximal log level - notice: everything higher MUST NOT BE be logged (info, debug)
 #
-# default log level - warning: the log level for unspecified files or functions priorities
+# default log level - warning: the maximal log level for unspecified files or functions priorities
 
-"String+Path.swift"          :: "debug"  # file specific log priority
-"Demo.swift"                 :: "error"  # file specific log priority
-"Node.swift/init"            :: "info"   # file/function specific log priority
+"String+Path.swift"          :: "debug"  # file specific maximal log priority
+"Demo.swift"                 :: "error"  # file specific maximal log priority
+"Node.swift/init"            :: "info"   # file/function maximal specific log priority
 
 
