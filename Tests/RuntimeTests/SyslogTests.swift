@@ -10,71 +10,50 @@ import XCTest
 
 @testable import Runtime
 
-public class SyslogTests: FleaTestCase {
-    // static var allTests: [(String, (SyslogTests) -> () throws -> Void)] {
-    //     return [
-    //         ("testSyslog", testSyslog),
-    //         ("testConfiguration", testConfiguration),
-    //     ]
-    // }
-
-    // func syslog(priority : Int32, _ message : String, _ args : CVarArg...) {
-    //   withVaList(args) { vsyslog(priority, message, $0) }
-    // }
-
-    /// [syslog](https://en.wikipedia.org/wiki/Syslog) wrapper demo.
-    /// Messages should appear near the output of the test,
-    public override func setUp() {
+public class SyslogTests: XCTestCase {
+    /// set up logging once _before_ all tests of a test class
+    public override class func setUp() {
         super.setUp()
-        // Put setUp code here. This method is called before the invocation of each test method in the class.
-        // Syslog.openLog(ident:"ABC", options:.console,.pid,.perror)
-        // _ = Syslog.setLogMask(upTo: .debug)
+        Syslog.openLog(options: .console, .pid, .perror)
+        Syslog.carping = false // off by default
     }
 
-    public override func tearDown() {
-
-        // Syslog.closeLog()
-        // Put tearDown code here. This method is called after the invocation of each test method in the class.
+    /// teardown logging once _after_ all tests of a test class
+    public override class func tearDown() {
+        Syslog.closeLog()
         super.tearDown()
     }
 
-    func testSyslog() {
-        // create new error and log it
-        let newerror = open("/fictitious_file", O_RDONLY, 0) // sets errno to ENOENT
-
-        XCTAssertEqual(Syslog.defaultLogLevel, .notice)
-        XCTAssertEqual(Syslog.logLevel(), .error)
-
-        Syslog.multiple(errcode: newerror) { "min=\(Syslog.minimalLogLevel) max=\(Syslog.maximalLogLevel) default=\(Syslog.defaultLogLevel)" }
-    }
-
-    func testTestConfiguration() {
+    func testError() {
 
         XCTAssertEqual(Syslog.minimalLogLevel, .error)
         XCTAssertEqual(Syslog.maximalLogLevel, .notice)
 
-        // emergency < alert < critical < error < warning < notice < info < debug
-
         XCTAssertEqual(Syslog.defaultLogLevel, .notice)
-        XCTAssertEqual(Syslog.logLevel(), .warning)
+        XCTAssertEqual(Syslog.logLevel(), .error)
 
     }
 
-    // func testConfiguration() {
-    //     let path = "Configs/default.logging"
+    func testWarning() {
 
-    //     guard let allLines = path.lines(), allLines.count > 15 else {
-    //         XCTFail()
-    //         return
-    //     }
+        XCTAssertEqual(Syslog.minimalLogLevel, .error)
+        XCTAssertEqual(Syslog.maximalLogLevel, .notice)
 
-    //     guard let lines = path.lines(predicate: {
-    //         !($0.hasPrefix("#") || $0.isEmpty)
-    //     }), lines.count == 6 else {
-    //         XCTFail()
-    //         return
-    //     }
+        XCTAssertEqual(Syslog.defaultLogLevel, .notice)
+        XCTAssertEqual(Syslog.logLevel(), .warning)
+    }
 
-    //     XCTAssertTrue(allLines.count > lines.count)
-    // }
+    func testMultiple() {
+
+        XCTAssertEqual(Syslog.minimalLogLevel, .error)
+        XCTAssertEqual(Syslog.maximalLogLevel, .notice)
+
+        XCTAssertEqual(Syslog.defaultLogLevel, .notice)
+        XCTAssertEqual(Syslog.logLevel(), .notice)
+
+        // create new error and log it
+        let newerror = open("/fictitious_file", O_RDONLY, 0) // sets errno to ENOENT
+
+        Syslog.multiple(errcode: newerror) { "min=\(Syslog.minimalLogLevel) max=\(Syslog.maximalLogLevel) default=\(Syslog.defaultLogLevel)" }
+    }
 }

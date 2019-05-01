@@ -7,9 +7,10 @@
 "+++" :: "notice"  # global maximal log priority
 
 "***" :: "info"    # global default log priority
-"URL+FilePath.swift" :: "warning"
-"SyslogTests.swift" :: "error"
-"SyslogTests.swift/testTestConfiguration()" :: "warning"
+
+"SyslogTests.swift" :: "info"
+"SyslogTests.swift/testError()" :: "error"
+"SyslogTests.swift/testWarning()" :: "warning"
 
 
 
