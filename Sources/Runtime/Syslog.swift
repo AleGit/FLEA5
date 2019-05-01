@@ -157,64 +157,56 @@ public struct Syslog {
         return cnfg
     }()
 
+    private static func embank<T>(lo: T, hi: T, _ level: T) -> T 
+    where T:Comparable {
+        return min(max(lo, level), hi)
+    }
+
     /// Everything less or equal MUST be logged.
     /// .error <= minimal log level
     public static var minimalLogLevel: Priority = {
-        let minLevel = max(
-            .error,
+        return embank(
+            lo: .error, 
+            hi: .debug,
             Syslog.configuration?["---"] ?? .error
         )
-        assert(minLevel >= .error)
-        return minLevel
     }()
 
     /// Everything greater MUST NOT be logged.
     /// minimal log level <= maximal log level
     public static var maximalLogLevel: Priority = {
-        let maxLevel = max(
-            Syslog.minimalLogLevel,
+        return embank(
+            lo: Syslog.minimalLogLevel,
+            hi: .debug,
             Syslog.configuration?["+++"] ?? .warning
         )
-        assert(Syslog.minimalLogLevel <= maxLevel)
-        return maxLevel // Log at least up to minimal log level.
     }()
-
-    private static func embank(lo: Priority = Syslog.minimalLogLevel, hi: Priority = Syslog.maximalLogLevel, _ level: Priority) -> Priority {
-        return min(max(lo, level), hi)
-    }
 
     /// Everything less or equal will be logged.
     /// minimal <= default <= maxiaml log level
     public static var defaultLogLevel: Priority = {
         return embank( 
+            lo: Syslog.minimalLogLevel,
+            hi: Syslog.maximalLogLevel,
             Syslog.configuration?["***"] ?? .notice 
         )
     }()
 
-    public static func logLevel(_ file: String = #file, _ function: String = #function) -> Priority {
-        let name = URL(fileURLWithPath: file).lastPathComponent
+    public static func logLevel(_ filePath: String = #file, _ function: String = #function) -> Priority {
+        let fileName = URL(fileURLWithPath: filePath).lastPathComponent
         return embank(
-            Syslog.configuration?["\(name)/\(function)"] ?? Syslog.configuration?["\(name)"] ?? Syslog.defaultLogLevel
+            lo: Syslog.minimalLogLevel,
+            hi: Syslog.maximalLogLevel,
+            Syslog.configuration?[fileName + "/" + function]    // "Node.swift/foo()"
+            ?? Syslog.configuration?[function]                   // "foo()"
+            ?? Syslog.configuration?[fileName]                  // "Node.swift"   
+            ?? Syslog.defaultLogLevel                           // "***"
         )
     }
 
     private static func loggable(_ priority: Priority, _ file: String, _ function: String, _: Int) -> Bool {
-        // guard Syslog.active, priority <= Syslog.maximalLogLevel else {
-        //     // Do not log if syslog is not active or maximal log level is smaller than priority.
-        //     return false
-        // }
-        // // [1] priority <  maximal logging level
-
-        // guard priority > Syslog.minimalLogLevel else {
-        //     // Log if priority is less than or equal to minimal log level.
-        //     return true
-        // }
-        // // [1] priority <  maximal logging level
-        // // [2] minimal log level < priority
-
         guard Syslog.active, priority <= Syslog.maximalLogLevel else { return false }
 
-        // Log if priority is less or equal to file/function log level.
         return priority <= Syslog.logLevel(file, function)
     }
 }
