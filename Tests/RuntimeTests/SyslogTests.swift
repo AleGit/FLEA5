@@ -28,7 +28,7 @@ public class SyslogTests: FleaTestCase {
         super.setUp()
         // Put setUp code here. This method is called before the invocation of each test method in the class.
         // Syslog.openLog(ident:"ABC", options:.console,.pid,.perror)
-        _ = Syslog.setLogMask(upTo: .debug)
+        // _ = Syslog.setLogMask(upTo: .debug)
     }
 
     public override func tearDown() {
@@ -42,6 +42,9 @@ public class SyslogTests: FleaTestCase {
         // create new error and log it
         let newerror = open("/fictitious_file", O_RDONLY, 0) // sets errno to ENOENT
 
+        XCTAssertEqual(Syslog.defaultLogLevel, .notice)
+        XCTAssertEqual(Syslog.logLevel(), .error)
+
         Syslog.multiple(errcode: newerror) { "min=\(Syslog.minimalLogLevel) max=\(Syslog.maximalLogLevel) default=\(Syslog.defaultLogLevel)" }
     }
 
@@ -52,7 +55,9 @@ public class SyslogTests: FleaTestCase {
 
         // emergency < alert < critical < error < warning < notice < info < debug
 
-        XCTAssertEqual(Syslog.defaultLogLevel, .info)
+        XCTAssertEqual(Syslog.defaultLogLevel, .notice)
+        XCTAssertEqual(Syslog.logLevel(), .warning)
+
     }
 
     // func testConfiguration() {

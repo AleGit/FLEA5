@@ -11,8 +11,8 @@ import Foundation
 /// Static wrapper for [syslog](https://en.wikipedia.org/wiki/Syslog),
 /// see [man 3 syslog]http://www.unix.com/man-page/POSIX/3posix/syslog/
 public struct Syslog {
-    private static var carping = false
-    public static var failOnError = true // make this configurable
+    static var carping = false
+    static var failOnError = false // make this configurable
 
     public enum Priority: Comparable {
         case emergency // LOG_EMERG      system is unusable
@@ -244,7 +244,7 @@ extension Syslog {
         return setlogmask(mask)
     }
 
-    private static func setLogMask(upTo: Syslog.Priority) -> Int32 {
+    static func setLogMask(upTo: Syslog.Priority) -> Int32 {
         Syslog.activePriorities = Set(
             Syslog.Priority.all.filter { $0.priority <= upTo.priority }
         )
@@ -318,7 +318,7 @@ extension Syslog {
         }
     }
 
-    public static func fail(condition: @autoclosure () -> Bool = true,
+    private static func fail(condition: @autoclosure () -> Bool = true,
                             file: String = #file, function: String = #function, line: Int = #line, column: Int = #column,
                             message: () -> String) {
         guard condition() else { return }
@@ -386,7 +386,7 @@ extension Syslog {
 }
 
 extension Syslog {
-    fileprivate static func loggingTime() -> String {
+    private static func loggingTime() -> String {
         var t = time(nil) // : time_t
         let tm = localtime(&t) // : struct tm *
         var s = [CChar](repeating: 0, count: 64) // : char s[64];

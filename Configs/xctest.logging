@@ -8,6 +8,8 @@
 
 "***" :: "info"    # global default log priority
 "URL+FilePath.swift" :: "warning"
+"SyslogTests.swift" :: "error"
+"SyslogTests.swift/testTestConfiguration()" :: "warning"
 
 
 

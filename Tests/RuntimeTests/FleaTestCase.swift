@@ -18,10 +18,10 @@ public class FleaTestCase: XCTestCase {
     public override class func setUp() {
         super.setUp()
         Syslog.openLog(options: .console, .pid, .perror)
-        let logLevel = Syslog.maximalLogLevel
+        // let logLevel = Syslog.maximalLogLevel
 
-        _ = Syslog.setLogMask(upTo: logLevel)
-        print("+++ +++ FleaTestCase.\(#function) +++ \(#file) +++")
+        // _ = Syslog.setLogMask(upTo: logLevel)
+        // print("+++ +++ FleaTestCase.\(#function) +++ \(#file) +++")
         Syslog.carping = false // off by default
     }
 

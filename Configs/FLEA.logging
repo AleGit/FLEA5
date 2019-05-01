@@ -4,7 +4,7 @@
 # for details see Project/Configs/default.logging.
 
 "---" :: "error"          # -->    error ≤ minimal log priority, log everything up to.
-"+++" :: "warning"             # -->  minimal ≤ maximal log priority, log nothing above.
+"+++" :: "info"             # -->  minimal ≤ maximal log priority, log nothing above.
 
 // default and file/function specific log levels
 
