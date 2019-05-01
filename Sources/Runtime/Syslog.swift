@@ -150,17 +150,8 @@ public struct Syslog {
             Syslog.prinfo { "\(entry), \(key), \(p)" }
         }
 
-        #if DEBUG
-            print(cnfg)
-        #endif
-
         return cnfg
     }()
-
-    private static func embank<T>(lo: T, hi: T, _ level: T) -> T 
-    where T:Comparable {
-        return min(max(lo, level), hi)
-    }
 
     /// Everything less or equal MUST be logged.
     /// .error <= minimal log level

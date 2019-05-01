@@ -50,9 +50,6 @@ extension CommandLine {
                 dictionary[name]?.append(parameter)
             }
         }
-        #if DEBUG
-            print("options", dictionary)
-        #endif
         return dictionary
     }()
 

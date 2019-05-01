@@ -1,5 +1,7 @@
 import Runtime
 
+print("FLEA - First order Logic with Equality Attester")
+
 Syslog.openLog(options: .console, .pid, .perror)
 defer { Syslog.closeLog() }
 
