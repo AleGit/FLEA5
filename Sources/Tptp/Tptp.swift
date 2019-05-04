@@ -1,4 +1,4 @@
-struct Tptp {
+public struct Tptp {
     class Parser {
 
     }

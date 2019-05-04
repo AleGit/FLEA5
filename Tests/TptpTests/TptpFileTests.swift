@@ -75,6 +75,26 @@ public class TptpFileTests: XCTestCase {
         for child in file.root!.children {
             XCTAssertEqual(Tptp.SymbolType(of: child), .fof)
         }
+
+        let node = Tptp.Node.create(file: file)!
+
+        print(node)
+    }
+
+    func testHWV134m1() {
+        let (file, triple1) = Time.measure {
+            return Tptp.File(problem: "HWV134-1")!
+        }
+
+        print(file.path!, triple1)
+
+        let (node, triple2) = Time.measure {
+            return Tptp.Node.create(file: file)!
+        }
+
+        print(node.symbol, triple2)
+
+        
     }
 
     func test_fXz() {

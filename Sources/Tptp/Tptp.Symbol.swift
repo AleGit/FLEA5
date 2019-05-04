@@ -10,7 +10,7 @@ extension Tptp {
         case unknown
     }
 
-    enum SymbolType: Equatable {
+    public enum SymbolType: Hashable {
         case undefined
 
         /// <TPTP_file>
