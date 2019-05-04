@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CTptpParsing",
+        "repositoryURL": "https://github.com/AleGit/CTptpParsing.git",
+        "state": {
+          "branch": null,
+          "revision": "845d7ee03afe3ed22ee37164cf08d5d8ce9dd541",
+          "version": "1.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
