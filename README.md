@@ -86,3 +86,16 @@ $ find /usr/local -name "libTptpParsing*"
 /usr/lib/lib/libTtptpParsing.so         # linux
 /usr/local/lib/libTptpParinsg.dylib     # macOS
 ```
+
+- [TPTPLibary](http://www.tptp.org)
+
+Download and unpack TPTP-v7.m.n.tgz.
+Create a symbolic link to the unpacked folder into your home directory.
+```
+$ ln -s /path/to/TPTP-v7.m.n ~/TPTP
+$ ls ~/TPTP/
+Axioms          Documents       Generators      Problems        Scripts         TPTP2X
+```
+
+FLEA will search for Axioms and Problems in `~/TPTP/Axioms` and `~/TPTP/Problems`.
+

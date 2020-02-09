@@ -6,8 +6,8 @@ public struct Time {
     private static func absoluteTime() -> Double {
         var atime = timeval() // initialize C struct
         _ = gettimeofday(&atime, nil) // will return 0
-        return Double(atime.tv_sec) // s + µs
-            + Double(atime.tv_usec) / Double(1_000_000.0)
+        return Double(atime.tv_sec) // s (seconds)
+            + Double(atime.tv_usec) / Double(1_000_000.0) // µs (microseconds)
     }
 
     public typealias Triple = (user: Double, system: Double, absolute: Double)
