@@ -147,7 +147,7 @@ public struct Syslog {
             }
             cnfg[key] = p
 
-            Syslog.prinfo { "\(entry), \(key), \(p)" }
+            Syslog.prinfo { "\(entry) => (\(key),\(p))" }
         }
 
         return cnfg
@@ -364,7 +364,7 @@ extension Syslog {
                        message: () -> String) {
         guard Syslog.loggable(.info, file, function, line), condition() else {
             if CommandLine.options["--prinfo"]?.first == "active" || CommandLine.name.hasSuffix("test"), condition() {
-                print("\(Syslog.loggingTime()) 🖨  🔖  \(URL(fileURLWithPath: file).lastPathComponent)[\(line):\(column)].\(function) 📌  \(message())")
+                print("\(Syslog.loggingTime()) 🖨  🔖  \(URL(fileURLWithPath: file).lastPathComponent)[\(line):\(column)].\(function) 📌 \(message())")
             }
             return
         }
