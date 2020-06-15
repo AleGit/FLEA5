@@ -32,15 +32,15 @@ extension UnsafeMutablePointer where Pointee: SymbolNodeProtocol {
 
 extension UnsafeMutablePointer where Pointee: TreeNodeProtocol {
     var type: PRLC_TREE_NODE_TYPE {
-        return pointee.type
+        pointee.type
     }
 
     var sibling: TreeNodeRef? {
-        return pointee.sibling
+        pointee.sibling
     }
 
     var child: TreeNodeRef? {
-        return pointee.child
+        pointee.child
     }
 }
 
@@ -69,11 +69,11 @@ extension UnsafeMutablePointer where Pointee: TreeNodeProtocol {
     // }
 
     func children<T>(where predicate: @escaping (TreeNodeRef) -> Bool = { _ in true }, data: @escaping (TreeNodeRef) -> T) -> UtileSequence<TreeNodeRef, T> {
-        return UtileSequence(first: child, step: { $0.sibling }, where: predicate, data: data)
+        UtileSequence(first: child, step: { $0.sibling }, where: predicate, data: data)
     }
 
     var children: UtileSequence<TreeNodeRef, TreeNodeRef> {
-        return children { $0 }
+        children { $0 }
     }
 
     var childCount: Int {

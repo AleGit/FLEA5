@@ -95,7 +95,7 @@ struct UtileSequence<S, T>: Sequence {
     }
 
     func makeIterator() -> UtileIterator<S, T> {
-        return UtileIterator(first: this, step: step, where: predicate, data: data)
+        UtileIterator(first: this, step: step, where: predicate, data: data)
     }
 }
 

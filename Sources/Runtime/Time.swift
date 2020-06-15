@@ -13,7 +13,7 @@ public struct Time {
     public typealias Triple = (user: Double, system: Double, absolute: Double)
 
     private static func ticksPerSecond() -> Double {
-        return Double(sysconf(Int32(_SC_CLK_TCK)))
+        Double(sysconf(Int32(_SC_CLK_TCK)))
     }
 
     private static func currentTriple() -> Triple {
@@ -40,7 +40,7 @@ public struct Time {
 
 
     private func - (lhs: Time.Triple, rhs: Time.Triple) -> Time.Triple {
-        return (
+        (
             user: lhs.user - rhs.user,
             system: lhs.system - rhs.system,
             absolute: lhs.absolute - rhs.absolute

@@ -40,7 +40,7 @@ public struct Syslog {
         /// Since `Syslog.Priority` is allready `Equatable`
         /// it is sufficient to implement < to adopt `Comparable`
         public static func < (_ lhs: Priority, rhs: Priority) -> Bool {
-            return lhs.priority < rhs.priority
+            lhs.priority < rhs.priority
         }
 
         fileprivate init?(string: String) {
@@ -149,14 +149,13 @@ public struct Syslog {
 
             Syslog.prinfo { "\(entry) => (\(key),\(p))" }
         }
-
         return cnfg
     }()
 
     /// Everything less or equal MUST be logged.
     /// .error <= minimal log level
     public static var minimalLogLevel: Priority = {
-        return embank(
+        embank(
             lo: .error, 
             hi: .debug,
             Syslog.configuration?["---"] ?? .error
@@ -166,7 +165,7 @@ public struct Syslog {
     /// Everything greater MUST NOT be logged.
     /// minimal log level <= maximal log level
     public static var maximalLogLevel: Priority = {
-        return embank(
+        embank(
             lo: Syslog.minimalLogLevel,
             hi: .debug,
             Syslog.configuration?["+++"] ?? .warning
@@ -176,7 +175,7 @@ public struct Syslog {
     /// Everything less or equal will be logged.
     /// minimal <= default <= maxiaml log level
     public static var defaultLogLevel: Priority = {
-        return embank( 
+        embank(
             lo: Syslog.minimalLogLevel,
             hi: Syslog.maximalLogLevel,
             Syslog.configuration?["***"] ?? .notice 
@@ -214,7 +213,7 @@ extension Syslog {
     }
 
     private static var configured: [Priority] {
-        return Syslog.activePriorities.sorted { $0.priority < $1.priority }
+        Syslog.activePriorities.sorted { $0.priority < $1.priority }
     }
 }
 

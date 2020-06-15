@@ -11,92 +11,6 @@ public class TptpFileTests: XCTestCase {
     /// teardown logging once _after_ all tests of a test class
     public override class func tearDown() {}
 
-    func testPUZ001m1() {
-        let file = Tptp.File(problem: "PUZ001-1")!
-
-        XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/PUZ/PUZ001-1.p"))
-        XCTAssertTrue(file.root!.symbol!.hasSuffix("TPTP/Problems/PUZ/PUZ001-1.p"))
-        XCTAssertEqual(Tptp.SymbolType(of: file.root!), .file)
-        for child in file.root!.children {
-            XCTAssertEqual(Tptp.SymbolType(of: child), .cnf)
-        }
-    }
-
-    func testPUZ006m1() {
-        let file = Tptp.File(problem: "PUZ006-1")!
-
-        XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/PUZ/PUZ006-1.p"))
-        XCTAssertTrue(file.root!.symbol!.hasSuffix("TPTP/Problems/PUZ/PUZ006-1.p"))
-        XCTAssertEqual(Tptp.SymbolType(of: file.root!), .file)
-        for child in file.root!.children {
-            let type = Tptp.SymbolType(of: child)
-            switch type {
-            case .include:
-                XCTAssertEqual(child.symbol!, "'Axioms/PUZ001-0.ax'")
-
-            default:
-                XCTAssertEqual(type, .cnf)
-            }
-        }
-
-        let includes = file.includeSelectionURLTriples(url: file.url!)
-        for include in includes {
-            print(include)
-        }
-    }
-
-    func _testHWV134m1() {
-        let (_, triple) = Time.measure {
-            let file = Tptp.File(problem: "HWV134-1")!
-
-            XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/HWV/HWV134-1.p"))
-            XCTAssertTrue(file.root!.symbol!.hasSuffix("TPTP/Problems/HWV/HWV134-1.p"))
-            XCTAssertEqual(Tptp.SymbolType(of: file.root!), .file)
-            for child in file.root!.children {
-                XCTAssertEqual(Tptp.SymbolType(of: child), .cnf)
-            }
-        }
-
-        XCTAssertTrue(triple.user + triple.system < triple.absolute)
-        XCTAssertTrue(triple.absolute * 0.8 < triple.user + triple.system)
-
-        XCTAssertTrue(triple.user <= 12.0)
-        XCTAssertTrue(triple.system <= 3.0)
-
-        print(triple)
-    }
-
-    func testPUZ001p1() {
-        let file = Tptp.File(problem: "PUZ001+1")!
-
-        XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/PUZ/PUZ001+1.p"))
-        XCTAssertTrue(file.root!.symbol!.hasSuffix("TPTP/Problems/PUZ/PUZ001+1.p"))
-        XCTAssertEqual(Tptp.SymbolType(of: file.root!), .file)
-        for child in file.root!.children {
-            XCTAssertEqual(Tptp.SymbolType(of: child), .fof)
-        }
-
-        let node = Tptp.Node.create(file: file)!
-
-        print(node)
-    }
-
-    func testHWV134m1() {
-        let (file, triple1) = Time.measure {
-            return Tptp.File(problem: "HWV134-1")!
-        }
-
-        print(file.path!, triple1)
-
-        let (node, triple2) = Time.measure {
-            return Tptp.Node.create(file: file)!
-        }
-
-        print(node.symbol, triple2)
-
-        
-    }
-
     func test_fXz() {
         guard
             let file = Tptp.File(string: "f(X,z)", type: Tptp.SymbolType.variable),
@@ -138,4 +52,93 @@ public class TptpFileTests: XCTestCase {
         XCTAssertEqual(z.symbol, "z")
         XCTAssertEqual(Tptp.SymbolType(of: z), .function(0))
     }
+}
+
+/// PUZ - Puzzles
+extension TptpFileTests {
+
+    func testPUZ001m1() {
+        let file = Tptp.File(problem: "PUZ001-1")!
+
+        XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/PUZ/PUZ001-1.p"))
+        XCTAssertTrue(file.root!.symbol!.hasSuffix("TPTP/Problems/PUZ/PUZ001-1.p"))
+        XCTAssertEqual(Tptp.SymbolType(of: file.root!), .file)
+        for child in file.root!.children {
+            XCTAssertEqual(Tptp.SymbolType(of: child), .cnf)
+        }
+    }
+
+    func testPUZ001p1() {
+        let file = Tptp.File(problem: "PUZ001+1")!
+
+        XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/PUZ/PUZ001+1.p"))
+        XCTAssertTrue(file.root!.symbol!.hasSuffix("TPTP/Problems/PUZ/PUZ001+1.p"))
+        XCTAssertEqual(Tptp.SymbolType(of: file.root!), .file)
+        for child in file.root!.children {
+            XCTAssertEqual(Tptp.SymbolType(of: child), .fof)
+        }
+
+        let node = Tptp.Node.create(file: file)!
+
+        print(node)
+    }
+
+    func testPUZ006m1() {
+        let file = Tptp.File(problem: "PUZ006-1")!
+
+        XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/PUZ/PUZ006-1.p"))
+        XCTAssertTrue(file.root!.symbol!.hasSuffix("TPTP/Problems/PUZ/PUZ006-1.p"))
+        XCTAssertEqual(Tptp.SymbolType(of: file.root!), .file)
+        for child in file.root!.children {
+            let type = Tptp.SymbolType(of: child)
+            switch type {
+            case .include:
+                XCTAssertEqual(child.symbol!, "'Axioms/PUZ001-0.ax'")
+
+            default:
+                XCTAssertEqual(type, .cnf)
+            }
+        }
+
+        let includes = file.includeSelectionURLTriples(url: file.url!)
+        for include in includes {
+            print(include)
+        }
+    }
+
+}
+
+/// HWV - Hardware verification
+
+extension TptpFileTests {
+
+    func _testHWV134m1() {
+        let (_, triple) = Time.measure {
+            let file = Tptp.File(problem: "HWV134-1")!
+
+            XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/HWV/HWV134-1.p"))
+            XCTAssertTrue(file.root!.symbol!.hasSuffix("TPTP/Problems/HWV/HWV134-1.p"))
+            XCTAssertEqual(Tptp.SymbolType(of: file.root!), .file)
+            for child in file.root!.children {
+                XCTAssertEqual(Tptp.SymbolType(of: child), .cnf)
+            }
+        }
+
+        // print(file.path!, triple)
+
+        XCTAssertTrue(triple.user + triple.system < triple.absolute)
+        XCTAssertTrue(triple.absolute * 0.8 < triple.user + triple.system)
+
+        XCTAssertTrue(triple.user <= 12.0)
+        XCTAssertTrue(triple.system <= 3.1)
+
+        print(triple)
+
+//        let (node, triple2) = Time.measure {
+//            Tptp.Node.create(file: file)!
+//        }
+//
+//        print(triple2)
+    }
+
 }

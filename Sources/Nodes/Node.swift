@@ -3,14 +3,14 @@
 /// of a value, together with a list of references to nodes (the "children"),
 /// with the constraints that no reference is duplicated, and none points to the root.
 /// <a href="https://en.wikipedia.org/wiki/Tree_(data_structure)">wikipedia</a>
-public protocol Node : Hashable, CustomStringConvertible { // , CustomStringConvertible, CustomDebugStringConvertible {
+public protocol Node : Hashable, CustomStringConvertible { // , CustomDebugStringConvertible {
     associatedtype Symbol
     associatedtype SymbolType : Equatable
     associatedtype SymbolKey : Hashable
 
     /// The symbol of the node, e.g. "f".
     var symbol: Symbol { get }
-    /// The type of the node, e.g. function.
+    /// The type of the node, e.g. function, connective, quantifier
     var type: SymbolType { get }
 
     /// The key of the node, e.g. 1 with [ 1: "f" ]

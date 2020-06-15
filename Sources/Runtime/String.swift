@@ -3,7 +3,7 @@ import Foundation
 extension String {
 
     var trimmingWhitespace: String {
-        return self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     }
     
     var pealing: String {

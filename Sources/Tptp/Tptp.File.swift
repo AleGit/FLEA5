@@ -6,7 +6,13 @@ import Foundation
 extension Tptp {
     /// A parsed TPTP file where the abstract syntax tree is stored in an optimized
     /// dynamically allocated heap memory which is only accessible by pointers.
-    /// (it uses TptpParsingLib with C-API)
+    /// It uses CTptpParsing with C-API.
+    /// - masOS
+    ///   - /usr/local/lib/libTptpParsing.dylib
+    ///   - /usr/local/include/Prlc*.h
+    /// - Linux TODO: configure and test
+    ///   - /usr/lib/libTptpParsing.so
+    ///   - /usr/include/Prlc*.h
     final class File {
 
         private var store: StoreRef?
@@ -154,7 +160,7 @@ extension Tptp {
         /// The sequence of parsed <TPTP_input> nodes.
         /// - <TPTP_input> ::= <annotated_formula> | <include>
         var inputs: UtileSequence<TreeNodeRef, TreeNodeRef> {
-            return root!.children { $0 }
+            root!.children { $0 }
         }
 
         /// The sequence of stored symbols (paths, names, etc.) from first to last.
@@ -191,19 +197,19 @@ extension Tptp {
         /// The sequence of parsed <include> nodes.
         /// includes.count <= inputs.count
         private var includes: UtileSequence<TreeNodeRef, TreeNodeRef> {
-            return root!.children(where: { $0.type == PRLC_INCLUDE }) { $0 }
+            root!.children(where: { $0.type == PRLC_INCLUDE }) { $0 }
         }
 
         /// The sequence of parsed <cnf_annotated> nodes.
         /// cnfs.count <= inputs.count
         private var cnfs: UtileSequence<TreeNodeRef, TreeNodeRef> {
-            return root!.children(where: { $0.type == PRLC_CNF }) { $0 }
+            root!.children(where: { $0.type == PRLC_CNF }) { $0 }
         }
 
         /// The sequence of parsed <fof_annotated> nodes.
         /// fofs.count <= inputs.count
         private var fofs: UtileSequence<TreeNodeRef, TreeNodeRef> {
-            return root!.children(where: { $0.type == PRLC_FOF }) { $0 }
+            root!.children(where: { $0.type == PRLC_FOF }) { $0 }
         }
 
         /* 
@@ -237,7 +243,7 @@ extension Tptp {
         func includeSelectionURLTriples(url: URL) -> [(String, [String], URL)] {
             // <include> ::= include(<file_name><formula_selection>).
 
-            return includes.compactMap {
+            includes.compactMap {
                 // <file_name> ::= <single_quoted>
                 guard let name = $0.symbol else {
                     Syslog.error { "<include> entry has no <file_name>." }
@@ -256,7 +262,7 @@ extension Tptp {
         }
 
         var containsIncludes: Bool {
-            return includes.reduce(false) { _, _ in true }
+            includes.reduce(false) { _, _ in true }
         }
     }
 }

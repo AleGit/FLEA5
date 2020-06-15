@@ -6,7 +6,16 @@
         "repositoryURL": "https://github.com/AleGit/CTptpParsing.git",
         "state": {
           "branch": null,
-          "revision": "845d7ee03afe3ed22ee37164cf08d5d8ce9dd541",
+          "revision": "9d15fc2c57d8e17194082af52468d0e5693b2e5c",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "CYices",
+        "repositoryURL": "https://github.com/AleGit/CYices.git",
+        "state": {
+          "branch": null,
+          "revision": "ea1c2ee764574911e09b3479069d90cce5c51cf0",
           "version": "1.0.0"
         }
       }

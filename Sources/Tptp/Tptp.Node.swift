@@ -4,27 +4,38 @@ import Runtime
 
 extension Tptp {
     public final class Node: Nodes.Node {
-        // symbols[3] -> "f"
-        private static var symbols = [(symbol: String, type: SymbolType)]()
-        // table["f"] -> ("f", function)
-        private static var table = [String: Int]()
-        private static var pool = Set<Node>()
+        public typealias Symbol = String
+        public typealias SymbolType = PRLC_TREE_NODE_TYPE
+        public typealias SymbolKey = Int
 
+        // MARK: - public protocol properties
+
+        /// The symbol of the node, e.g. "f".
+        public var symbol: String {
+            Tptp.Node.symbols[key].symbol
+        }
+
+        /// The TPTP type of the node, e.g. function.
+        public var type: PRLC_TREE_NODE_TYPE {
+            Tptp.Node.symbols[key].type
+        }
+
+        /// The key of the node, e.g. 1 with [ 1: "f" ]
         public let key: Int
+
+        /// The children of the node, e.g. X, z.
         public let nodes: [Node]?
 
-        private init(key: Int, nodes: [Node]?) {
-            self.key = key
-            self.nodes = nodes
-        }
+        // MARK: - private static tables and functions
 
-        public var symbol: String {
-            return Tptp.Node.symbols[key].symbol
-        }
+        // Lookup for symbols by key, e.g. symbols[3] -> ("f", function)
+        private static var symbols = [(symbol: String, type: SymbolType)]()
 
-        public var type: PRLC_TREE_NODE_TYPE {
-            return Tptp.Node.symbols[key].type
-        }
+        // Lookup for key by symbols, e.g. table["f"] -> 3
+        private static var table = [String: Int]()
+
+        // All (shared) nodes
+        private static var pool = Set<Node>()
 
         private static func symbolize(_ type: PRLC_TREE_NODE_TYPE, _ symbol: String) -> Int {
             if Node.table[symbol] == nil {
@@ -33,6 +44,12 @@ extension Tptp {
             }
 
             return Node.table[symbol]!
+        }
+
+
+        private init(key: Int, nodes: [Node]?) {
+            self.key = key
+            self.nodes = nodes
         }
 
         public static func create(_ type: PRLC_TREE_NODE_TYPE, _ symbol: String, nodes: [Node]? = nil) -> Node {

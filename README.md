@@ -85,6 +85,7 @@ $ find /usr/local -name "Prlc*h"
 $ find /usr/local -name "libTptpParsing*"
 /usr/lib/lib/libTtptpParsing.so         # linux
 /usr/local/lib/libTptpParinsg.dylib     # macOS
+/usr/local/lib/pkgconfig/TptpParsing.pc # macOS
 ```
 
 - [TPTPLibary](http://www.tptp.org)

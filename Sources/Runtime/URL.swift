@@ -98,11 +98,11 @@ extension URL {
 
 extension URL {
     var isAccessible: Bool {
-        return self.path.isAccessible
+        self.path.isAccessible
     }
 
     var isAccessibleDirectory: Bool {
-        return self.path.isAccessibleDirectory
+        self.path.isAccessibleDirectory
     }
 }
 
