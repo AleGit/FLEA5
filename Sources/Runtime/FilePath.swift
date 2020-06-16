@@ -35,6 +35,17 @@ extension FilePath {
 }
 
 extension FilePath {
+    public var fileName: String {
+        guard let index = self.lastIndex(of: "/") else {
+            return self
+        }
+        let start = self.index(after: index)
+        let end = self.endIndex
+        return String(self[start..<end])
+    }
+}
+
+extension FilePath {
     var content: String? {
         #if os(OSX) /**************************************************************/
 

@@ -5,6 +5,8 @@ import XCTest
 @testable import Tptp
 
 public class TptpFileTests: XCTestCase {
+    let cr = "\n"
+    let line = "---------------------------------------------------------------------------------"
     /// set up logging once _before_ all tests of a test class
     public override class func setUp() {}
 
@@ -58,6 +60,7 @@ public class TptpFileTests: XCTestCase {
 extension TptpFileTests {
 
     func testPUZ001m1() {
+        print(line+cr+#file.fileName, #function, #line, #column)
         let file = Tptp.File(problem: "PUZ001-1")!
 
         XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/PUZ/PUZ001-1.p"))
@@ -69,6 +72,7 @@ extension TptpFileTests {
     }
 
     func testPUZ001p1() {
+        print(line+cr+#file.fileName, #function, #line, #column)
         let file = Tptp.File(problem: "PUZ001+1")!
 
         XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/PUZ/PUZ001+1.p"))
@@ -80,10 +84,11 @@ extension TptpFileTests {
 
         let node = Tptp.Node.create(file: file)!
 
-        print(node)
+        print(node, cr+line)
     }
 
     func testPUZ006m1() {
+        print(line+cr+#file.fileName, #function, #line, #column)
         let file = Tptp.File(problem: "PUZ006-1")!
 
         XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/PUZ/PUZ006-1.p"))
@@ -102,7 +107,7 @@ extension TptpFileTests {
 
         let includes = file.includeSelectionURLTriples(url: file.url!)
         for include in includes {
-            print(include)
+            print(include, cr+line)
         }
     }
 
@@ -112,7 +117,8 @@ extension TptpFileTests {
 
 extension TptpFileTests {
 
-    func _testHWV134m1() {
+    func testHWV134m1() {
+        print(line+cr+#file.fileName, #function, #line, #column)
         let (_, triple) = Time.measure {
             let file = Tptp.File(problem: "HWV134-1")!
 
@@ -124,21 +130,14 @@ extension TptpFileTests {
             }
         }
 
-        // print(file.path!, triple)
-
         XCTAssertTrue(triple.user + triple.system < triple.absolute)
         XCTAssertTrue(triple.absolute * 0.8 < triple.user + triple.system)
 
         XCTAssertTrue(triple.user <= 12.0)
-        XCTAssertTrue(triple.system <= 3.1)
+        XCTAssertTrue(triple.system <= 3.5)
+        XCTAssertTrue(triple.absolute <= 15.5)
 
-        print(triple)
-
-//        let (node, triple2) = Time.measure {
-//            Tptp.Node.create(file: file)!
-//        }
-//
-//        print(triple2)
+        print(triple, cr+line)
     }
 
 }

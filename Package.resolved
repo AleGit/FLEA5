@@ -18,6 +18,15 @@
           "revision": "ea1c2ee764574911e09b3479069d90cce5c51cf0",
           "version": "1.0.0"
         }
+      },
+      {
+        "package": "CZ3Api",
+        "repositoryURL": "https://github.com/AleGit/CZ3API.git",
+        "state": {
+          "branch": null,
+          "revision": "a262fd127d7f77a05d46a27c14c723e371d4bed9",
+          "version": "1.0.0"
+        }
       }
     ]
   },

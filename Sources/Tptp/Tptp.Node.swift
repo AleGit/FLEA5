@@ -23,7 +23,7 @@ extension Tptp {
         /// The key of the node, e.g. 1 with [ 1: "f" ]
         public let key: Int
 
-        /// The children of the node, e.g. X, z.
+        /// The children of the node, e.g. [X, z].
         public let nodes: [Node]?
 
         // MARK: - private static tables and functions
@@ -38,12 +38,15 @@ extension Tptp {
         private static var pool = Set<Node>()
 
         private static func symbolize(_ type: PRLC_TREE_NODE_TYPE, _ symbol: String) -> Int {
-            if Node.table[symbol] == nil {
-                Node.table[symbol] = Node.symbols.count
+            guard let key = Node.table[symbol] else {
+                // symbol was not encountered before
+                let count = Node.symbols.count
+                Node.table[symbol] = count
                 Node.symbols.append((symbol, type))
+                return count
             }
 
-            return Node.table[symbol]!
+            return key
         }
 
 
@@ -82,7 +85,7 @@ extension Tptp {
                 return "\(symbol)\n\(list)"
 
             case (PRLC_FOF, _,_):
-                assert(count > 0)
+                assert(count == 2)
                 return "fof(\(symbol),\(children.first!),\n\t( \(children.last!) ))."
 
             case (PRLC_QUANTIFIER, _,_):
