@@ -14,8 +14,9 @@ public class TptpFileTests: XCTestCase {
     public override class func tearDown() {}
 
     func test_fXz() {
+        let string = "f(X,z)"
         guard
-            let file = Tptp.File(string: "f(X,z)", type: Tptp.SymbolType.variable),
+            let file = Tptp.File(string: string, type: Tptp.SymbolType.variable, name:"tempTptpFile"),
             let root = file.root, let term = root.child, 
             let role = term.child, let predicate = role.sibling,
             let function = predicate.child,
@@ -72,19 +73,39 @@ extension TptpFileTests {
     }
 
     func testPUZ001p1() {
-        print(line+cr+#file.fileName, #function, #line, #column)
-        let file = Tptp.File(problem: "PUZ001+1")!
+        print(line+cr+#file.fileName, #function, #line, #column) 
+        let fileName = "PUZ001+1"
+       guard let file = Tptp.File(problem: "PUZ001+1"), 
+       let node = Tptp.Node.create(file: file) else {
+           XCTFail(fileName)
+           return
+       }
 
-        XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/PUZ/PUZ001+1.p"))
-        XCTAssertTrue(file.root!.symbol!.hasSuffix("TPTP/Problems/PUZ/PUZ001+1.p"))
-        XCTAssertEqual(Tptp.SymbolType(of: file.root!), .file)
-        for child in file.root!.children {
-            XCTAssertEqual(Tptp.SymbolType(of: child), .fof)
-        }
+       XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/PUZ/PUZ001+1.p"))
+       XCTAssertTrue(file.root!.symbol!.hasSuffix("TPTP/Problems/PUZ/PUZ001+1.p"))
+       XCTAssertEqual(Tptp.SymbolType(of: file.root!), .file)
+       for child in file.root!.children {
+           XCTAssertEqual(Tptp.SymbolType(of: child), .fof)
+       }
 
-        let node = Tptp.Node.create(file: file)!
+       print(node.symbol)
 
-        print(node, cr+line)
+
+
+        // let urlString = "http://www.tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=PUZ&File=PUZ001+1.p"
+        // guard let url = URL(string: urlString)
+        //       , let file2 = Tptp.File(url: url)
+        //       , let node2 = Tptp.Node.create(file: file2)
+        //         else {
+        //     XCTFail()
+        //     return
+        // }
+        // print(node2.symbol)
+
+        // XCTAssertEqual(node.nodes, node2.nodes)
+
+        // print(node.nodes?.count ?? -1, node2.nodes?.count ?? -1)
+        // print(node.symbol, node2.symbol)
     }
 
     func testPUZ006m1() {
@@ -133,9 +154,9 @@ extension TptpFileTests {
         XCTAssertTrue(triple.user + triple.system < triple.absolute)
         XCTAssertTrue(triple.absolute * 0.8 < triple.user + triple.system)
 
-        XCTAssertTrue(triple.user <= 12.0)
-        XCTAssertTrue(triple.system <= 3.5)
-        XCTAssertTrue(triple.absolute <= 15.5)
+        XCTAssertTrue(triple.user <= 15.0)
+        XCTAssertTrue(triple.system <= 5.5)
+        XCTAssertTrue(triple.absolute <= 20.5)
 
         print(triple, cr+line)
     }

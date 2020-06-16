@@ -1,6 +1,7 @@
 import CTptpParsing
 
 extension Tptp {
+    /*
     enum Role: String {
         case axiom, hypothesis, definition, assumption
         case lemma, theorem, corollary, conjecture
@@ -9,6 +10,7 @@ extension Tptp {
         case fi_domain, fi_functors, fi_predicates
         case unknown
     }
+    */
 
     public enum SymbolType: Hashable {
         case undefined
@@ -52,9 +54,9 @@ extension Tptp {
         case equation // s = t with implicit arity == 2
         case inequation // s != t with implicit arity == 2
 
-        case predicate(Int) // predicates and propositions with symolb fixed arity
+        case predicate(Int) // predicates and propositions with fixed arity per symbol
 
-        case function(Int) // functions and constants with symbol fixed arity
+        case function(Int) // functions and constants with fixed arity per symbol
         case variable // variables
     }
 }

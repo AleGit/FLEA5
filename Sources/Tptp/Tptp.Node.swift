@@ -1,9 +1,9 @@
 import CTptpParsing
-import Nodes
+import Tree
 import Runtime
 
 extension Tptp {
-    public final class Node: Nodes.Node {
+    public final class Node: Tree.Node {
         public typealias Symbol = String
         public typealias SymbolType = PRLC_TREE_NODE_TYPE
         public typealias SymbolKey = Int

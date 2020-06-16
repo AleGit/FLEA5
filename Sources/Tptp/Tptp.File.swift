@@ -32,7 +32,7 @@ extension Tptp {
             }
         }
 
-        /// intiialize with the content of a file referenced by file url
+        /// intiialize with the content of an url
         private convenience init?(url: URL) {
             Syslog.info { "Tptp.File(url:\(url))" }
 
@@ -40,11 +40,18 @@ extension Tptp {
                 let path = url.path
                 Syslog.debug { "url.path : \(type(of: url.path))" }
                 self.init(path: path)
-            } else {
-                Syslog.error { "\(url) is not a file URL!" }
-                // TODO: Download file into
-                // - canonical place and parse the saved file
-                // - memory and parse string of type .file
+            } else if let content = try? String(contentsOf: url),
+                      let startRange = content.range(of: "<pre>", options: .caseInsensitive),
+                      let endRange = content.range(of: "</pre>", options: [.caseInsensitive, .backwards]) 
+            {
+                let range = startRange.upperBound..<endRange.lowerBound
+                let problem = content[range]
+                let cleaned = problem.replacingOccurrences(of: "<A.*</A>", with: "", options: .regularExpression)
+
+                self.init(string: cleaned, type: .file, name: url.absoluteString)
+            }
+            else {
+                Syslog.error { "\(url) could not be read." }
                 return nil
             }
         }
@@ -77,8 +84,8 @@ extension Tptp {
 
         // initialize with the content of string
         
-        init?(string: String, type: Tptp.SymbolType) {
-            Syslog.notice { "Tptp.File(string:\(string), type:\(type))" }
+        init?(string: String, type: Tptp.SymbolType, name: String) {
+            Syslog.notice { "Tptp.File(string:\(string), type:\(type), name:\(name))" }
 
             let code: Int32
 
@@ -87,13 +94,13 @@ extension Tptp {
                 /// Σ -> fof(temp, axiom, predicate(Σ)).
                 /// http://www.cs.miami.edu/~tptp/TPTP/SyntaxBNF.html#plain_term
             case .function(_), .variable:
-                code = prlcParseString(string, &store, &root, PRLC_FUNCTION)
+                code = prlcParseString(string, &store, &root, PRLC_FUNCTION, name)
 
                 /// conjunctive normal form
                 /// Σ -> string -> cnf(temp, axiom, Σ).
                 /// http://www.cs.miami.edu/~tptp/TPTP/SyntaxBNF.html#cnf_annotated
             case .cnf:
-                code = prlcParseString(string, &store, &root, PRLC_CNF)
+                code = prlcParseString(string, &store, &root, PRLC_CNF, name)
 
                 /// arbitrary first order formulas
                 /// Σ -> fof(temp, axiom, Σ).
@@ -102,7 +109,7 @@ extension Tptp {
                  .implication, .reverseimpl, .bicondition, .xor, .nand, .nor,
                  .equation, .inequation, .predicate:
 
-                code = prlcParseString(string, &store, &root, PRLC_FOF)
+                code = prlcParseString(string, &store, &root, PRLC_FOF, name)
 
                 /// the content of include statements, e.g.
                 /// - "'Axioms/PUZ001-0.ax'"
@@ -110,13 +117,13 @@ extension Tptp {
                 /// Σ -> include(Σ).
                 /// http://www.cs.miami.edu/~tptp/TPTP/SyntaxBNF.html#include
             case .include:
-                code = prlcParseString(string, &store, &root, PRLC_INCLUDE)
+                code = prlcParseString(string, &store, &root, PRLC_INCLUDE, name)
 
                 /// the content of a file
                 /// Σ -> Σ
                 /// http://www.cs.miami.edu/~tptp/TPTP/SyntaxBNF.html#TPTP_file
             case .file:
-                code = prlcParseString(string, &store, &root, PRLC_FILE)
+                code = prlcParseString(string, &store, &root, PRLC_FILE, name)
 
             default: // .name, .role, .annotation
                 code = -1
@@ -130,10 +137,13 @@ extension Tptp {
 
         /// free dynammically allocated memory
         deinit {
+            print("▶️", #file.fileName, #function, self.path ?? "n/a")
             Syslog.debug { "'\(String(describing:self.path))' memory freed." }
             if let store = store {
                 prlcDestroyStore(store)
             }
+
+            print("◀️", #file.fileName, #function)
         }
 
         /// Transform the C tree representation into a Swift representation.
