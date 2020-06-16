@@ -33,20 +33,21 @@ extension Tptp {
         }
 
         /// intiialize with the content of an url
-        private convenience init?(url: URL) {
+        convenience init?(url: URL) {
             Syslog.info { "Tptp.File(url:\(url))" }
 
             if url.isFileURL {
                 let path = url.path
                 Syslog.debug { "url.path : \(type(of: url.path))" }
                 self.init(path: path)
-            } else if let content = try? String(contentsOf: url),
+            } else if let content = try? String(contentsOf: url, encoding: .isoLatin1), // charset=iso-8859-1
                       let startRange = content.range(of: "<pre>", options: .caseInsensitive),
                       let endRange = content.range(of: "</pre>", options: [.caseInsensitive, .backwards]) 
             {
-                let range = startRange.upperBound..<endRange.lowerBound
-                let problem = content[range]
+                let problem = content[startRange.upperBound..<endRange.lowerBound]
                 let cleaned = problem.replacingOccurrences(of: "<A.*</A>", with: "", options: .regularExpression)
+
+                assert(content.contains("charset=iso-8859-1"), "wrong charset")
 
                 self.init(string: cleaned, type: .file, name: url.absoluteString)
             }
@@ -85,7 +86,7 @@ extension Tptp {
         // initialize with the content of string
         
         init?(string: String, type: Tptp.SymbolType, name: String) {
-            Syslog.notice { "Tptp.File(string:\(string), type:\(type), name:\(name))" }
+            Syslog.notice { "Tptp.File(string:\(string.prefix(80*5)), type:\(type), name:\(name)" }
 
             let code: Int32
 
@@ -137,13 +138,10 @@ extension Tptp {
 
         /// free dynammically allocated memory
         deinit {
-            print("▶️", #file.fileName, #function, self.path ?? "n/a")
             Syslog.debug { "'\(String(describing:self.path))' memory freed." }
             if let store = store {
                 prlcDestroyStore(store)
             }
-
-            print("◀️", #file.fileName, #function)
         }
 
         /// Transform the C tree representation into a Swift representation.
