@@ -1,4 +1,4 @@
-# CONFIGURATION
+# Default logging configuration
 
 # FLEA's logging system wraps [syslog](https://en.wikipedia.org/wiki/Syslog)
 #

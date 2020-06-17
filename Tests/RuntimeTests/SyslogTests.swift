@@ -12,28 +12,28 @@ public class SyslogTests: TestCase {
     func testError() {
 
         XCTAssertEqual(Syslog.minimalLogLevel, .error)
-        XCTAssertEqual(Syslog.maximalLogLevel, .notice)
+        XCTAssertEqual(Syslog.maximalLogLevel, .debug)
 
-        XCTAssertEqual(Syslog.defaultLogLevel, .notice)
+        XCTAssertEqual(Syslog.defaultLogLevel, .info)
         XCTAssertEqual(Syslog.logLevel(), .error)
     }
 
     func testWarning() {
 
         XCTAssertEqual(Syslog.minimalLogLevel, .error)
-        XCTAssertEqual(Syslog.maximalLogLevel, .notice)
+        XCTAssertEqual(Syslog.maximalLogLevel, .debug)
 
-        XCTAssertEqual(Syslog.defaultLogLevel, .notice)
+        XCTAssertEqual(Syslog.defaultLogLevel, .info)
         XCTAssertEqual(Syslog.logLevel(), .warning)
     }
 
     func testMultiple() {
 
         XCTAssertEqual(Syslog.minimalLogLevel, .error)
-        XCTAssertEqual(Syslog.maximalLogLevel, .notice)
+        XCTAssertEqual(Syslog.maximalLogLevel, .debug)
 
-        XCTAssertEqual(Syslog.defaultLogLevel, .notice)
-        XCTAssertEqual(Syslog.logLevel(), .notice)
+        XCTAssertEqual(Syslog.defaultLogLevel, .info)
+        XCTAssertEqual(Syslog.logLevel(), .info)
 
         // create new error and log it
         let newerror = open("/fictitious_file", O_RDONLY, 0) // sets errno to ENOENT

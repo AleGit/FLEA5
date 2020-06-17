@@ -7,7 +7,7 @@ public class TestCase: XCTestCase {
     /// set up logging once _before_ all tests of a test class
     public override class func setUp() {
         super.setUp()
-        Syslog.openLog(options: .console, .pid, .perror, verbosely: true)
+        Syslog.openLog(options: .console, .pid, .perror, verbosely: false)
         Syslog.carping = false // off by default
     }
 

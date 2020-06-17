@@ -4,9 +4,8 @@
 # for details see Project/Configs.
 
 "---" :: "error"   # global minimum log priority
-"+++" :: "notice"  # global maximal log priority
-
 "***" :: "info"    # global default log priority
+"+++" :: "debug"   # global maximal log priority
 
 "SyslogTests.swift" :: "info"
 "SyslogTests.swift/testError()" :: "error"
