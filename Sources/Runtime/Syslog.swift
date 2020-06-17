@@ -1,11 +1,3 @@
-//  Copyright © 2017 Alexander Maringele. All rights reserved.
-
-// #if os(OSX)
-//     import Darwin
-// #elseif os(Linux)
-//     import Glibc
-// #endif
-
 import Foundation
 
 /// Static wrapper for [syslog](https://en.wikipedia.org/wiki/Syslog),
@@ -365,14 +357,12 @@ extension Syslog {
     static func prinfo(errcode: Int32 = 0, condition: @autoclosure () -> Bool = true,
                        file: String = #file, function: String = #function, line: Int = #line, column: Int = #column,
                        message: () -> String) {
-        guard Syslog.loggable(.info, file, function, line), condition() else {
-            if CommandLine.options["--prinfo"]?.first == "active" || CommandLine.name.hasSuffix("test"), condition() {
-                print("\(Syslog.loggingTime()) 🖨  🔖  \(URL(fileURLWithPath: file).lastPathComponent)[\(line):\(column)].\(function) 📌 \(message())")
-            }
-            return
+        if Syslog.loggable(.info, file, function, line), condition() {
+            log(.info, errcode: errcode,
+                    file: file, function: function, line: line, column: column, message: message)
+        } else if CommandLine.options["--prinfo"]?.first == "active" || CommandLine.name.hasSuffix("test"), condition() {
+            print("\(Syslog.loggingTime()) 🖨  🔖  \(URL(fileURLWithPath: file).lastPathComponent)[\(line):\(column)].\(function) 📌 \(message())")
         }
-        log(.info, errcode: errcode,
-            file: file, function: function, line: line, column: column, message: message)
     }
 
     public static func debug(errcode: Int32 = 0, condition: @autoclosure () -> Bool = true,

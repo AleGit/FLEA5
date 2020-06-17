@@ -1,18 +1,16 @@
 import XCTest
+import Runtime
 @testable import Solver
 
-final class Z3SATSolverTests : XCTestCase {
-    let solver = Z3SATSolver()
-
-    override class func setUp() {
-        super.setUp()
-    }
-
-    override class func tearDown() {
-        super.tearDown()
-    }
+final class Z3SATSolverTests : Z3TestCase, HasSolver {
+    var solver: Solver = Z3SATSolver()
 
     func testVersion() {
-        XCTAssertEqual(solver.description, "Z3 v4.5.1.0")
+        let expected = "Z3 • 4.5.1.0"
+        let actual = solver.description
+
+        Syslog.notice { actual }
+        XCTAssertEqual(expected, actual)
+        Syslog.debug { solver.debugDescription }
     }
 }

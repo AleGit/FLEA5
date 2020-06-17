@@ -1,18 +1,16 @@
 import XCTest
+import Runtime
 @testable import Solver
 
-class Y2SATSolverTests: XCTestCase {
-    var solver = Y2SATSolver()
-
-    override class func setUp() {
-        super.setUp()
-}
-
-    override class func tearDown() {
-        super.tearDown()
-    }
+class Y2SATSolverTests: Y2TestCase, HasSolver {
+    var solver: Solver = Y2SATSolver()
 
     func testVersion() {
-        XCTAssertEqual(solver.description, "Yices2 v2.6.2")
+        let expected = "Yices2 • 2.6.2"
+        let actual = solver.description
+
+        Syslog.notice { actual }
+        Syslog.debug { solver.debugDescription }
+        XCTAssertEqual(expected, actual)
     }
 }

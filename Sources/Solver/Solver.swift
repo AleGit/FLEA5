@@ -7,17 +7,14 @@ public protocol Solver: CustomStringConvertible, CustomDebugStringConvertible {
     var arch: String { get }
     var mode: String { get }
     var date: String { get }
-
-
-
 }
 
 extension Solver {
     public var description: String {
-        return name + " v" + vers
+        return [name, vers].joined(separator: " • ")
     }
 
     public var debugDescription: String {
-        return [name, vers, arch, mode, date].joined(separator: "_")
+        return [name, vers, arch, mode, date].joined(separator: " • ")
     }
 }

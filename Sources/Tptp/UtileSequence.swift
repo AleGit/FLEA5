@@ -1,5 +1,3 @@
-//  Copyright © 2017 Alexander Maringele. All rights reserved.
-
 import Foundation
 
 /*

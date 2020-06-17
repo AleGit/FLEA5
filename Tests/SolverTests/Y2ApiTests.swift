@@ -2,21 +2,10 @@ import CYices
 import XCTest
 import Runtime
 
-class CYicesTests: XCTestCase {
-    // setup yices before all tests
-    public override class func setUp() {
-        Syslog.openLog(options: .console, .pid, .perror)
-        yices_init()
-    }
-
-    /// teardown yices after all tests
-    override class func tearDown() {
-        yices_exit()
-        Syslog.closeLog()
-    }
+class Y2ApiTests: Y2TestCase {
 
     func testDeMorgan() {
-        Syslog.warning { "DeMorgan"}
+        Syslog.notice { "De Morgan"}
 //        let cfg = yices_new_config()
 //        defer { yices_free_config(cfg)}
 //

@@ -1,17 +1,13 @@
 import CZ3Api
 import XCTest
+import Runtime
 
 /// https://github.com/Z3Prover/z3/blob/master/examples/c/test_capi.c
-class CZ3ApiTests: XCTestCase {
-    // setup yices before all tests
-    public override class func setUp() {
-    }
-
-    /// teardown yices after all tests
-    override class func tearDown() {
-    }
+class CZ3ApiTests: TestCase {
 
     func testDeMorgan() {
+        Syslog.notice { "De Morgan"}
+
         let cfg = Z3_mk_config()
         defer { Z3_del_config(cfg) }
         let ctx = Z3_mk_context(cfg)

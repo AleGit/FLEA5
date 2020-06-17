@@ -1,4 +1,4 @@
-// Equatable
+/// Equatable
 extension Node {
     public static func ==(lhs: Self, rhs: Self) -> Bool {
         guard lhs.key == rhs.key, lhs.nodes == rhs.nodes else {
