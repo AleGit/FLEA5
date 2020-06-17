@@ -3,7 +3,7 @@ import Runtime
 @testable import Solver
 
 class Y2SATSolverTests: Y2TestCase, HasSolver {
-    var solver: Solver = Y2SATSolver()
+    lazy var solver: Solver = Y2SATSolver()
 
     func testVersion() {
         let expected = "Yices2 • 2.6.2"

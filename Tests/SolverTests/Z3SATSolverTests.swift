@@ -3,7 +3,7 @@ import Runtime
 @testable import Solver
 
 final class Z3SATSolverTests : Z3TestCase, HasSolver {
-    var solver: Solver = Z3SATSolver()
+    lazy var solver: Solver = Z3SATSolver()
 
     func testVersion() {
         let expected = "Z3 • 4.5.1.0"

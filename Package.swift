@@ -19,11 +19,10 @@ let package: Package = Package(
         // .systemLibrary(name: "CYices", pkgConfig: "Yices"),
         .target(name: "Runtime", dependencies: []),
         .target(name: "Tree", dependencies: []),
-        .target(name: "Solver", dependencies: ["Runtime"]),
         .target(name: "Tptp", dependencies: ["Runtime", "Tree"]),
-        .target(name: "Flea", dependencies: ["Runtime", "Tree", "Tptp"]),
+        .target(name: "Solver", dependencies: ["Runtime", "Tree", "Tptp"]),
+        .target(name: "Flea", dependencies: ["Runtime", "Tree", "Tptp", "Solver"]),
         .testTarget(name: "RuntimeTests", dependencies: ["Runtime"]),
-        // .testTarget(name: "NodesTests", dependencies: ["Nodes"]),
         .testTarget(name: "TptpTests", dependencies: ["Tptp"]),
         .testTarget(name: "SolverTests", dependencies: ["Solver"]),
         // .testTarget(name: "FleaTests", dependencies: ["FleaCmd"])
