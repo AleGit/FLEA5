@@ -27,14 +27,14 @@ class CZ3ApiTests: TestCase {
         let x_and_y            = Z3_mk_and(ctx, 2, [ x, y ]);
         let ls                 = Z3_mk_not(ctx, x_and_y);
         let rs                 = Z3_mk_or(ctx, 2, [not_x, not_y]);
-        let conjecture         = Z3_mk_iff(ctx, ls, rs);
-        let negated_conjecture = Z3_mk_not(ctx, conjecture);
+        let de_morgan = Z3_mk_iff(ctx, ls, rs);
+        let negated_de_morgan = Z3_mk_not(ctx, de_morgan);
 
         let s = Z3_mk_solver(ctx)
         Z3_solver_inc_ref(ctx, s)
         defer { Z3_solver_dec_ref(ctx, s) }
 
-        Z3_solver_assert(ctx, s, negated_conjecture)
+        Z3_solver_assert(ctx, s, negated_de_morgan)
         let result = Z3_solver_check(ctx, s)
 
         XCTAssertEqual(result, Z3_L_FALSE, "De Morgan is not valid.")

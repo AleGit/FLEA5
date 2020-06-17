@@ -27,15 +27,20 @@ class Y2ApiTests: Y2TestCase {
         let x_and_y = yices_and2(x,y)
         let ls = yices_not(x_and_y)
         let rs = yices_or2(not_x, not_y)
-        let conjecture = yices_iff(ls, rs)
-        let negated_conjecture = yices_not(conjecture)
+        let de_morgan = yices_iff(ls, rs)
+        let negated_de_morgan = yices_not(de_morgan)
 
-        let result = yices_check_formula(negated_conjecture, nil, nil, nil)
+        let result = yices_check_formula(negated_de_morgan, nil, nil, nil)
         XCTAssertEqual(result, STATUS_UNSAT, "De Morgan is not valid.")
 
-        yices_assert_formula(ctx, negated_conjecture)
+        yices_assert_formula(ctx, negated_de_morgan)
         let status = yices_check_context(ctx, nil)
         
         XCTAssertEqual(status, STATUS_UNSAT, "De Morgan is not valid.")
+
+        let model = yices_get_model(ctx, 1)
+        XCTAssertNil(model)
+        // defer { yices_free_model(model) }
+        print(x)
     }
 }
