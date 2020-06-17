@@ -12,7 +12,7 @@ extension URL {
 
     /// Get the process specific configuration file path for logging
     static var loggingConfigurationURL: URL? {
-        Syslog.prinfo { "Searching logging configuration file for process '\(CommandLine.name)'." }
+        Syslog.prinfo(condition: Syslog.openVerbosely) { "Searching logging configuration file for process '\(CommandLine.name)'." }
 
         // --config path/to/file has the highest priority
         if let path = CommandLine.options["--config"]?.first, path.isAccessible {
@@ -41,12 +41,12 @@ extension URL {
         for path in paths {
             let url = URL(fileURLWithPath: path)
             if url.isAccessible {
-                Syslog.prinfo { "'\(url.path)' is an accessible logging configuration file." }
+                Syslog.prinfo(condition: Syslog.openVerbosely) { "'\(url.path)' is an accessible logging configuration file." }
                 return url
             }
-            Syslog.prinfo { "'\(url.path)' is not accessible." }
+            Syslog.prinfo(condition: Syslog.openVerbosely) { "'\(url.path)' is not accessible." }
         }
-        Syslog.prinfo { "No accessible logging configuration file was found." }
+        Syslog.prinfo(condition: Syslog.openVerbosely) { "No accessible logging configuration file was found." }
         return nil
     }
 }

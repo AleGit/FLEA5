@@ -108,6 +108,8 @@ public struct Syslog {
     /// Syslog is active _after_ reading the configuration.
     private static var active = false
 
+    public static var openVerbosely = false
+
     /// read in the logging configuration (from file)
     // TODO: provide a cleaner/better implementation
     static let configuration: [String: Priority]? = {
@@ -115,15 +117,15 @@ public struct Syslog {
         defer { Syslog.active = true }
 
         // reminder: the logging is not active
-        Syslog.prinfo { "reading CONFIGURATION started" }
-        defer { Syslog.prinfo { "reading CONFIGURATION finished" } }
+        Syslog.prinfo(condition: Syslog.openVerbosely) {  "Reading Configuration started." }
+        defer { Syslog.prinfo(condition: Syslog.openVerbosely) { "Reading configuration finished." } }
 
         // read configuration file line by line, but
         // ignore comments (#...) and empty lines (whitespace only)
         guard let entries = URL.loggingConfigurationURL?.path.lines(predicate: {
             !($0.hasPrefix("#") || $0.isEmpty)
         }), entries.count > 0 else {
-            Syslog.prinfo { "CONFIGURATION file has NO entries (comments and whitespace only)" }
+            Syslog.prinfo(condition: Syslog.openVerbosely) { "Configuration file is missing or has no entries." }
             return nil
         }
 
@@ -147,7 +149,7 @@ public struct Syslog {
             }
             cnfg[key] = p
 
-            Syslog.prinfo { "\(entry) => (\(key),\(p))" }
+            Syslog.prinfo(condition: Syslog.openVerbosely) { "\(entry) => (\(key),\(p))" }
         }
         return cnfg
     }()
@@ -218,17 +220,19 @@ extension Syslog {
 }
 
 extension Syslog {
+
     /* void closelog(void); */
     public static func closeLog() {
         closelog()
     }
 
     /* void openlog(const char *ident, int logopt, int facility); */
-    public static func openLog(ident: String? = nil, options: Syslog.Option..., facility: Int32 = LOG_USER) {
+    public static func openLog(ident: String? = nil, options: Syslog.Option..., facility: Int32 = LOG_USER, verbosely: Bool = false) {
+        Syslog.openVerbosely = verbosely
         let option = options.reduce(0) { $0 | $1.option }
         openlog(ident, option, facility)
         // ident == nil => use process name
-        // idetn != nil => does not work on Linux
+        // ident != nil => does not work on Linux
         _ = setLogMask(upTo: Syslog.maximalLogLevel)
     }
 

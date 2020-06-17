@@ -1,18 +1,18 @@
 import XCTest
 @testable import Solver
 
-final class Z3SolverTests : XCTestCase {
-    let solver : Z3Solver = Z3Solver.shared
+class Y2SATSolverTests: XCTestCase {
+    var solver = Y2SATSolver()
 
     override class func setUp() {
         super.setUp()
-    }
+}
 
     override class func tearDown() {
         super.tearDown()
     }
 
     func testVersion() {
-        XCTAssertEqual(solver.description, "Z3 4.5.1.0")
+        XCTAssertEqual(solver.description, "Yices2 v2.6.2")
     }
 }
