@@ -15,8 +15,6 @@ let package: Package = Package(
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
-        // .systemLibrary(name: "CTptpParsing", pkgConfig: "TptpParsing"),
-        // .systemLibrary(name: "CYices", pkgConfig: "Yices"),
         .target(name: "Runtime", dependencies: []),
         .target(name: "Tree", dependencies: []),
         .target(name: "Tptp", dependencies: ["Runtime", "Tree"]),
