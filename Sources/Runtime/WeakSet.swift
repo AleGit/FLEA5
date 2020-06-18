@@ -41,7 +41,7 @@ protocol WeakPartialSetAlgebra: PartialSetAlgebra {}
 /// and supports a subset of set algebra methods.
 extension WeakSet: WeakPartialSetAlgebra {
 
-    /// Insert an element (and get it's substitution).
+    /// Insert an element (and get its substitution).
     /// - Parameter newElement:
     /// - Returns:
     @discardableResult
@@ -54,7 +54,7 @@ extension WeakSet: WeakPartialSetAlgebra {
             return (true, newElement)
         }
 
-        assert(validEntries.count < 12, "\(#function) \(validEntries.count)")
+        assert(validEntries.count < 12, "\(#function) \(validEntries.count) (too many collisions)")
 
         for entry in validEntries {
             if let element = entry.element, element == newElement {
@@ -97,7 +97,7 @@ extension WeakSet {
 
     /// Number of entries *without* a referenced object.
     /// This number may increase even when the weak set is immutable.
-    /// An atomic insert can change this number by n ∊ [-nilCount,0].
+    /// An atomic insert may decrease this number by k ∊ [0, nilCount].
     /// *Complexity*: O(n)
     var nilCount: Int {
         return contents.flatMap({ $0.1 }).filter { $0.element == nil }.count
@@ -193,68 +193,11 @@ extension WeakEntry: CustomStringConvertible {
 
 extension WeakSet {
     /// Update and return list of valid (not nullified) entries for a value
-    fileprivate mutating func entries(at value: Int) -> [WeakEntry<T>]? {
-        return entries3(at: value)
-    }
-
-    private mutating func entries1(at value: Int) -> [WeakEntry<T>]? {
-        guard let count = contents[value]?.count else {
-            // no entries at all
+    fileprivate func entries(at value: Int) -> [WeakEntry<T>]? {
+        guard let entries = contents[value]?.filter({ $0.element != nil }), entries.count > 0 else {
             return nil
-        }
-
-        guard let entries = contents[value]?.filter({ $0.element != nil }),
-              entries.count > 0 else {
-            // invalid entries only
-            contents[value] = nil
-            return nil
-        }
-
-        if entries.count != count {
-            // valid and invalid entries, hence cleanup
-            contents[value] = entries
         }
         return entries
-    }
-
-    private mutating func entries2(at value: Int) -> [WeakEntry<T>]? {
-        guard let allEntries = contents[value] else {
-            // no entries at all
-            return nil
-        }
-
-        let validEntries = allEntries.filter({ $0.element != nil })
-
-        guard validEntries.count > 0 else {
-            // invalid entries only, hence reset
-            contents[value] = nil
-            return nil
-        }
-
-        guard allEntries.count == validEntries.count else {
-            // valid and invalid entries, hence cleanup
-            contents[value] = validEntries
-            return validEntries
-        }
-
-        return validEntries
-
-    }
-
-    private mutating func entries3(at value: Int) -> [WeakEntry<T>]? {
-        guard let allEntries = contents[value] else {
-            // no entries at all
-            return nil
-        }
-
-        let validEntries = allEntries.filter({ $0.element != nil })
-
-        guard validEntries.count > 0 else {
-            return nil
-        }
-
-        return validEntries
-
     }
 
     mutating func clean() {
@@ -264,10 +207,10 @@ extension WeakSet {
     }
 
     /// The number of extra members (values) per hash value (key)
-    /// collision count <= count - contents.count when no member is nillified.
-    /// collision count = count - contents.count when no member is nillified.
+    /// collision count <= count - contents.count when no member is nilified.
+    /// collision count = count - contents.count when no member is nilified.
     var collisionCount: Int {
-        return contents.filter({ $0.1.count > 1 }).map({ $0.1 }).reduce(0) {
+        return contents.map({ $0.1 }).reduce(0) {
             $0 + $1.count - 1
         }
     }
