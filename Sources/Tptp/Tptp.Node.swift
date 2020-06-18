@@ -37,11 +37,18 @@ extension Tptp {
         // All (shared) nodes
         private static var pool = Set<Node>()
 
+        /// a symbol might be used multiple times with different types
+        private static func merge(_ type: PRLC_TREE_NODE_TYPE, _ symbol: String) -> String {
+            return "\(symbol)_\(type)"
+        }
+
         private static func symbolize(_ type: PRLC_TREE_NODE_TYPE, _ symbol: String) -> Int {
-            guard let key = Node.table[symbol] else {
-                // symbol was not encountered before
+            let st = merge(type, symbol)
+
+            guard let key = Node.table[st] else {
+                // symbol of type was not encountered before
                 let count = Node.symbols.count
-                Node.table[symbol] = count
+                Node.table[st] = count
                 Node.symbols.append((symbol, type))
                 return count
             }
@@ -88,15 +95,22 @@ extension Tptp {
                 assert(count == 2)
                 return "fof(\(symbol),\(children.first!),\n\t( \(children.last!) ))."
 
+            case (PRLC_CNF, _,_):
+                assert(count == 2)
+                return "cnf(\(symbol),\(children.first!),\n\t( \(children.last!) ))."
+
             case (PRLC_QUANTIFIER, _,_):
                 let variables = children[..<(count - 1)].map { $0 }.joined(separator: ",")
                 return "\(symbol) [\(variables)] :\n\t( \(children.last!) )"
 
-            case (PRLC_CONNECTIVE, _, 1):
-                return "\(symbol) \(children.first!)"
+            case (PRLC_CONNECTIVE, "~", 1):
+                return "\(symbol)\(children.first!)"
 
-            case (PRLC_CONNECTIVE, _, 2):
-                return "\(children.first!) \(symbol) \(children.last!)"
+            case (PRLC_CONNECTIVE, _, 1):
+                return "\(children.first!)"
+
+            case (PRLC_CONNECTIVE, _, _):
+                return children.joined(separator: " \(symbol) ")
 
             case (PRLC_EQUATIONAL, _, _):
                 assert(count == 2)
@@ -106,7 +120,7 @@ extension Tptp {
             case (_, _, 0):
                 return symbol
 
-            default:
+            case (_, _, _):
                 let terms = children.joined(separator: ",")
                 return "\(symbol)(\(terms))"
             }

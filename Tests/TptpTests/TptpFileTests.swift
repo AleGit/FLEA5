@@ -1,6 +1,7 @@
 import Foundation
 import Runtime
 import XCTest
+import CTptpParsing
 
 @testable import Tptp
 
@@ -64,13 +65,19 @@ public class TptpFileTests: XCTestCase {
 extension TptpFileTests {
 
     func testPUZ001m1() {
-        print(line + cr + #file.fileName, #function, #line, #column)
-        let file = Tptp.File(problem: "PUZ001-1")!
+        guard let file = Tptp.File(problem: "PUZ001-1") ,
+              let filePath = file.path, let root = file.root,
+              let rootSymbol = root.symbol else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(filePath.hasSuffix("TPTP/Problems/PUZ/PUZ001-1.p"))
+        XCTAssertTrue(rootSymbol.hasSuffix("TPTP/Problems/PUZ/PUZ001-1.p"))
 
-        XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/PUZ/PUZ001-1.p"))
-        XCTAssertTrue(file.root!.symbol!.hasSuffix("TPTP/Problems/PUZ/PUZ001-1.p"))
-        XCTAssertEqual(Tptp.SymbolType(of: file.root!), .file)
-        for child in file.root!.children {
+        XCTAssertEqual(Tptp.SymbolType(of: root), .file)
+
+        for child in root.children {
+            XCTAssertEqual(PRLC_CNF, child.type)
             XCTAssertEqual(Tptp.SymbolType(of: child), .cnf)
         }
     }
@@ -144,7 +151,7 @@ extension TptpFileTests {
 
 extension TptpFileTests {
 
-    func testHWV134m1() {
+    func _testHWV134m1() {
         print(line + cr + #file.fileName, #function, #line, #column)
         let (_, triple) = Time.measure {
             let file = Tptp.File(problem: "HWV134-1")!

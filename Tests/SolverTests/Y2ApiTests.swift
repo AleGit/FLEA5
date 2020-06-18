@@ -5,10 +5,6 @@ import Runtime
 class Y2ApiTests: Y2TestCase {
 
     func testDeMorgan() {
-        Syslog.notice { "De Morgan"}
-//        let cfg = yices_new_config()
-//        defer { yices_free_config(cfg)}
-//
         let ctx = yices_new_context(nil)
         defer { yices_free_context(ctx) }
 
@@ -39,8 +35,7 @@ class Y2ApiTests: Y2TestCase {
         XCTAssertEqual(status, STATUS_UNSAT, "De Morgan is not valid.")
 
         let model = yices_get_model(ctx, 1)
-        XCTAssertNil(model)
         // defer { yices_free_model(model) }
-        print(x)
+        XCTAssertNil(model)
     }
 }

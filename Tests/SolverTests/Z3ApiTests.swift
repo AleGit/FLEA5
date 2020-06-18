@@ -6,7 +6,6 @@ import Runtime
 class CZ3ApiTests: TestCase {
 
     func testDeMorgan() {
-        Syslog.notice { "De Morgan"}
 
         let cfg = Z3_mk_config()
         defer { Z3_del_config(cfg) }
@@ -38,6 +37,5 @@ class CZ3ApiTests: TestCase {
         let result = Z3_solver_check(ctx, s)
 
         XCTAssertEqual(result, Z3_L_FALSE, "De Morgan is not valid.")
-
     }
 }
