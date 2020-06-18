@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/AleGit/CYices.git",
         "state": {
           "branch": null,
-          "revision": "ea1c2ee764574911e09b3479069d90cce5c51cf0",
+          "revision": "f1228f5e4a175bad212b44240c688215b4d8d53f",
           "version": "1.0.0"
         }
       },
@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/AleGit/CZ3API.git",
         "state": {
           "branch": null,
-          "revision": "a262fd127d7f77a05d46a27c14c723e371d4bed9",
+          "revision": "d7f288ccd763733904ee5f78d77b5faddf3cadbc",
           "version": "1.0.0"
         }
       }
