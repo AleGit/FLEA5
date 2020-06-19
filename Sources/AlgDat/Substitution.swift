@@ -50,7 +50,7 @@ public func *<N: Term, S: Substitution>(t: N, σ: S) -> N
         return t // implicit sharing for reference types
     }
 
-    return N.create(t.type, t.symbol, nodes: nodes.map { $0 * σ })
+    return N.term(t.type, t.symbol, nodes: nodes.map { $0 * σ })
     // explicit sharing for sharing types
 }
 
@@ -88,7 +88,7 @@ func *<N: Term>(t: N, s: N) -> N {
         return s // implicit sharing for reference types
     } // any variable is replaced by term s
 
-    return N.create(t.type, t.symbol, nodes: nodes.map { $0 * s })
+    return N.term(t.type, t.symbol, nodes: nodes.map { $0 * s })
 }
 
 /// `t⊥` substitutes all variables in term `t` with constant `⊥`.

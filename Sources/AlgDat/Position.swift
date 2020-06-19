@@ -79,7 +79,7 @@ extension Term {
         guard let subnode = nodes[head][term, Array(tail)] else { return nil }
 
         nodes[head] = subnode
-        return Self.create(type, symbol, nodes: nodes)
+        return Self.term(type, symbol, nodes: nodes)
     }
 }
 

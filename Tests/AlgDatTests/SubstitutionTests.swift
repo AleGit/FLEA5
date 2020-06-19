@@ -6,7 +6,7 @@ final class SubstitutionTests : XCTestCase {
 
 
     func testApply() {
-        let a = NodeTests.Node.create(.function, "a", nodes: [NodeTests.Node]())
+        let a = NodeTests.Node.term(.function, "a", nodes: [NodeTests.Node]())
         let y = NodeTests.Node.variable("y")
 
         let s = [y : a]
@@ -19,10 +19,10 @@ final class SubstitutionTests : XCTestCase {
             XCTAssertEqual(a, f * s, f.description)
         }
 
-        let fay = NodeTests.Node.create(.function, "f", nodes: [a,y])
-        let fya = NodeTests.Node.create(.function, "f", nodes: [y,a])
-        let fyy = NodeTests.Node.create(.function, "f", nodes: [y,y])
-        let faa = NodeTests.Node.create(.function, "f", nodes: [a,a])
+        let fay = NodeTests.Node.term(.function, "f", nodes: [a,y])
+        let fya = NodeTests.Node.term(.function, "f", nodes: [y,a])
+        let fyy = NodeTests.Node.term(.function, "f", nodes: [y,y])
+        let faa = NodeTests.Node.term(.function, "f", nodes: [a,a])
 
         for f in [ faa, fay, fya, fyy] {
             XCTAssertEqual(faa, f * s, f.description)

@@ -73,7 +73,7 @@ extension Tptp {
             self.nodes = nodes
         }
 
-        public static func create(_ type: PRLC_TREE_NODE_TYPE, _ symbol: String, nodes: [Term]? = nil) -> Term {
+        public static func term(_ type: PRLC_TREE_NODE_TYPE, _ symbol: String, nodes: [Term]? = nil) -> Term {
 
             let key = Term.symbolize(type, symbol)
             let node : Term
@@ -95,7 +95,7 @@ extension Tptp {
                 Term.create(tree: child)
             }
 
-            return Term.create(parent.type, parent.symbol ?? "n/a", nodes: children)
+            return Term.term(parent.type, parent.symbol ?? "n/a", nodes: children)
         }
 
         public lazy var description: String = {

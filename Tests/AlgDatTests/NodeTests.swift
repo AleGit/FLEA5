@@ -25,7 +25,7 @@ extension NodeTests {
             self.nodes = nodes
         }
 
-        static func create(_ type: `Type`, _ symbol: String, nodes: [Node]?) -> Node {
+        static func term(_ type: `Type`, _ symbol: String, nodes: [Node]?) -> Node {
             return Node(symbol: symbol, type: type, nodes: nodes)
         }
 

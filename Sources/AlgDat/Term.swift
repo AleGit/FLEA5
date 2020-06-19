@@ -18,7 +18,7 @@ public protocol Term: Hashable, CustomStringConvertible { // , CustomDebugString
     /// The children of the node, e.g. X, z.
     var nodes: [Self]? { get }
 
-    static func create(_ type: SymbolType, _ symbol: Symbol, nodes: [Self]?) -> Self
+    static func term(_ type: SymbolType, _ symbol: Symbol, nodes: [Self]?) -> Self
 
     static var variable : SymbolType { get }
     static var function : SymbolType { get }
@@ -41,21 +41,21 @@ extension Term {
     }
 
     public static func variable(_ symbol: Symbol) -> Self {
-        Self.create(variable, symbol, nodes: nil)
+        Self.term(variable, symbol, nodes: nil)
     }
 
     public static func constant(_ symbol: Symbol) -> Self {
-        Self.create(function, symbol, nodes: [Self]())
+        Self.term(function, symbol, nodes: [Self]())
     }
 
     public static func function(_ symbol: Symbol, nodes: [Self]) -> Self {
         assert( nodes.reduce(true, { result, term in result && (term.type == variable || term.type == function) } ))
-        return Self.create(function, symbol, nodes: nodes)
+        return Self.term(function, symbol, nodes: nodes)
     }
 
     public static func predicate(_ symbol: Symbol, nodes: [Self]) -> Self {
         assert( nodes.reduce(true, { result, term in result && (term.type == variable || term.type == function) } ))
-        return Self.create(predicate, symbol, nodes: nodes)
+        return Self.term(predicate, symbol, nodes: nodes)
     }
 }
 
