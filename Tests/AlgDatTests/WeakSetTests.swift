@@ -1,7 +1,7 @@
 import XCTest
 @testable import AlgDat
 
-class WeakSetTests : XCTestCase {
+final class WeakSetTests : XCTestCase {
     private class Foo: Hashable, CustomStringConvertible{
         let name : String
 

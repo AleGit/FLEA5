@@ -9,7 +9,7 @@ public class ProblemTests: XCTestCase {
 
     func testPUZ001m1() {
         guard let file = Tptp.File(problem: "PUZ001-1"),
-              let node = Tptp.Node.create(file: file),
+              let node = Tptp.Term.create(file: file),
               let nodes = node.nodes else {
             XCTFail()
             return
@@ -33,7 +33,7 @@ public class ProblemTests: XCTestCase {
 
     func _testHWV134m1() {
         guard let tptpFile = Tptp.File(problem: "HWV134-1"),
-              let tptpFileNode = Tptp.Node.create(file: tptpFile),
+              let tptpFileNode = Tptp.Term.create(file: tptpFile),
               let nodes = tptpFileNode.nodes else {
             XCTFail()
             return

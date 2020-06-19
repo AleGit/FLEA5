@@ -1,15 +1,15 @@
-import Tptp
+@testable import Tptp
 import CTptpParsing
 import XCTest
 
 final class NodeTests: XCTestCase {
-    typealias N = Tptp.Node
+    typealias N = Tptp.Term
 
-    let x = N.create(PRLC_VARIABLE, "X")
+    let x = N.variable("X")
     let c = N.create(PRLC_FUNCTION, "c", nodes: [N]())
     let fxc = N.create(PRLC_FUNCTION, "f",
                        nodes: [
-                           N.create(PRLC_VARIABLE, "X"), 
+                           N.variable("X"), 
                            N.create(PRLC_FUNCTION, "c", nodes: [N]()),
                        ])
 

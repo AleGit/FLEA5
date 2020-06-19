@@ -11,7 +11,7 @@ import Foundation
 /// replaced with an other term, which can lead to ambiguity.
 /// - where keys are only variables it matches the definition of substitution
 /// - implicit sharing of nodes MAY happen!
-public func *<N: Node, S: Substitution>(t: N, σ: S) -> N
+public func *<N: Term, S: Substitution>(t: N, σ: S) -> N
         where N == S.K, N == S.V, S.Iterator == DictionaryIterator<N, N> {
 
     if let tσ = σ[t] {

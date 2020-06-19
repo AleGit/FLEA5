@@ -19,7 +19,7 @@ extension Dictionary: Substitution {
 
 /// A node substitution has a specialized description.
 extension Substitution // K == V not necessary
-        where K: Node, V: Node, Iterator == DictionaryIterator<K, V> {
+        where K: Term, V: Term, Iterator == DictionaryIterator<K, V> {
     var description: String {
         let pairs = map { "\($0)->\($1)" }.joined(separator: ",")
         return "{\(pairs)}"

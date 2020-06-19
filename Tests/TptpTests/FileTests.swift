@@ -86,7 +86,7 @@ extension FileTests {
         let problemName = "PUZ001+1"
 
         guard let file1 = Tptp.File(problem: problemName),
-              let node1 = Tptp.Node.create(file: file1) else {
+              let node1 = Tptp.Term.create(file: file1) else {
             XCTFail(problemName)
             return
         }
@@ -103,7 +103,7 @@ extension FileTests {
         // let urlString = "file:///Users/alm/TPTP/Problems/PUZ/PUZ001+1.p"
         guard let url = URL(string: urlString),
               let file2 = Tptp.File(url: url),
-              let node2 = Tptp.Node.create(file: file2) else {
+              let node2 = Tptp.Term.create(file: file2) else {
             XCTFail(urlString)
             return
         }

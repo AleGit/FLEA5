@@ -3,7 +3,9 @@ import AlgDat
 import Runtime
 
 extension Tptp {
-    public final class Node: AlgDat.Node {
+    public final class Term: AlgDat.Term {
+        public static var variable = PRLC_VARIABLE
+
         public typealias Symbol = String
         public typealias SymbolType = PRLC_TREE_NODE_TYPE
         public typealias SymbolKey = Int
@@ -12,19 +14,19 @@ extension Tptp {
 
         /// The symbol of the node, e.g. "f".
         public var symbol: String {
-            Tptp.Node.symbols[key].symbol
+            Tptp.Term.symbols[key].symbol
         }
 
         /// The TPTP type of the node, e.g. function.
         public var type: PRLC_TREE_NODE_TYPE {
-            Tptp.Node.symbols[key].type
+            Tptp.Term.symbols[key].type
         }
 
         /// The key of the node, e.g. 1 with [ 1: "f" ]
         public let key: Int
 
         /// The children of the node, e.g. [X, z].
-        public let nodes: [Node]?
+        public let nodes: [Term]?
 
         // MARK: - private static tables and functions
 
@@ -35,7 +37,7 @@ extension Tptp {
         private static var table = [String: Int]()
 
         // All (shared) nodes
-        private static var pool = Set<Node>()
+        private static var pool = Set<Term>()
 
         /// A symbol might be used multiple times with different types,
         /// e.g. name of annotated formula and constant in a formula,
@@ -51,11 +53,11 @@ extension Tptp {
         private static func symbolize(_ type: PRLC_TREE_NODE_TYPE, _ symbol: String) -> Int {
             let st = merge(type, symbol)
 
-            guard let key = Node.table[st] else {
+            guard let key = Term.table[st] else {
                 // symbol of type was not encountered before
-                let count = Node.symbols.count
-                Node.table[st] = count
-                Node.symbols.append((symbol, type))
+                let count = Term.symbols.count
+                Term.table[st] = count
+                Term.symbols.append((symbol, type))
                 return count
             }
 
@@ -63,34 +65,34 @@ extension Tptp {
         }
 
 
-        private init(key: Int, nodes: [Node]?) {
+        private init(key: Int, nodes: [Term]?) {
             self.key = key
             self.nodes = nodes
         }
 
-        public static func create(_ type: PRLC_TREE_NODE_TYPE, _ symbol: String, nodes: [Node]? = nil) -> Node {
+        public static func create(_ type: PRLC_TREE_NODE_TYPE, _ symbol: String, nodes: [Term]? = nil) -> Term {
 
-            let key = Node.symbolize(type, symbol)
-            let node : Node
+            let key = Term.symbolize(type, symbol)
+            let node : Term
             switch type {
             case PRLC_VARIABLE:
                 assert(nodes == nil || nodes?.count == 0, "\(type) \(symbol))")
-                node = Node(key: key, nodes: nil)
+                node = Term(key: key, nodes: nil)
             default:
                 assert(nodes != nil)
-                node = Node(key: key, nodes: nodes)
+                node = Term(key: key, nodes: nodes)
             }
 
             return pool.insert(node).memberAfterInsert
         }
 
-        fileprivate static func create(tree parent: TreeNodeRef) -> Node? {
+        fileprivate static func create(tree parent: TreeNodeRef) -> Term? {
             let children = parent.children.compactMap {
                 child in
-                Node.create(tree: child)
+                Term.create(tree: child)
             }
 
-            return Node.create(parent.type, parent.symbol ?? "n/a", nodes: children)
+            return Term.create(parent.type, parent.symbol ?? "n/a", nodes: children)
         }
 
         public lazy var description: String = {
@@ -143,11 +145,11 @@ extension Tptp {
     }
 }
 
-extension Tptp.Node {
-    static func create(file: Tptp.File) -> Tptp.Node? {
+extension Tptp.Term {
+    static func create(file: Tptp.File) -> Tptp.Term? {
         guard let root = file.root else {
             return nil
         }
-        return Tptp.Node.create(tree: root)
+        return Tptp.Term.create(tree: root)
     }
 }

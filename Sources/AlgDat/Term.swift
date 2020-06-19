@@ -3,7 +3,7 @@
 /// of a value, together with a list of references to nodes (the "children"),
 /// with the constraints that no reference is duplicated, and none points to the root.
 /// <a href="https://en.wikipedia.org/wiki/Tree_(data_structure)">wikipedia</a>
-public protocol Node : Hashable, CustomStringConvertible { // , CustomDebugStringConvertible {
+public protocol Term: Hashable, CustomStringConvertible { // , CustomDebugStringConvertible {
     associatedtype Symbol
     associatedtype SymbolType : Equatable
     associatedtype SymbolKey : Hashable
@@ -19,9 +19,11 @@ public protocol Node : Hashable, CustomStringConvertible { // , CustomDebugStrin
     var nodes: [Self]? { get }
 
     static func create(_ type: SymbolType, _ symbol: Symbol, nodes: [Self]?) -> Self
+
+    static var variable : SymbolType { get }
 }
 
-extension Node {
+extension Term {
     /// Equatable
     public static func ==(lhs: Self, rhs: Self) -> Bool {
         guard lhs.key == rhs.key, lhs.nodes == rhs.nodes else {
@@ -34,6 +36,10 @@ extension Node {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(key)
         hasher.combine(nodes)
+    }
+
+    public static func variable(_ symbol: Symbol) -> Self {
+        Self.create(variable, symbol, nodes: nil)
     }
 }
 
