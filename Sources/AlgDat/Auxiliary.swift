@@ -31,17 +31,3 @@ extension Sequence {
         return reduce(0) { $0 + (predicate($1) ? 1 : 0) }
     }
 }
-
-/* postbone after talk */
-typealias MultiSet<T: Hashable> = [T: Int]
-
-/* postbone after talk */
-extension Sequence where Element: Hashable {
-    var multiSet: MultiSet<Element> {
-        var d = MultiSet<Element>()
-        for element in self {
-            d[element] = (d[element] ?? 0) + 1
-        }
-        return d
-    }
-}

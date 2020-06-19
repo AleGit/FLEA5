@@ -27,16 +27,21 @@ func =?= <N: Term, S: Substitution>(lhs: N, rhs: N) -> S?
 
     // both lhs and rhs are not variables
 
-    // conflict
-
-    guard lhs.key == rhs.key else { return nil }
+    guard lhs.key == rhs.key else {
+        // f(...) =?= g(...) -> nil
+        return nil
+    }
 
     // decompositon
 
     guard var lnodes = lhs.nodes, var rnodes = rhs.nodes, lnodes.count == rnodes.count
-    else { return nil }
+    else {
+        assert(false, "node counts do not match")
+        // f(.) =?= f(.,.) -> nil
+        return nil
+    }
 
-    // signatures match
+    // signatures match, e.g. f(.,.,.) =?= f(.,.,.)
 
     var mgu = S()
 
