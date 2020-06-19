@@ -11,6 +11,10 @@ final class SubstitutionTests : XCTestCase {
 
         let s = [y : a]
 
+        XCTAssertTrue(s.isSubstitution)
+        XCTAssertFalse(s.isVariableSubstitution)
+        XCTAssertFalse(s.isRenaming)
+
         for f in [ a, y] {
             XCTAssertEqual(a, f * s, f.description)
         }

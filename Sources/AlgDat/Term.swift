@@ -21,6 +21,8 @@ public protocol Term: Hashable, CustomStringConvertible { // , CustomDebugString
     static func create(_ type: SymbolType, _ symbol: Symbol, nodes: [Self]?) -> Self
 
     static var variable : SymbolType { get }
+    static var function : SymbolType { get }
+    static var predicate : SymbolType { get }
 }
 
 extension Term {
@@ -40,6 +42,35 @@ extension Term {
 
     public static func variable(_ symbol: Symbol) -> Self {
         Self.create(variable, symbol, nodes: nil)
+    }
+
+    public static func constant(_ symbol: Symbol) -> Self {
+        Self.create(function, symbol, nodes: [Self]())
+    }
+
+    public static func function(_ symbol: Symbol, nodes: [Self]) -> Self {
+        assert( nodes.reduce(true, { result, term in result && (term.type == variable || term.type == function) } ))
+        return Self.create(function, symbol, nodes: nodes)
+    }
+
+    public static func predicate(_ symbol: Symbol, nodes: [Self]) -> Self {
+        assert( nodes.reduce(true, { result, term in result && (term.type == variable || term.type == function) } ))
+        return Self.create(predicate, symbol, nodes: nodes)
+    }
+}
+
+extension Term {
+    public var isVariable: Bool {
+        return self.type == Self.variable
+    }
+
+    public var variables: Set<Self> {
+        guard let nodes = self.nodes else {
+            return Set(arrayLiteral: self)
+        }
+        return Set(nodes.flatMap {
+            $0.variables
+        })
     }
 }
 

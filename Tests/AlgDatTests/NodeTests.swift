@@ -11,6 +11,8 @@ extension NodeTests {
 
     final class Node: AlgDat.Term {
         static var variable = `Type`.variable
+        static var function = `Type`.function
+        static var predicate = `Type`.predicate
 
         let symbol: String
         var key : String { return symbol }

@@ -17,7 +17,7 @@ let package: Package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
 
         .target(name: "Runtime", dependencies: []),
-        .target(name: "AlgDat", dependencies: []),
+        .target(name: "AlgDat", dependencies: ["Runtime"]),
         .target(name: "Tptp", dependencies: ["Runtime", "AlgDat"]),
         .target(name: "Solver", dependencies: ["Runtime", "AlgDat", "Tptp"]),
         .target(name: "Flea", dependencies: ["Runtime", "AlgDat", "Tptp", "Solver"]),

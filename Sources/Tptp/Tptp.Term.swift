@@ -4,11 +4,14 @@ import Runtime
 
 extension Tptp {
     public final class Term: AlgDat.Term {
-        public static var variable = PRLC_VARIABLE
 
         public typealias Symbol = String
         public typealias SymbolType = PRLC_TREE_NODE_TYPE
         public typealias SymbolKey = Int
+
+        public static var variable = PRLC_VARIABLE
+        public static var function = PRLC_FUNCTION
+        public static var predicate = PRLC_PREDICATE
 
         // MARK: - public protocol properties
 

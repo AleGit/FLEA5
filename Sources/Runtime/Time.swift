@@ -7,7 +7,7 @@ public struct Time {
         var atime = timeval() // initialize C struct
         _ = gettimeofday(&atime, nil) // will return 0
         return Double(atime.tv_sec) // s (seconds)
-            + Double(atime.tv_usec) / Double(1_000_000.0) // µs (microseconds)
+                + Double(atime.tv_usec) / Double(1_000_000.0) // µs (microseconds)
     }
 
     public typealias Triple = (user: Double, system: Double, absolute: Double)
@@ -21,9 +21,9 @@ public struct Time {
         _ = times(&ptime)
 
         return (
-            user: Double(ptime.tms_utime + ptime.tms_cutime) / tps,
-            system: Double(ptime.tms_stime + ptime.tms_cstime) / tps,
-            absolute: absoluteTime()
+                user: Double(ptime.tms_utime + ptime.tms_cutime) / tps,
+                system: Double(ptime.tms_stime + ptime.tms_cstime) / tps,
+                absolute: absoluteTime()
         )
     }
 
@@ -38,11 +38,10 @@ public struct Time {
 }
 
 
-
-    private func - (lhs: Time.Triple, rhs: Time.Triple) -> Time.Triple {
-        (
+private func -(lhs: Time.Triple, rhs: Time.Triple) -> Time.Triple {
+    (
             user: lhs.user - rhs.user,
             system: lhs.system - rhs.system,
             absolute: lhs.absolute - rhs.absolute
-        )
-    }
+    )
+}
