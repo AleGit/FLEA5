@@ -1,5 +1,5 @@
 import XCTest
-@testable import Runtime
+@testable import ADS
 
 class WeakSetTests : XCTestCase {
     private class Foo: Hashable, CustomStringConvertible{

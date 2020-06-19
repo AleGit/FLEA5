@@ -1,9 +1,9 @@
 import CTptpParsing
-import Tree
+import ADS
 import Runtime
 
 extension Tptp {
-    public final class Node: Tree.Node {
+    public final class Node: ADS.Node {
         public typealias Symbol = String
         public typealias SymbolType = PRLC_TREE_NODE_TYPE
         public typealias SymbolKey = Int
@@ -37,7 +37,13 @@ extension Tptp {
         // All (shared) nodes
         private static var pool = Set<Node>()
 
-        /// a symbol might be used multiple times with different types
+        /// A symbol might be used multiple times with different types,
+        /// e.g. name of annotated formula and constant in a formula,
+        /// see agatha, butler, charles in [PUZ001-1.p](http://www.tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=PUZ&File=PUZ001-1.p)
+        /// - Parameters:
+        ///   - type:
+        ///   - symbol:
+        /// - Returns:
         private static func merge(_ type: PRLC_TREE_NODE_TYPE, _ symbol: String) -> String {
             return "\(symbol)_\(type)"
         }

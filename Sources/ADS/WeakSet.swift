@@ -144,7 +144,6 @@ extension WeakSet: IteratorProtocol {
         guard let member = entries.last?.element else {
             // the last entry should hold a valid reference, but the
             /// weakly referenced object was deallocated after filtering
-            Syslog.warning { "*** WeakSetInterator failed ***" }
             return next()
         }
 

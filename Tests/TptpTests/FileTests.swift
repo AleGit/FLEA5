@@ -5,7 +5,7 @@ import CTptpParsing
 
 @testable import Tptp
 
-public class TptpFileTests: XCTestCase {
+public class FileTests: XCTestCase {
     let cr = "\n"
     let line = "---------------------------------------------------------------------------------"
 
@@ -62,7 +62,7 @@ public class TptpFileTests: XCTestCase {
 }
 
 /// PUZ - Puzzles
-extension TptpFileTests {
+extension FileTests {
 
     func testPUZ001m1() {
         guard let file = Tptp.File(problem: "PUZ001-1") ,
@@ -149,7 +149,7 @@ extension TptpFileTests {
 
 /// HWV - Hardware verification
 
-extension TptpFileTests {
+extension FileTests {
 
     func _testHWV134m1() {
         print(line + cr + #file.fileName, #function, #line, #column)

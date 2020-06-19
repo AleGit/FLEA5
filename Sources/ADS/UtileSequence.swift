@@ -47,7 +47,7 @@ extension Sequence where Element: Hashable {
 */
 // MARK: - utile iterator and sequence /* ******************* */
 
-struct UtileIterator<S, T>: IteratorProtocol {
+public struct UtileIterator<S, T>: IteratorProtocol {
     private var this: S?
     private let step: (S) -> S?
     private let data: (S) -> T
@@ -63,7 +63,7 @@ struct UtileIterator<S, T>: IteratorProtocol {
         self.predicate = predicate
     }
 
-    mutating func next() -> T? {
+    public mutating func next() -> T? {
         while let current = self.this {
             this = step(current)
 
@@ -76,7 +76,7 @@ struct UtileIterator<S, T>: IteratorProtocol {
     }
 }
 
-struct UtileSequence<S, T>: Sequence {
+public struct UtileSequence<S, T>: Sequence {
     private let this: S?
     private let step: (S) -> S?
     private let predicate: (S) -> Bool
@@ -84,7 +84,7 @@ struct UtileSequence<S, T>: Sequence {
 
     /// a sequence may outlive its creator,
     /// hence the functions `step`, `predicate`, and `data` may escape their context.
-    init(first: S?, step: @escaping (S) -> S?, where
+    public init(first: S?, step: @escaping (S) -> S?, where
         predicate: @escaping (S) -> Bool = { _ in true }, data: @escaping (S) -> T) {
         this = first
         self.step = step
@@ -92,7 +92,7 @@ struct UtileSequence<S, T>: Sequence {
         self.data = data
     }
 
-    func makeIterator() -> UtileIterator<S, T> {
+    public func makeIterator() -> UtileIterator<S, T> {
         UtileIterator(first: this, step: step, where: predicate, data: data)
     }
 }

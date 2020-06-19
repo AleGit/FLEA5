@@ -2,7 +2,7 @@ import Tptp
 import CTptpParsing
 import XCTest
 
-final class TptpNodeTests: XCTestCase {
+final class NodeTests: XCTestCase {
     typealias N = Tptp.Node
 
     let x = N.create(PRLC_VARIABLE, "X")

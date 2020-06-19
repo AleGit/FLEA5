@@ -27,6 +27,8 @@ public class ProblemTests: XCTestCase {
             XCTAssertEqual("|", cnf_formula.symbol, cnf_formula.description)
             XCTAssertEqual(PRLC_CONNECTIVE, cnf_formula.type, cnf_formula.description)
         }
+
+        print(node)
     }
 
     func _testHWV134m1() {
