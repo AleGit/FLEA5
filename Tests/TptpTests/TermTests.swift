@@ -2,7 +2,7 @@
 import CTptpParsing
 import XCTest
 
-final class TermTests: XCTestCase {
+final class TermTests: AbstractTestCase {
     typealias N = Tptp.Term
 
     let x = N.variable("X")

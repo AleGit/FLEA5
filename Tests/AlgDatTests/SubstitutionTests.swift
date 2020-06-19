@@ -1,13 +1,11 @@
 import XCTest
 @testable import AlgDat
 
-final class SubstitutionTests : XCTestCase {
-
-
+final class SubstitutionTests : AbstractTestCase {
 
     func testApply() {
-        let a = NodeTests.Node.term(.function, "a", nodes: [NodeTests.Node]())
-        let y = NodeTests.Node.variable("y")
+        let a = TermTests.Node.term(.function, "a", nodes: [TermTests.Node]())
+        let y = TermTests.Node.variable("y")
 
         let s = [y : a]
 
@@ -19,10 +17,10 @@ final class SubstitutionTests : XCTestCase {
             XCTAssertEqual(a, f * s, f.description)
         }
 
-        let fay = NodeTests.Node.term(.function, "f", nodes: [a,y])
-        let fya = NodeTests.Node.term(.function, "f", nodes: [y,a])
-        let fyy = NodeTests.Node.term(.function, "f", nodes: [y,y])
-        let faa = NodeTests.Node.term(.function, "f", nodes: [a,a])
+        let fay = TermTests.Node.term(.function, "f", nodes: [a,y])
+        let fya = TermTests.Node.term(.function, "f", nodes: [y,a])
+        let fyy = TermTests.Node.term(.function, "f", nodes: [y,y])
+        let faa = TermTests.Node.term(.function, "f", nodes: [a,a])
 
         for f in [ faa, fay, fya, fyy] {
             XCTAssertEqual(faa, f * s, f.description)

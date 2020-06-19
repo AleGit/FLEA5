@@ -3,7 +3,7 @@ import XCTest
 import Runtime
 
 /// https://github.com/Z3Prover/z3/blob/master/examples/c/test_capi.c
-class CZ3ApiTests: TestCase {
+class CZ3ApiTests: AbstractTestCase {
 
     func testDeMorgan() {
 

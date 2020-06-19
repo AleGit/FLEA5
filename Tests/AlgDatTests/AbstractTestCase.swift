@@ -1,14 +1,11 @@
-import Foundation
 import XCTest
+import Runtime
 
-@testable import Runtime
-
-public class TestCase: XCTestCase {
+public class AbstractTestCase: XCTestCase {
     /// set up logging once _before_ all tests of a test class
     public override class func setUp() {
         super.setUp()
         Syslog.openLog(options: .console, .pid, .perror, verbosely: false)
-        Syslog.carping = false // off by default
     }
 
     /// teardown logging once _after_ all tests of a test class
@@ -17,4 +14,7 @@ public class TestCase: XCTestCase {
         super.tearDown()
     }
 
+    public func testTest() {
+        print("*️⃣", type(of: self))
+    }
 }

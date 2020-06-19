@@ -8,7 +8,7 @@ import Foundation
 import XCTest
 @testable import Runtime
 
-public class SyslogTests: TestCase {
+public class SyslogTests: AbstractTestCase {
     func testError() {
 
         XCTAssertEqual(Syslog.minimalLogLevel, .error)

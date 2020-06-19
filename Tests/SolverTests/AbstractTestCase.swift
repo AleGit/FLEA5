@@ -1,11 +1,9 @@
-import Foundation
 import XCTest
-import CYices
-
 import Runtime
+import CYices
 @testable import Solver
 
-public class TestCase: XCTestCase {
+public class AbstractTestCase: XCTestCase {
 
     /// set up logging once _before_ all tests of a test class
     public override class func setUp() {
@@ -18,17 +16,21 @@ public class TestCase: XCTestCase {
         Syslog.closeLog()
         super.tearDown()
     }
+
+    public func testTest() {
+        print("*️⃣", type(of: self))
+    }
 }
 
 protocol HasSolver {
     var solver: Solver { get }
 }
 
-extension HasSolver where Self: TestCase {
+extension HasSolver where Self: AbstractTestCase {
 
 }
 
-public class Y2TestCase: TestCase {
+public class Y2TestCase: AbstractTestCase {
 
     public override class func setUp() {
         super.setUp()
@@ -43,4 +45,4 @@ public class Y2TestCase: TestCase {
 
 }
 
-public class Z3TestCase: TestCase { }
+public class Z3TestCase: AbstractTestCase { }

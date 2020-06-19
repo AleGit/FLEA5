@@ -5,7 +5,7 @@ import CTptpParsing
 
 @testable import Tptp
 
-public class ProblemTests: XCTestCase {
+public class ProblemTests: AbstractTestCase {
 
     func testPUZ001m1() {
         guard let file = Tptp.File(problem: "PUZ001-1"),

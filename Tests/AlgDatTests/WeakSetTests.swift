@@ -1,9 +1,9 @@
 import XCTest
 @testable import AlgDat
 
-final class WeakSetTests : XCTestCase {
-    private class Foo: Hashable, CustomStringConvertible{
-        let name : String
+final class WeakSetTests : AbstractTestCase {
+    private class Foo: Hashable, CustomStringConvertible {
+        let name: String
 
         init(name: String) {
             self.name = name
@@ -19,12 +19,12 @@ final class WeakSetTests : XCTestCase {
         }
 
         var description: String {
-             return self.name
+            return self.name
         }
     }
 
-    private class Bar : Hashable, CustomStringConvertible {
-        let name : String
+    private class Bar: Hashable, CustomStringConvertible {
+        let name: String
 
         init(name: String) {
             self.name = name
@@ -45,6 +45,11 @@ final class WeakSetTests : XCTestCase {
 
 
     }
+}
+
+// MARK: Tests
+
+extension WeakSetTests {
 
     func testFoo() {
 

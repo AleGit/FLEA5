@@ -5,7 +5,7 @@ import CTptpParsing
 
 @testable import Tptp
 
-public class FileTests: XCTestCase {
+public class FileTests: AbstractTestCase {
     let cr = "\n"
     let line = "---------------------------------------------------------------------------------"
 

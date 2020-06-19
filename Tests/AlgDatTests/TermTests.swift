@@ -1,10 +1,7 @@
 import XCTest
-import AlgDat
+@testable import AlgDat
 
-final class NodeTests : XCTestCase {
-}
-
-extension NodeTests {
+final class TermTests: AbstractTestCase {
     enum `Type` {
         case predicate, function, variable
     }
@@ -37,4 +34,9 @@ extension NodeTests {
             return "\(symbol)(\(args.joined(separator: ",")))"
         }
     }
+}
+
+// MARK: Tests
+extension TermTests {
+
 }
