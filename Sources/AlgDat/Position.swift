@@ -1,6 +1,3 @@
-/*** This file could move to an own nodes module because Node.Symbol:Hashable only. ***/
-
-// swiftlint:disable line_length
 /**
  A position is a finite sequence of non-negative integers.
  The *root* position is the empty sequence and denoted by `ε`
@@ -14,12 +11,47 @@
  Positions `p`, q are parallel, denoted by `p || q`, if neither `p <= q` nor `q <= p`.
  **/
 
-// swiftlint:enable line_length
-
 typealias Position = [Int]
-// swiftlint:disable variable_name
+
 let ε = Position()
-// swiftlint:enable variable_name
+
+func <=(lhs: Position, rhs: Position) -> Bool {
+    guard lhs.count <= rhs.count else { return false }
+    return lhs.prefix(lhs.count) == rhs.prefix(lhs.count)
+}
+
+func <(lhs: Position, rhs: Position) -> Bool {
+    guard lhs.count < rhs.count else { return false }
+    return lhs.prefix(lhs.count) == rhs.prefix(lhs.count)
+}
+
+func ||(lhs: Position, rhs: Position) -> Bool {
+    return !(lhs <= rhs || rhs <= lhs)
+}
+
+func +(lhs: Position, rhs: Position) -> Position {
+    var result = lhs
+    result.append(contentsOf: rhs)
+    return result
+}
+
+func -(lhs:Position, rhs: Position) -> Position? {
+    guard rhs <= lhs else { return nil }
+
+    return Array(lhs.dropFirst(rhs.count))
+}
+
+extension Array where Element == Int {
+    var prettyDescription : String {
+        guard self.count > 0 else {
+            return "ε"
+        }
+        return self.map { String($0) }.joined(separator: ".")
+    }
+}
+
+
+
 
 extension Term {
 
