@@ -1,9 +1,9 @@
 import CTptpParsing
-import ADS
+import AlgDat
 import Runtime
 
 extension Tptp {
-    public final class Node: ADS.Node {
+    public final class Node: AlgDat.Node {
         public typealias Symbol = String
         public typealias SymbolType = PRLC_TREE_NODE_TYPE
         public typealias SymbolKey = Int
@@ -69,8 +69,17 @@ extension Tptp {
         }
 
         public static func create(_ type: PRLC_TREE_NODE_TYPE, _ symbol: String, nodes: [Node]? = nil) -> Node {
+
             let key = Node.symbolize(type, symbol)
-            let node = Node(key: key, nodes: nodes)
+            let node : Node
+            switch type {
+            case PRLC_VARIABLE:
+                assert(nodes == nil || nodes?.count == 0, "\(type) \(symbol))")
+                node = Node(key: key, nodes: nil)
+            default:
+                assert(nodes != nil)
+                node = Node(key: key, nodes: nodes)
+            }
 
             return pool.insert(node).memberAfterInsert
         }

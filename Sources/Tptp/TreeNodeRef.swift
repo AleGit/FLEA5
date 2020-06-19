@@ -1,5 +1,5 @@
 import CTptpParsing
-import ADS
+import AlgDat
 
 typealias TreeNodeRef = UnsafeMutablePointer<prlc_tree_node>
 typealias CStringRef = UnsafePointer<Int8>

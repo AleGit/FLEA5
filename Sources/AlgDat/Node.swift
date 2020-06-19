@@ -21,3 +21,19 @@ public protocol Node : Hashable, CustomStringConvertible { // , CustomDebugStrin
     static func create(_ type: SymbolType, _ symbol: Symbol, nodes: [Self]?) -> Self
 }
 
+extension Node {
+    /// Equatable
+    public static func ==(lhs: Self, rhs: Self) -> Bool {
+        guard lhs.key == rhs.key, lhs.nodes == rhs.nodes else {
+            return false
+        }
+        return true
+    }
+
+    /// Hashable
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(key)
+        hasher.combine(nodes)
+    }
+}
+

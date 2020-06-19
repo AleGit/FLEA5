@@ -23,6 +23,7 @@ private struct WeakEntry<T>
 
 /// A protocol for collections with a subset of set algebra methods.
 /// A type adopting this protocol MAY NOT hold strong references to its elements.
+/// See [SetAlgebra](https://developer.apple.com/documentation/swift/setalgebra)
 protocol PartialSetAlgebra {
     associatedtype Element
     mutating func insert(_ newMember: Element) -> (inserted: Bool, memberAfterInsert: Element)

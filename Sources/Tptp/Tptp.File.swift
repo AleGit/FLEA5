@@ -1,6 +1,6 @@
 import CTptpParsing
 import Runtime
-import ADS
+import AlgDat
 
 import Foundation
 
