@@ -1,12 +1,8 @@
 import XCTest
-@testable import Tptp
 import Runtime
+import Utile
 
-class TptpSequenceTests : AbstractTestCase {
-
-}
-
-extension TptpSequenceTests {
+class SequenceTests : AbstractTestCase {
 
     private static var primes10 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
 
@@ -26,8 +22,8 @@ extension TptpSequenceTests {
             primes.insert(s)
             return true
         }
-        func makeIterator() -> Tptp.Iterator<Int,Int> {
-            return Tptp.Iterator(
+        func makeIterator() -> Aux.Iterator<Int,Int> {
+            return Aux.Iterator(
                     first: 2,
                     step: { s in s + 1  },
                     where: { s in self.prime(s: s)  },
@@ -94,8 +90,8 @@ extension TptpSequenceTests {
 
         }
 
-        func makeIterator() -> Tptp.Iterator<Int, Int> {
-            return Tptp.Iterator(
+        func makeIterator() -> Aux.Iterator<Int, Int> {
+            return Aux.Iterator(
                     first: 0,
                     step: { idx in idx + 1  },
                     data: { idx in self[idx] })
@@ -112,11 +108,11 @@ extension TptpSequenceTests {
     func testPrime() {
         let primes = Primes()
 
-        for n in 0...TptpSequenceTests.primes10.last! {
-            XCTAssertEqual(TptpSequenceTests.primes10.contains(n), primes.prime(p: n) )
+        for n in 0...SequenceTests.primes10.last! {
+            XCTAssertEqual(SequenceTests.primes10.contains(n), primes.prime(p: n) )
         }
 
-        for p in TptpSequenceTests.primes10.reversed() {
+        for p in SequenceTests.primes10.reversed() {
             XCTAssertTrue(primes.prime(p: p))
         }
 
@@ -166,7 +162,7 @@ extension TptpSequenceTests {
     }
 }
 
-extension TptpSequenceTests {
+extension SequenceTests {
 
     private static var fibonacci13 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
 
@@ -181,8 +177,8 @@ extension TptpSequenceTests {
             return sorted[idx]
         }
 
-        func makeIterator() -> Tptp.Iterator<Int, Int> {
-            return Tptp.Iterator(
+        func makeIterator() -> Aux.Iterator<Int, Int> {
+            return Aux.Iterator(
                     first: 0,
                     step: { idx in idx + 1  },
                     data: { idx in self[idx] })
@@ -198,6 +194,6 @@ extension TptpSequenceTests {
 
     func testFibonacci() {
         let fibs = FibonacciSequence()
-        XCTAssertEqual(TptpSequenceTests.fibonacci13, fibs.first(13))
+        XCTAssertEqual(SequenceTests.fibonacci13, fibs.first(13))
     }
 }
