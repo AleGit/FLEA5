@@ -22,7 +22,7 @@ public struct Multiset<T: Hashable> {
     public init() {}
 
     /// Constructs a multiset from a sequence, such as an array.
-    public init<S: Sequence>(_ elements: S) where S.Iterator.Element == T {
+    public init<S: Swift.Sequence>(_ elements: S) where S.Iterator.Element == T {
         for e in elements {
             insert(e)
         }

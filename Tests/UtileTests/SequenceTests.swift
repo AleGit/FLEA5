@@ -6,7 +6,7 @@ class SequenceTests : AbstractTestCase {
 
     private static var primes10 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
 
-    class Simples: Sequence {
+    class Simples: Swift.Sequence {
         private var sorted = primes10
         private lazy var primes = Set(sorted)
 
@@ -22,8 +22,8 @@ class SequenceTests : AbstractTestCase {
             primes.insert(s)
             return true
         }
-        func makeIterator() -> Aux.Iterator<Int,Int> {
-            return Aux.Iterator(
+        func makeIterator() -> Utile.Iterator<Int,Int> {
+            return Utile.Iterator(
                     first: 2,
                     step: { s in s + 1  },
                     where: { s in self.prime(s: s)  },
@@ -45,7 +45,7 @@ class SequenceTests : AbstractTestCase {
         }
     }
 
-    class Primes: Sequence {
+    class Primes: Swift.Sequence {
         private var sorted = primes10
 
         private func sieved(s: Int) -> Bool {
@@ -90,8 +90,8 @@ class SequenceTests : AbstractTestCase {
 
         }
 
-        func makeIterator() -> Aux.Iterator<Int, Int> {
-            return Aux.Iterator(
+        func makeIterator() -> Utile.Iterator<Int, Int> {
+            return Utile.Iterator(
                     first: 0,
                     step: { idx in idx + 1  },
                     data: { idx in self[idx] })
@@ -166,7 +166,7 @@ extension SequenceTests {
 
     private static var fibonacci13 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
 
-    class FibonacciSequence: Sequence {
+    class FibonacciSequence: Swift.Sequence {
         private var sorted = [0, 1]
 
         subscript(idx: Int) -> Int {
@@ -177,8 +177,8 @@ extension SequenceTests {
             return sorted[idx]
         }
 
-        func makeIterator() -> Aux.Iterator<Int, Int> {
-            return Aux.Iterator(
+        func makeIterator() -> Utile.Iterator<Int, Int> {
+            return Utile.Iterator(
                     first: 0,
                     step: { idx in idx + 1  },
                     data: { idx in self[idx] })

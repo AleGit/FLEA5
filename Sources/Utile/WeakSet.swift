@@ -156,7 +156,7 @@ extension WeakSet: IteratorProtocol {
 
 // MARK: - Sequence
 
-extension WeakSet: Sequence {
+extension WeakSet: Swift.Sequence {
     func makeIterator() -> WeakSet<T> {
         return self // a consumable copy
     }

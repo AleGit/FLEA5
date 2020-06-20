@@ -5,9 +5,9 @@ import Foundation
 protocol Trie {
     associatedtype Leap
     associatedtype Value
-    associatedtype LeapS: Sequence // a sequence of leaps is a path, i.e. key
-    associatedtype ValueS: Sequence // a sequence of stored values
-    associatedtype TrieS: Sequence // a sequence of (sub)tries
+    associatedtype LeapS: Swift.Sequence // a sequence of leaps is a path, i.e. key
+    associatedtype ValueS: Swift.Sequence // a sequence of stored values
+    associatedtype TrieS: Swift.Sequence // a sequence of (sub)tries
 
     /// creates empty trie type
     init()

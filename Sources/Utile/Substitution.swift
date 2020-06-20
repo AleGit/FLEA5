@@ -1,5 +1,5 @@
 /// A substitution is a mapping from keys to values, e.g. a dictionary.
-public protocol Substitution: ExpressibleByDictionaryLiteral, Sequence, CustomStringConvertible {
+public protocol Substitution: ExpressibleByDictionaryLiteral, Swift.Sequence, CustomStringConvertible {
     associatedtype K: Hashable
     associatedtype V
     associatedtype Ks : Collection where Ks.Element == K
