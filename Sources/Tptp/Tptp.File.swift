@@ -168,14 +168,14 @@ struct Tptp {
 
         /// The sequence of parsed <TPTP_input> nodes.
         /// - <TPTP_input> ::= <annotated_formula> | <include>
-        var inputs: UtileSequence<TreeNodeRef, TreeNodeRef> {
+        var inputs: Tptp.Sequence<TreeNodeRef, TreeNodeRef> {
             root!.children { $0 }
         }
 
         /// The sequence of stored symbols (paths, names, etc.) from first to last.
         /// Symbols (C-strings / UTF8) are uniquely stored in a single memory block,
         /// i.e. the symbols are separated by exactly one `\0`
-        private var symbols: UtileSequence<CStringRef, String?> {
+        private var symbols: Tptp.Sequence<CStringRef, String?> {
             let first = prlcFirstSymbol(store!)
             let step = {
                 (cstring: CStringRef) in
@@ -186,11 +186,11 @@ struct Tptp {
                 String(validatingUTF8: cstring)
             }
 
-            return UtileSequence(first: first, step: step, data: data)
+            return Tptp.Sequence(first: first, step: step, data: data)
         }
 
         /// The sequence of stored tree nodes from first to last.
-        private var nodes: UtileSequence<TreeNodeRef, TreeNodeRef> {
+        private var nodes: Tptp.Sequence<TreeNodeRef, TreeNodeRef> {
             let first = prlcFirstTreeNode(store!)
             let step = {
                 (treeNode: TreeNodeRef) in
@@ -200,24 +200,24 @@ struct Tptp {
                 (treeNode: TreeNodeRef) in
                 treeNode
             }
-            return UtileSequence(first: first, step: step, data: data)
+            return Tptp.Sequence(first: first, step: step, data: data)
         }
 
         /// The sequence of parsed <include> nodes.
         /// includes.count <= inputs.count
-        private var includes: UtileSequence<TreeNodeRef, TreeNodeRef> {
+        private var includes: Tptp.Sequence<TreeNodeRef, TreeNodeRef> {
             root!.children(where: { $0.type == PRLC_INCLUDE }) { $0 }
         }
 
         /// The sequence of parsed <cnf_annotated> nodes.
         /// cnfs.count <= inputs.count
-        private var cnfs: UtileSequence<TreeNodeRef, TreeNodeRef> {
+        private var cnfs: Tptp.Sequence<TreeNodeRef, TreeNodeRef> {
             root!.children(where: { $0.type == PRLC_CNF }) { $0 }
         }
 
         /// The sequence of parsed <fof_annotated> nodes.
         /// fofs.count <= inputs.count
-        private var fofs: UtileSequence<TreeNodeRef, TreeNodeRef> {
+        private var fofs: Tptp.Sequence<TreeNodeRef, TreeNodeRef> {
             root!.children(where: { $0.type == PRLC_FOF }) { $0 }
         }
 
