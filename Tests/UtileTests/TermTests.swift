@@ -1,12 +1,12 @@
 import XCTest
-@testable import AlgDat
+@testable import Utile
 
 final class TermTests: AbstractTestCase {
     enum `Type` {
         case predicate, function, variable
     }
 
-    final class Node: AlgDat.Term {
+    final class Node: Utile.Term {
         static var variable = `Type`.variable
         static var function = `Type`.function
         static var predicate = `Type`.predicate

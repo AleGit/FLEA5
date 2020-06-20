@@ -17,13 +17,13 @@ let package: Package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
 
         .target(name: "Runtime", dependencies: []),
-        .target(name: "AlgDat", dependencies: ["Runtime"]),
-        .target(name: "Tptp", dependencies: ["Runtime", "AlgDat"]),
-        .target(name: "Solver", dependencies: ["Runtime", "AlgDat", "Tptp"]),
-        .target(name: "Flea", dependencies: ["Runtime", "AlgDat", "Tptp", "Solver"]),
+        .target(name: "Utile", dependencies: ["Runtime"]),
+        .target(name: "Tptp", dependencies: ["Runtime", "Utile"]),
+        .target(name: "Solver", dependencies: ["Runtime", "Utile", "Tptp"]),
+        .target(name: "Flea", dependencies: ["Runtime", "Utile", "Tptp", "Solver"]),
 
         .testTarget(name: "RuntimeTests", dependencies: ["Runtime"]),
-        .testTarget(name: "AlgDatTests", dependencies: ["AlgDat"]),
+        .testTarget(name: "UtileTests", dependencies: ["Utile"]),
         .testTarget(name: "TptpTests", dependencies: ["Tptp"]),
         .testTarget(name: "SolverTests", dependencies: ["Solver"]),
     ]

@@ -2,7 +2,7 @@
 
 import Foundation
 
-extension Collection {
+extension Swift.Collection {
     /// Split a collection in a pair of its first element and the remaining elements.
     ///
     /// - [] -> nil
@@ -15,7 +15,7 @@ extension Collection {
     }
 }
 
-extension Sequence {
+extension Swift.Sequence {
     /// check if a predicate holds for all members of a sequence
     func all(_ predicate: (Element) -> Bool) -> Bool {
         return reduce(true) { $0 && predicate($1) }

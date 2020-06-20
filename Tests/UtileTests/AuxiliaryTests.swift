@@ -1,5 +1,5 @@
 import XCTest
-@testable import AlgDat
+@testable import Utile
 
 class AuxiliaryTests: AbstractTestCase {
     func testDecomposingArray() {

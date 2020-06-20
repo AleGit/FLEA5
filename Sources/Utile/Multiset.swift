@@ -116,7 +116,7 @@ public struct Multiset<T: Hashable> {
 
 // MARK: -
 
-extension Multiset: Sequence {
+extension Multiset: Swift.Sequence {
 
     // MARK: Sequence Protocol Conformance
 

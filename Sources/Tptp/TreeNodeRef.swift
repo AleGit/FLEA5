@@ -1,5 +1,5 @@
 import CTptpParsing
-import AlgDat
+import Utile
 
 typealias TreeNodeRef = UnsafeMutablePointer<prlc_tree_node>
 typealias CStringRef = UnsafePointer<Int8>
@@ -69,11 +69,11 @@ extension UnsafeMutablePointer where Pointee: TreeNodeProtocol {
     //   return nil
     // }
 
-    func children<T>(where predicate: @escaping (TreeNodeRef) -> Bool = { _ in true }, data: @escaping (TreeNodeRef) -> T) -> Tptp.Sequence<TreeNodeRef, T> {
-        Tptp.Sequence(first: child, step: { $0.sibling }, where: predicate, data: data)
+    func children<T>(where predicate: @escaping (TreeNodeRef) -> Bool = { _ in true }, data: @escaping (TreeNodeRef) -> T) -> Aux.Sequence<TreeNodeRef, T> {
+        Aux.Sequence(first: child, step: { $0.sibling }, where: predicate, data: data)
     }
 
-    var children: Tptp.Sequence<TreeNodeRef, TreeNodeRef> {
+    var children: Aux.Sequence<TreeNodeRef, TreeNodeRef> {
         children { $0 }
     }
 

@@ -1,5 +1,5 @@
 import XCTest
-@testable import AlgDat
+@testable import Utile
 
 final class WeakSetTests : AbstractTestCase {
     private class Foo: Hashable, CustomStringConvertible {

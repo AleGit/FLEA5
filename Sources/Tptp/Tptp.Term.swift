@@ -1,9 +1,9 @@
 import CTptpParsing
-import AlgDat
+import Utile
 import Runtime
 
 extension Tptp {
-    public final class Term: AlgDat.Term {
+    public final class Term: Utile.Term {
 
         public typealias Symbol = String
         public typealias SymbolType = PRLC_TREE_NODE_TYPE
