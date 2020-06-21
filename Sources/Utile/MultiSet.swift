@@ -14,7 +14,7 @@ import Foundation
 ///
 /// Conforms to `Sequence`, `ExpressibleByArrayLiteral` and
 ///  `Hashable`.
-public struct Multiset<T: Hashable> {
+public struct MultiSet<T: Hashable> {
 
     // MARK: Creating a Multiset
 
@@ -116,7 +116,7 @@ public struct Multiset<T: Hashable> {
 
 // MARK: -
 
-extension Multiset: Swift.Sequence {
+extension MultiSet: Swift.Sequence {
 
     // MARK: Sequence Protocol Conformance
 
@@ -141,7 +141,7 @@ extension Multiset: Swift.Sequence {
     }
 }
 
-extension Multiset: CustomStringConvertible {
+extension MultiSet: CustomStringConvertible {
 
     // MARK: CustomStringConvertible Protocol Conformance
 
@@ -152,7 +152,7 @@ extension Multiset: CustomStringConvertible {
     }
 }
 
-extension Multiset: ExpressibleByArrayLiteral {
+extension MultiSet: ExpressibleByArrayLiteral {
 
     // MARK: ExpressibleByArrayLiteral Protocol Conformance
 
@@ -163,7 +163,7 @@ extension Multiset: ExpressibleByArrayLiteral {
     }
 }
 
-extension Multiset: Hashable {
+extension MultiSet: Hashable {
 
     // MARK: Hashable Protocol Conformance
 
@@ -178,7 +178,7 @@ extension Multiset: Hashable {
 // MARK: Multiset Equatable Conformance
 
 /// Returns `true` if and only if the multisets contain the same number of occurrences per element.
-public func ==<T>(lhs: Multiset<T>, rhs: Multiset<T>) -> Bool {
+public func ==<T>(lhs: MultiSet<T>, rhs: MultiSet<T>) -> Bool {
     if lhs.count != rhs.count || lhs.distinctCount != rhs.distinctCount {
         return false
     }

@@ -1,7 +1,7 @@
 import Foundation
 
 /// Static wrapper for [syslog](https://en.wikipedia.org/wiki/Syslog),
-/// see [man 3 syslog]http://www.unix.com/man-page/POSIX/3posix/syslog/
+/// see [The Syslog Protocol]https://tools.ietf.org/html/rfc5424
 public struct Syslog {
     static var carping = false
     static var failOnError = false // make this configurable
