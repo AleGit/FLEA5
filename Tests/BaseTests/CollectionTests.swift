@@ -28,6 +28,7 @@ class CollectionTests: AbstractTestCase {
         XCTAssertEqual("ArraySlice<Int>", "\(type(of: tail3))")
 
         XCTAssertNil(tail3.decomposing)
+        XCTAssertNil(tail3.decomposing)
     }
 
     func testStringDecomposing() {
@@ -56,5 +57,6 @@ class CollectionTests: AbstractTestCase {
         XCTAssertEqual("Substring", "\(type(of: tail3))")
 
         XCTAssertNil(tail3.decomposing)
+        XCTAssertNil("".decomposing)
     }
 }
