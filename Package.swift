@@ -3,11 +3,8 @@
 
 import PackageDescription
 
-
-
 extension Target {
-    enum Modules: String {
-
+    enum Module: String {
         case base = "Base"
         case utile = "Utile"
         case tptp = "Tptp"
@@ -17,7 +14,6 @@ extension Target {
         var targetName: String {
             self.rawValue
         }
-
         var testTargetName: String {
             self.targetName + "Tests"
         }
@@ -25,15 +21,13 @@ extension Target {
             Target.Dependency.init(stringLiteral: self.rawValue)
         }
     }
-    static func target(name: Modules, dependencies: [Modules]) -> PackageDescription.Target {
-        return .target(name: name.targetName, dependencies: dependencies.map { $0.targetDependency })
+    static func target(module: Module, dependencies: [Module]) -> PackageDescription.Target {
+        return .target(name: module.targetName, dependencies: dependencies.map { $0.targetDependency })
     }
-    static func testTarget(name: Modules, dependencies: [Modules]) -> PackageDescription.Target {
-        return .testTarget(name: name.testTargetName, dependencies: dependencies.map { $0.targetDependency })
+    static func testTarget(module: Module, dependencies: [Module]) -> PackageDescription.Target {
+        return .testTarget(name: module.testTargetName, dependencies: dependencies.map { $0.targetDependency })
     }
-
 }
-
 
 
 let package: Package = Package(
@@ -49,15 +43,15 @@ let package: Package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
 
-        .target(name: .base,   dependencies: []),
-        .target(name: .utile,  dependencies: [.base]),
-        .target(name: .tptp,   dependencies: [.base, .utile]),
-        .target(name: .solver, dependencies: [.base, .utile, .tptp]),
-        .target(name: .flea,   dependencies: [.base, .utile, .tptp]),
+        .target(module: .base,   dependencies: []),
+        .target(module: .utile,  dependencies: [.base]),
+        .target(module: .tptp,   dependencies: [.base, .utile]),
+        .target(module: .solver, dependencies: [.base, .utile, .tptp]),
+        .target(module: .flea,   dependencies: [.base, .utile, .tptp]),
 
-        .testTarget(name: .base,   dependencies: [.base]),
-        .testTarget(name: .utile,  dependencies: [.utile]),
-        .testTarget(name: .tptp,   dependencies: [.tptp]),
-        .testTarget(name: .solver, dependencies: [.solver]),
+        .testTarget(module: .base,   dependencies: [.base]),
+        .testTarget(module: .utile,  dependencies: [.utile]),
+        .testTarget(module: .tptp,   dependencies: [.tptp]),
+        .testTarget(module: .solver, dependencies: [.solver]),
     ]
 )
