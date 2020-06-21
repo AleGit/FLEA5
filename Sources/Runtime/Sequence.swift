@@ -1,21 +1,4 @@
-//  Copyright © 2017 Alexander Maringele. All rights reserved.
-
-import Foundation
-
-extension Swift.Collection {
-    /// Split a collection in a pair of its first element and the remaining elements.
-    ///
-    /// - [] -> nil
-    /// - [a,...] -> (a,[...])
-    ///
-    /// _Complexity_: O(1) -- `first` and `dropFirst()` are O(1) for collections
-    var decomposing: (head: Self.Element, tail: Self.SubSequence)? {
-        guard let head = first else { return nil }
-        return (head, dropFirst()) //
-    }
-}
-
-extension Swift.Sequence {
+extension Sequence {
     /// check if a predicate holds for all members of a sequence
     func all(_ predicate: (Element) -> Bool) -> Bool {
         return reduce(true) { $0 && predicate($1) }

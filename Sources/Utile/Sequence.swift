@@ -1,5 +1,3 @@
-
-
 public struct Iterator<S, T>: Swift.IteratorProtocol {
     private var this: S?
     private let step: (S) -> S?

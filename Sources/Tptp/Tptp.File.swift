@@ -1,8 +1,7 @@
+import Foundation
 import CTptpParsing
 import Runtime
 import Utile
-
-import Foundation
 
 struct Tptp {
     /// A parsed TPTP file where the abstract syntax tree is stored in an optimized

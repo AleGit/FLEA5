@@ -1,5 +1,3 @@
-import Runtime
-
 /// Construct unifier of left-hand side and right-hand side.
 infix operator =?= // : UnificationPrecedence
 

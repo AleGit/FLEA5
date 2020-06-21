@@ -1,6 +1,6 @@
 import CTptpParsing
-import Utile
 import Runtime
+import Utile
 
 extension Tptp {
     public final class Term: Utile.Term {

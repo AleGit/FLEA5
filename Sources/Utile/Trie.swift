@@ -1,7 +1,8 @@
-import Foundation
+import Runtime
 
-// MARK: - a generic trie protocol
-
+/// A trie, also called digital tree or prefix tree, is a kind of search tree—an ordered tree data structure
+/// used to store a dynamic set or associative array where the keys are usually strings.
+/// [Trie](https://en.wikipedia.org/wiki/Trie)
 protocol Trie {
     associatedtype Leap
     associatedtype Value

@@ -1,12 +1,5 @@
-//
-//  Multiset.swift
-//  Buckets
-//
 //  Created by Mauricio Santos on 3/28/15.
 //  Copyright (c) 2015 Mauricio Santos. All rights reserved.
-//
-
-import Foundation
 
 /// A Multiset (sometimes called a bag) is a special kind of set in which
 /// members are allowed to appear more than once. It's possible to convert a multiset
