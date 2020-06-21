@@ -1,5 +1,5 @@
 import XCTest
-import Runtime
+import Base
 @testable import Solver
 
 class Y2SATSolverTests: Y2TestCase, HasSolver {

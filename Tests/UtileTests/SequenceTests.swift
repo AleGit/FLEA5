@@ -1,5 +1,5 @@
 import XCTest
-import Runtime
+import Base
 import Utile
 
 class SequenceTests : AbstractTestCase {

@@ -1,5 +1,5 @@
 import XCTest
-import Runtime
+import Base
 import CYices
 @testable import Solver
 

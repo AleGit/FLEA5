@@ -1,6 +1,6 @@
 import CYices
 import XCTest
-import Runtime
+import Base
 
 class Y2ApiTests: Y2TestCase {
 

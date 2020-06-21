@@ -1,4 +1,4 @@
-import Runtime
+import Base
 import Tptp
 
 print("FLEA - First order Logic with Equality Attester (FLEA)")

@@ -1,6 +1,6 @@
 import XCTest
 import Foundation
-@testable import Runtime
+@testable import Base
 
 final class CommandLineTests: AbstractTestCase {
     func testName() {

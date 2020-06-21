@@ -1,5 +1,5 @@
 import CTptpParsing
-import Runtime
+import Base
 import Utile
 
 extension Tptp {

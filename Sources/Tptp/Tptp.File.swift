@@ -1,6 +1,6 @@
 import Foundation
 import CTptpParsing
-import Runtime
+import Base
 import Utile
 
 struct Tptp {

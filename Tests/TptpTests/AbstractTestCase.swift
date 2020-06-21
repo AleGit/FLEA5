@@ -1,5 +1,5 @@
 import XCTest
-import Runtime
+import Base
 
 public class AbstractTestCase: XCTestCase {
     /// set up logging once _before_ all tests of a test class

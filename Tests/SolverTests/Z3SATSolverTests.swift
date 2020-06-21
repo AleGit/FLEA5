@@ -1,5 +1,5 @@
 import XCTest
-import Runtime
+import Base
 @testable import Solver
 
 final class Z3SATSolverTests : Z3TestCase, HasSolver {

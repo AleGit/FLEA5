@@ -6,7 +6,7 @@
 
 import Foundation
 import XCTest
-@testable import Runtime
+@testable import Base
 
 public class SyslogTests: AbstractTestCase {
     func testError() {
