@@ -6,8 +6,6 @@ import CTptpParsing
 @testable import Tptp
 
 public class FileTests: AbstractTestCase {
-    let cr = "\n"
-    let line = "---------------------------------------------------------------------------------"
 
     /// set up logging once _before_ all tests of a test class
     public override class func setUp() {
@@ -122,7 +120,6 @@ extension FileTests {
     }
 
     func testPUZ006m1() {
-        print(line + cr + #file.fileName, #function, #line, #column)
         let file = Tptp.File(problem: "PUZ006-1")!
 
         XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/PUZ/PUZ006-1.p"))
@@ -141,7 +138,7 @@ extension FileTests {
 
         let includes = file.includeSelectionURLTriples(url: file.url!)
         for include in includes {
-            print(include, cr + line)
+            print(#function, "•", include)
         }
     }
 
@@ -152,7 +149,6 @@ extension FileTests {
 extension FileTests {
 
     func _testHWV134m1() {
-        print(line + cr + #file.fileName, #function, #line, #column)
         let (_, triple) = Time.measure {
             let file = Tptp.File(problem: "HWV134-1")!
 
@@ -170,8 +166,6 @@ extension FileTests {
         XCTAssertTrue(triple.user <= 15.0)
         XCTAssertTrue(triple.system <= 5.5)
         XCTAssertTrue(triple.absolute <= 20.5)
-
-        print(triple, cr + line)
     }
 
 }

@@ -36,7 +36,6 @@ class AuxiliaryTests: AbstractTestCase {
             XCTFail()
             return
         }
-        print(type(of: head1), type(of: tail1))
         XCTAssertEqual("1", head1)
         XCTAssertEqual("👩‍👧‍👧3", tail1)
 
