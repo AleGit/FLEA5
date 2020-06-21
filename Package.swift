@@ -3,6 +3,39 @@
 
 import PackageDescription
 
+
+
+extension Target {
+    enum Modules: String {
+
+        case base = "Base"
+        case utile = "Utile"
+        case tptp = "Tptp"
+        case solver = "Solver"
+        case flea = "Flea"
+
+        var targetName: String {
+            self.rawValue
+        }
+
+        var testTargetName: String {
+            self.targetName + "Tests"
+        }
+        var targetDependency : Target.Dependency {
+            Target.Dependency.init(stringLiteral: self.rawValue)
+        }
+    }
+    static func target(name: Modules, dependencies: [Modules]) -> PackageDescription.Target {
+        return .target(name: name.targetName, dependencies: dependencies.map { $0.targetDependency })
+    }
+    static func testTarget(name: Modules, dependencies: [Modules]) -> PackageDescription.Target {
+        return .testTarget(name: name.testTargetName, dependencies: dependencies.map { $0.targetDependency })
+    }
+
+}
+
+
+
 let package: Package = Package(
     name: "FLEA5",
     dependencies: [
@@ -16,15 +49,15 @@ let package: Package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
 
-        .target(name: "Base", dependencies: []),
-        .target(name: "Utile", dependencies: ["Base"]),
-        .target(name: "Tptp", dependencies: ["Base", "Utile"]),
-        .target(name: "Solver", dependencies: ["Base", "Utile", "Tptp"]),
-        .target(name: "Flea", dependencies: ["Base", "Utile", "Tptp", "Solver"]),
+        .target(name: .base,   dependencies: []),
+        .target(name: .utile,  dependencies: [.base]),
+        .target(name: .tptp,   dependencies: [.base, .utile]),
+        .target(name: .solver, dependencies: [.base, .utile, .tptp]),
+        .target(name: .flea,   dependencies: [.base, .utile, .tptp]),
 
-        .testTarget(name: "BaseTests", dependencies: ["Base"]),
-        .testTarget(name: "UtileTests", dependencies: ["Utile"]),
-        .testTarget(name: "TptpTests", dependencies: ["Tptp"]),
-        .testTarget(name: "SolverTests", dependencies: ["Solver"]),
+        .testTarget(name: .base,   dependencies: [.base]),
+        .testTarget(name: .utile,  dependencies: [.utile]),
+        .testTarget(name: .tptp,   dependencies: [.tptp]),
+        .testTarget(name: .solver, dependencies: [.solver]),
     ]
 )
