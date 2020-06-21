@@ -1,5 +1,6 @@
 import Foundation
 
+/// A static wrapper for system time utilities to measure runtime of program routines.
 public struct Time {
     static var tps = ticksPerSecond()
 
@@ -8,6 +9,8 @@ public struct Time {
         _ = gettimeofday(&atime, nil) // will return 0
         return Double(atime.tv_sec) // s (seconds)
                 + Double(atime.tv_usec) / Double(1_000_000.0) // µs (microseconds)
+        // 1 µs (microsecond) = 1E-6 s
+        // 1 ms (millisecond) = 1E-3 s
     }
 
     public typealias Triple = (user: Double, system: Double, absolute: Double)

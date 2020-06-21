@@ -1,8 +1,8 @@
 import XCTest
-@testable import Utile
+import Utile
 
-class AuxiliaryTests: AbstractTestCase {
-    func testDecomposingArray() {
+class CollectionTests: AbstractTestCase {
+    func testArrayDecomposing() {
         let list1 = [1, 2, 3]
         guard let (head1, tail1) = list1.decomposing else {
             XCTFail()
@@ -30,7 +30,7 @@ class AuxiliaryTests: AbstractTestCase {
         XCTAssertNil(tail3.decomposing)
     }
 
-    func testDecomposingString() {
+    func testStringDecomposing() {
         let string = "1👩‍👧‍👧3"
         guard let (head1, tail1) = string.decomposing else {
             XCTFail()
