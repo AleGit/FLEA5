@@ -3,6 +3,19 @@
 
 import PackageDescription
 
+/** __Dependency directed down graph:__
+```
+         flea
+            \
+        solver
+       /  /   \
+    z3 yices  tptp
+             /  \
+      parsing  utile
+                  \
+                  base
+```
+*/
 let package: Package = Package(
     name: "FLEA5",
     dependencies: [
@@ -18,9 +31,9 @@ let package: Package = Package(
 
         .target(module: .base,   dependencies: []),
         .target(module: .utile,  dependencies: [.base]),
-        .target(module: .tptp,   dependencies: [.base, .utile]),
-        .target(module: .solver, dependencies: [.base, .utile, .tptp]),
-        .target(module: .flea,   dependencies: [.base, .utile, .tptp, .solver]),
+        .target(module: .tptp,   dependencies: [.utile]),
+        .target(module: .solver, dependencies: [.tptp]),
+        .target(module: .flea,   dependencies: [.solver]),
 
         // implicit test suite names and dependencies
 
