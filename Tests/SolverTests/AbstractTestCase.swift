@@ -22,24 +22,17 @@ public class AbstractTestCase: XCTestCase {
     }
 }
 
-protocol HasSolver {
-    var solver: Solver { get }
-}
-
-extension HasSolver where Self: AbstractTestCase {
-
-}
-
 public class Y2TestCase: AbstractTestCase {
+    static var context : Yices.Context?
 
     public override class func setUp() {
         super.setUp()
-        yices_init()
+        Y2TestCase.context = Yices.Context()
     }
 
     /// teardown logging once _after_ all tests of a test class
     public override class func tearDown() {
-        yices_exit()
+        Y2TestCase.context = nil
         super.tearDown()
     }
 

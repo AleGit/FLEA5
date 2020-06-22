@@ -2,15 +2,14 @@ import XCTest
 import Base
 @testable import Solver
 
-class Y2SATSolverTests: Y2TestCase, HasSolver {
-    lazy var solver: Solver = Y2SATSolver()
+class Y2ContextTests: Y2TestCase {
 
     func testVersion() {
         let expected = "Yices2 • 2.6.2"
-        let actual = solver.description
+        let actual = Yices.Context().description
 
         Syslog.notice { actual }
-        Syslog.debug { solver.debugDescription }
+        Syslog.debug { Yices.Context().solverName }
         XCTAssertEqual(expected, actual)
     }
 }
