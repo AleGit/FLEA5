@@ -2,7 +2,7 @@ import Foundation
 import CZ3Api
 
 public struct Z3 {
-    final class Context: ContextProtocol {
+    final class Context: SolverContext {
         private let context: OpaquePointer
 
         init() {

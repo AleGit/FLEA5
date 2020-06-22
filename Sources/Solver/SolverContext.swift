@@ -1,6 +1,6 @@
 import Tptp
 
-public protocol ContextProtocol: CustomStringConvertible {
+public protocol SolverContext: CustomStringConvertible {
     associatedtype Tau
 
     var solverName: String { get }
@@ -13,7 +13,7 @@ public protocol ContextProtocol: CustomStringConvertible {
 
 }
 
-extension ContextProtocol {
+extension SolverContext {
     public var description: String {
         return [solverName, solverVersion].joined(separator: " • ")
     }

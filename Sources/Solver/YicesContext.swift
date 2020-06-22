@@ -2,7 +2,7 @@ import CYices
 import Base
 
 public struct Yices {
-    public final class Context: ContextProtocol {
+    public final class Context: SolverContext {
 
         private static var lock: Lock = Base.Mutex()
         private static var contextCount = 0
@@ -29,6 +29,7 @@ public struct Yices {
             Context.lock.lock()
             defer { Context.lock.unlock() }
             if Context.contextCount == 0 {
+                print("yices_init()")
                 yices_init()
             }
 
@@ -46,6 +47,7 @@ public struct Yices {
             Context.contextCount -= 1
 
             if Context.contextCount == 0 {
+                print("yices_exit()")
                 yices_exit()
             }
         }
