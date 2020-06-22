@@ -45,6 +45,8 @@ class YicesApiTests: Y2TestCase {
             yices_free_context(ctx)
         }
 
+        print(type(of: ctx))
+
         let bool_tau: type_t = yices_bool_type()
         let free_tau: type_t = yices_new_uninterpreted_type()
         yices_set_type_name(free_tau, "τ")
@@ -62,9 +64,9 @@ class YicesApiTests: Y2TestCase {
         yices_set_term_name(p, "p")
         let pfa: term_t = yices_application(p, 1, [fa])
 
-        let npfa = yices_not(pfa)
-        let tautology = yices_or2(pfa, npfa)
-        let contradiction = yices_and2(pfa, npfa)
+        let negation = yices_not(pfa)
+        let tautology = yices_or2(pfa, negation)
+        let contradiction = yices_and2(pfa, negation)
 
         yices_assert_formula(ctx, tautology)
 
@@ -80,7 +82,7 @@ class YicesApiTests: Y2TestCase {
 
         XCTAssertEqual(yices_formula_true_in_model(model, tautology), 1)
         XCTAssertEqual(yices_formula_true_in_model(model, pfa), 0)
-        XCTAssertEqual(yices_formula_true_in_model(model, npfa), 1)
+        XCTAssertEqual(yices_formula_true_in_model(model, negation), 1)
 
         yices_assert_formula(ctx, contradiction)
         XCTAssertEqual(STATUS_UNSAT, yices_check_context(ctx, nil))
