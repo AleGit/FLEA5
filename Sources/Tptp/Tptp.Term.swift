@@ -17,12 +17,12 @@ extension Tptp {
 
         /// The symbol of the node, e.g. "f".
         public var symbol: String {
-            Tptp.Term.symbols[key].symbol
+            Tptp.Term.keysToTypedSymbolsMapping[key].symbol
         }
 
         /// The TPTP type of the node, e.g. function.
         public var type: PRLC_TREE_NODE_TYPE {
-            Tptp.Term.symbols[key].type
+            Tptp.Term.keysToTypedSymbolsMapping[key].type
         }
 
         /// The key of the node, e.g. 1 with [ 1: "f" ]
@@ -33,40 +33,45 @@ extension Tptp {
 
         // MARK: - private static tables and functions
 
+        /// A symbol might be used multiple times with different types,
+        /// e.g. as a name of an annotated formula and as a constant in this formula.
+        /// see agatha, butler, charles in [PUZ001-1.p](http://www.tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=PUZ&File=PUZ001-1.p)
+        private struct TypedSymbol : Hashable {
+            let type : PRLC_TREE_NODE_TYPE
+            let symbol : String
+        }
+
         // Lookup for symbols by key, e.g. symbols[3] -> ("f", function)
-        private static var symbols = [(symbol: String, type: SymbolType)]()
+        private static var keysToTypedSymbolsMapping = [TypedSymbol]()
 
         // Lookup for key by symbols, e.g. table["f"] -> 3
-        private static var table = [String: Int]()
+        private static var typedSymbolsToKeyMapping = [TypedSymbol: Int]()
 
         // All (shared) nodes
         private static var pool = Set<Term>()
 
-        /// A symbol might be used multiple times with different types,
-        /// e.g. name of annotated formula and constant in a formula,
-        /// see agatha, butler, charles in [PUZ001-1.p](http://www.tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=PUZ&File=PUZ001-1.p)
+
         /// - Parameters:
         ///   - type:
         ///   - symbol:
         /// - Returns:
-        private static func merge(_ type: PRLC_TREE_NODE_TYPE, _ symbol: String) -> String {
+        private static func combine(_ type: PRLC_TREE_NODE_TYPE, _ symbol: String) -> String {
             return "\(symbol)_\(type)"
         }
 
         private static func symbolize(_ type: PRLC_TREE_NODE_TYPE, _ symbol: String) -> Int {
-            let st = merge(type, symbol)
+            let typedSymbol = TypedSymbol(type: type, symbol: symbol)
 
-            guard let key = Term.table[st] else {
-                // symbol of type was not encountered before
-                let count = Term.symbols.count
-                Term.table[st] = count
-                Term.symbols.append((symbol, type))
+            guard let key = Term.typedSymbolsToKeyMapping[typedSymbol] else {
+                // typed symbol is not known yet
+                let count = Term.keysToTypedSymbolsMapping.count
+                Term.typedSymbolsToKeyMapping[typedSymbol] = count
+                Term.keysToTypedSymbolsMapping.append(typedSymbol)
                 return count
             }
 
             return key
         }
-
 
         private init(key: Int, nodes: [Term]?) {
             self.key = key

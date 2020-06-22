@@ -17,10 +17,11 @@ protocol TreeNodeProtocol: SymbolNodeProtocol {
     var child: TreeNodeRef! { get }
 }
 
-// MARK: - let C-structures conform to protocols
+// MARK: - let C types conform to protocols
 
 extension prlc_prefix_node: SymbolNodeProtocol {}
 extension prlc_tree_node: TreeNodeProtocol {}
+extension PRLC_TREE_NODE_TYPE : Hashable {}
 
 // MARK: -
 
