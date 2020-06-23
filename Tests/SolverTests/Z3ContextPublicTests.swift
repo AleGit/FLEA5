@@ -1,10 +1,10 @@
-import XCTest
 import Base
-@testable import Solver
+import Solver
+import XCTest
 
-final class Z3ContextTests : Z3TestCase {
+class Z3ContextPublicTests {
 
-    func _testVersion() {
+    func testVersion() {
         let expected = "Z3 • 4.8.8.0"
         let actual = Z3.Context().description
 

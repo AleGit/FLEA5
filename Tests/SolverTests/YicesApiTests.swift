@@ -2,7 +2,7 @@ import CYices
 import XCTest
 import Base
 
-class YicesApiTests: Y2TestCase {
+class YicesApiTests: YicesTestCase {
 
     func testDeMorgan() {
         let ctx = yices_new_context(nil)

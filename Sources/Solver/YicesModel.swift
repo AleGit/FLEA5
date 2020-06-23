@@ -2,6 +2,7 @@ import CYices
 
 extension Yices {
     final class Model: SolverModel {
+
         private var context: Yices.Context
         private var model: OpaquePointer
 
@@ -19,8 +20,15 @@ extension Yices {
             yices_free_model(model)
         }
 
-        func satisfies(formula: Yices.Context.Term) -> Bool {
-            yices_formula_true_in_model(self.model, formula) == 1
+        func satisfies(formula: Yices.Context.Term) -> Bool? {
+            switch yices_formula_true_in_model(self.model, formula) {
+            case 1:
+                return true
+            case 0:
+                return false
+            default:
+                return nil
+            }
         }
     }
 }

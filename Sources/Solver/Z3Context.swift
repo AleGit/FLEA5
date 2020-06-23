@@ -1,7 +1,7 @@
 import CZ3Api
 
 public struct Z3 {
-    final class Context: SolverContext {
+    public final class Context: SolverContext {
         let context: Z3_context
         let solver: Z3_solver
 
@@ -9,7 +9,7 @@ public struct Z3 {
         typealias Decl = Z3_func_decl
         typealias Term = Z3_ast
 
-        init() {
+        public init() {
             let cfg = Z3_mk_config()
             defer {
                 Z3_del_config(cfg)

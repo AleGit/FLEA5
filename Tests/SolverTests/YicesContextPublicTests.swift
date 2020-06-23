@@ -1,8 +1,8 @@
-import XCTest
 import Base
-@testable import Solver
+import Solver
+import XCTest
 
-class Y2ContextTests: Y2TestCase {
+class YicesContextPublicTests : YicesTestCase {
 
     func testVersion() {
         let expected = "Yices2 • 2.6.2"

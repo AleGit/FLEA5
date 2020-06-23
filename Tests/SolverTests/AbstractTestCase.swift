@@ -22,17 +22,17 @@ public class AbstractTestCase: XCTestCase {
     }
 }
 
-public class Y2TestCase: AbstractTestCase {
+public class YicesTestCase: AbstractTestCase {
     static var context : Yices.Context?
 
     public override class func setUp() {
         super.setUp()
-        Y2TestCase.context = Yices.Context()
+        YicesTestCase.context = Yices.Context()
     }
 
     /// teardown logging once _after_ all tests of a test class
     public override class func tearDown() {
-        Y2TestCase.context = nil
+        YicesTestCase.context = nil
         super.tearDown()
     }
 

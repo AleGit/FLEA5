@@ -19,10 +19,10 @@ extension Z3{
             Z3_model_dec_ref(context.context, self.model)
         }
 
-        func satisfies(formula: Z3.Context.Term) -> Bool {
+        func satisfies(formula: Z3.Context.Term) -> Bool? {
             var result: Z3_ast? = nil
             guard Z3_model_eval(context.context, model, formula, false, &result) else {
-                return false
+                return nil
             }
             return result == context.top
         }

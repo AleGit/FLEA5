@@ -16,5 +16,5 @@ protocol SolverContext {
 protocol SolverModel {
     associatedtype T : SolverContext
     init?(context: T)
-    func satisfies(formula: T.Term) -> Bool
+    func satisfies(formula: T.Term) -> Bool?
 }
