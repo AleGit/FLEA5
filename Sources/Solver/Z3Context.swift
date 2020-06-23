@@ -2,6 +2,7 @@ import CZ3Api
 
 public struct Z3 {
     public final class Context: SolverContext {
+
         let context: Z3_context
         let solver: Z3_solver
 
@@ -32,11 +33,53 @@ public struct Z3 {
 
         lazy var top: Term = Z3_mk_true(context)
         lazy var bot: Term = Z3_mk_false(context)
-
     }
 }
 
 extension Z3.Context {
+    func declare(constant: String) -> Z3_ast {
+        let symbol = Z3_mk_string_symbol(self.context, constant)
+        return Z3_mk_const(self.context, symbol, self.freeTau)
+    }
+
+    func declare(proposition: String) -> Z3_ast {
+        let symbol = Z3_mk_string_symbol(context, proposition)
+        return Z3_mk_const(context, symbol, freeTau)
+    }
+
+    func declare(function: String, arity: Int) -> Z3_func_decl {
+        let symbol = Z3_mk_string_symbol(context, function)
+        let domain = [Z3_sort?](repeatElement(freeTau, count: arity))
+        return Z3_mk_func_decl(context, symbol, UInt32(arity), domain, freeTau)
+    }
+
+    func declare(predicate: String, arity: Int) -> Z3_func_decl {
+        let symbol = Z3_mk_string_symbol(self.context, predicate)
+        let domain = [Z3_sort?](repeatElement(freeTau, count: arity))
+        return Z3_mk_func_decl(context, symbol, UInt32(arity), domain, boolTau)
+
+    }
+
+    func apply(term: Z3_func_decl, args: [Z3_ast]) -> Z3_ast {
+        var args :[Z3_ast?] = args
+        return Z3_mk_app(context, term, UInt32(args.count), args)
+    }
+
+    func negate(term: Z3_ast) -> Z3_ast {
+        Z3_mk_not(context, term)
+    }
+
+    func and(lhs: Z3_ast, rhs: Z3_ast) -> Z3_ast {
+        Z3_mk_and(context, 2, [lhs, rhs])
+    }
+
+    func or(lhs: Z3_ast, rhs: Z3_ast) -> Z3_ast {
+        Z3_mk_or(context, 2, [lhs, rhs])
+    }
+
+    func iff(lhs: Z3_ast, rhs: Z3_ast) -> Z3_ast {
+        Z3_mk_iff(context, lhs, rhs)
+    }
 
     func assert(formula: Term) {
         Z3_solver_assert(context, solver, formula)

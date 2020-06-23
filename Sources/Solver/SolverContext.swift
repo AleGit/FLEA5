@@ -9,8 +9,33 @@ protocol SolverContext {
     var freeTau : Sort { get }
 
     var bot: Term { get }
+    var top: Term { get }
+
+    func declare(constant: String) -> Term
+
+    func declare(proposition: String) -> Term
+
+    func declare(function: String, arity: Int) -> Decl
+
+    func declare(predicate: String, arity: Int) -> Decl
+
+    func apply(term: Term, args: [Term]) -> Term
+
+    func negate(term: Term) -> Term
+    func and(lhs: Term, rhs: Term) -> Term
+    func or(lhs: Term, rhs: Term) -> Term
+    func iff(lhs: Term, rhs: Term) -> Term
 
     func assert(formula: Term)
+}
+
+extension SolverContext {
+//    func conjunction<S: Sequence>(_ s: S) -> Self.Term where S.Element == Self.Term {
+//        let terms = s.map {
+//            $0
+//        }
+//        return conjunction(terms: terms)
+//    }
 }
 
 protocol SolverModel {

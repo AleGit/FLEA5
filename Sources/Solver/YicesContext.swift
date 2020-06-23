@@ -3,7 +3,6 @@ import Base
 
 public struct Yices {
     public final class Context: SolverContext {
-
         private static var lock: Lock = Base.Mutex()
         private static var contextCount = 0
         let context: OpaquePointer
@@ -23,8 +22,6 @@ public struct Yices {
 
             Context.contextCount += 1
             context = yices_new_context(nil)
-
-
         }
 
         deinit {
@@ -43,11 +40,6 @@ public struct Yices {
 
         lazy var boolTau: Sort = yices_bool_type()
         lazy var freeTau: Sort = {
-//            Yices.Context.lock.lock()
-//            defer {
-//                Yices.Context.lock.lock()
-//            }
-
             let name = "𝛕"
             var tau = yices_get_type_by_name(name)
             if tau == NULL_TYPE {
@@ -64,7 +56,7 @@ public struct Yices {
 
 extension Yices.Context {
 
-    private func declare(symbol: String, tau: Sort) -> Term {
+    private func declare(symbol: String, tau: Sort) -> term_t {
         var c = yices_get_term_by_name(symbol)
         if c == NULL_TERM {
             c = yices_new_uninterpreted_term(tau)
@@ -76,31 +68,48 @@ extension Yices.Context {
         return c
     }
 
-    func declare(constant: String) -> Term {
+
+    func declare(constant: String) -> term_t {
         declare(symbol: constant, tau: self.freeTau)
     }
 
-    func declare(proposition: String) -> Term {
+    func declare(proposition: String) -> term_t {
         declare(symbol: proposition, tau: self.boolTau)
     }
 
-    func declare(function: String, arity: Int) -> Sort {
+    func declare(function: String, arity: Int) -> type_t {
         let domain = [Term](repeatElement(self.freeTau, count: arity))
         let tau = yices_function_type(UInt32(arity), domain, self.freeTau)
         return declare(symbol: function, tau: tau)
     }
 
-    func declare(predicate: String, arity: Int) -> Sort {
+    func declare(predicate: String, arity: Int) -> type_t {
         let domain = [type_t](repeatElement(self.freeTau, count: arity))
         let tau = yices_function_type(UInt32(arity), domain, self.boolTau)
         return declare(symbol: predicate, tau: tau)
     }
 
-    func apply(term: Term, args: [Term]) -> Term {
+    func apply(term: term_t, args: [term_t]) -> term_t {
         yices_application(term, UInt32(args.count), args)
     }
 
-    func assert(formula: Term) {
+    func negate(term: term_t) -> term_t {
+        yices_not(term)
+    }
+
+    func and(lhs: term_t, rhs: term_t) -> term_t {
+        yices_and2(lhs, rhs)
+    }
+
+    func or(lhs: term_t, rhs: term_t) -> term_t {
+        yices_or2(lhs, rhs)
+    }
+
+    func iff(lhs: term_t, rhs: term_t) -> term_t {
+        yices_iff(lhs, rhs)
+    }
+
+    func assert(formula: term_t) {
         yices_assert_formula(context, formula)
     }
 

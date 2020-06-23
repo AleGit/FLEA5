@@ -3,15 +3,24 @@ import Base
 import CYices
 @testable import Solver
 
-class Y2ContextTests: YicesTestCase {
+class YicesContextInternalTests: YicesTestCase {
 
-    func testVersion() {
-        let expected = "Yices2 • 2.6.2"
-        let actual = Yices.Context().description
+    func testDeMorgan() {
+        let context = Yices.Context()
+        let x = context.declare(proposition: "x")
+        let y = context.declare(proposition: "y")
+        let not_x = context.negate(term: x)
+        let not_y = context.negate(term: y)
 
-        Syslog.notice { actual }
-        Syslog.debug { Yices.Context().name }
-        XCTAssertEqual(expected, actual)
+        let x_and_y = context.and(lhs: x, rhs: y)
+        let ls = context.negate(term: x_and_y)
+        let rs = context.or(lhs: not_x, rhs: not_y)
+        let de_morgan = context.iff(lhs: ls, rhs: rs)
+        let negated = context.negate(term: de_morgan)
+
+        context.assert(formula: negated)
+
+        XCTAssertNil( Yices.Model(context: context) )
     }
 
     func testP() {
