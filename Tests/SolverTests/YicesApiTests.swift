@@ -30,12 +30,10 @@ class YicesApiTests: Y2TestCase {
         XCTAssertEqual(result, STATUS_UNSAT, "De Morgan is not valid.")
 
         yices_assert_formula(ctx, negated_de_morgan)
-        let status = yices_check_context(ctx, nil)
         
-        XCTAssertEqual(status, STATUS_UNSAT, "De Morgan is not valid.")
+        XCTAssertEqual(yices_check_context(ctx, nil), STATUS_UNSAT, "De Morgan is not valid.")
 
         let model = yices_get_model(ctx, 1)
-        // defer { yices_free_model(model) }
         XCTAssertNil(model)
     }
 
@@ -44,8 +42,6 @@ class YicesApiTests: Y2TestCase {
         defer {
             yices_free_context(ctx)
         }
-
-        print(type(of: ctx))
 
         let bool_tau: type_t = yices_bool_type()
         let free_tau: type_t = yices_new_uninterpreted_type()
@@ -64,27 +60,39 @@ class YicesApiTests: Y2TestCase {
         yices_set_term_name(p, "p")
         let pfa: term_t = yices_application(p, 1, [fa])
 
-        let negation = yices_not(pfa)
-        let tautology = yices_or2(pfa, negation)
-        let contradiction = yices_and2(pfa, negation)
+        let not = yices_not(pfa)
+        let top = yices_or2(pfa, not)
 
-        yices_assert_formula(ctx, tautology)
-
+        yices_assert_formula(ctx, top)
         XCTAssertEqual(STATUS_SAT, yices_check_context(ctx, nil))
 
-        guard let model = yices_get_model(ctx, 1) else {
-            XCTFail()
-            return
-        }
-        defer {
-            yices_free_model(model)
-        }
+        var model = yices_get_model(ctx, 1) // 1st model
+        XCTAssertNotNil(model)
 
-        XCTAssertEqual(yices_formula_true_in_model(model, tautology), 1)
-        XCTAssertEqual(yices_formula_true_in_model(model, pfa), 0)
-        XCTAssertEqual(yices_formula_true_in_model(model, negation), 1)
+        XCTAssertEqual(yices_formula_true_in_model(model, top), 1)
+        XCTAssertTrue( yices_formula_true_in_model(model, pfa) != yices_formula_true_in_model(model, not))
+        XCTAssertEqual( yices_formula_true_in_model(model, pfa), 0)
+        XCTAssertEqual( yices_formula_true_in_model(model, not), 1)
 
-        yices_assert_formula(ctx, contradiction)
+        yices_free_model( model) // 1st model ends
+
+        yices_assert_formula(ctx, pfa)
+        XCTAssertEqual(STATUS_SAT, yices_check_context(ctx, nil))
+
+        model = yices_get_model(ctx, 1) // 2nd model
+        XCTAssertNotNil(model)
+
+        XCTAssertEqual(yices_formula_true_in_model(model, top), 1)
+        XCTAssertEqual( yices_formula_true_in_model(model, pfa), 1)
+        XCTAssertEqual( yices_formula_true_in_model(model, not), 0)
+
+        yices_free_model( model) // 2nd model ends
+
+
+        yices_assert_formula(ctx, not)
         XCTAssertEqual(STATUS_UNSAT, yices_check_context(ctx, nil))
+
+        model = yices_get_model(ctx, 1)
+        XCTAssertNil(model) // no model
     }
 }
