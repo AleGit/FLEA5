@@ -1,19 +1,20 @@
 import Tptp
 
-public protocol SolverContext {
-    associatedtype Tau
+protocol SolverContext {
+    associatedtype Sort // Tau, Type
+    associatedtype Decl //
+    associatedtype Term // AST
 
-    var boolTau : Tau { get }
-    var freeTau : Tau { get }
+    var boolTau : Sort { get }
+    var freeTau : Sort { get }
+
+    var bot: Term { get }
+
+    func assert(formula: Term)
 }
 
-public protocol SolverContextInfo : CustomStringConvertible {
-    var solverName: String { get }
-    var solverVersion: String { get }
-}
-
-extension SolverContextInfo {
-    public var description: String {
-        return [solverName, solverVersion].joined(separator: " • ")
-    }
+protocol SolverModel {
+    associatedtype T : SolverContext
+    init?(context: T)
+    func satisfies(formula: T.Term) -> Bool
 }

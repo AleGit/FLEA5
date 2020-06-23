@@ -9,7 +9,7 @@ class Y2ContextTests: Y2TestCase {
         let actual = Yices.Context().description
 
         Syslog.notice { actual }
-        Syslog.debug { Yices.Context().solverName }
+        Syslog.debug { Yices.Context().name }
         XCTAssertEqual(expected, actual)
     }
 }

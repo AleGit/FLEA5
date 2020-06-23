@@ -1,11 +1,11 @@
 import CZ3Api
 
-extension Z3.Context: SolverContextInfo {
-    var solverName: String {
-        return "Z3"
+extension Z3.Context: Solver {
+    var name: String {
+        "Z3"
     }
 
-    var solverVersion: String {
+    var version: String {
         var major = UInt32.zero
         var minor = UInt32.zero
         var build = UInt32.zero
