@@ -3,7 +3,7 @@ import CTptpParsing
 import Base
 import Utile
 
-struct Tptp {
+public struct Tptp {
     /// A parsed TPTP file where the abstract syntax tree is stored in an optimized
     /// dynamically allocated heap memory which is only accessible by pointers.
     /// It uses CTptpParsing with C-API.
