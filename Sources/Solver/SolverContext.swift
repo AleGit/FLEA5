@@ -26,9 +26,9 @@ protocol SolverContext {
     func apply(term: Term, args: [Term]) -> Term
 
     func negate(formula: Term) -> Term
-    func and(lhs: Term, rhs: Term) -> Term
-    func or(lhs: Term, rhs: Term) -> Term
-    func iff(lhs: Term, rhs: Term) -> Term
+    func formula(_ lhs: Term, and rhs: Term) -> Term
+    func formula(_ lhs: Term, or rhs: Term) -> Term
+    func formula(_ lhs: Term, iff rhs: Term) -> Term
 
     func assert(formula: Term)
 }

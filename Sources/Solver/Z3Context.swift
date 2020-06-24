@@ -73,7 +73,7 @@ extension Z3.Context {
         and(formulas: formulas)
     }
 
-    func and(lhs: Z3_ast, rhs: Z3_ast) -> Z3_ast {
+    func formula(_ lhs: Z3_ast, and rhs: Z3_ast) -> Z3_ast {
         and(formulas: [lhs, rhs])
     }
 
@@ -82,11 +82,11 @@ extension Z3.Context {
         return Z3_mk_and(context, UInt32(args.count), args)
     }
 
-    func or(lhs: Z3_ast, rhs: Z3_ast) -> Z3_ast {
+    func formula(_ lhs: Z3_ast, or rhs: Z3_ast) -> Z3_ast {
         Z3_mk_or(context, 2, [lhs, rhs])
     }
 
-    func iff(lhs: Z3_ast, rhs: Z3_ast) -> Z3_ast {
+    func formula(_ lhs: Z3_ast, iff rhs: Z3_ast) -> Z3_ast {
         Z3_mk_iff(context, lhs, rhs)
     }
 

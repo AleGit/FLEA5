@@ -97,7 +97,7 @@ extension Yices.Context {
         yices_not(formula)
     }
 
-    func and(lhs: term_t, rhs: term_t) -> term_t {
+    func formula(_ lhs: term_t, and rhs: term_t) -> term_t {
         yices_and2(lhs, rhs)
     }
 
@@ -106,11 +106,11 @@ extension Yices.Context {
 
     }
 
-    func or(lhs: term_t, rhs: term_t) -> term_t {
+    func formula(_ lhs: term_t, or rhs: term_t) -> term_t {
         yices_or2(lhs, rhs)
     }
 
-    func iff(lhs: term_t, rhs: term_t) -> term_t {
+    func formula(_ lhs: term_t, iff rhs: term_t) -> term_t {
         yices_iff(lhs, rhs)
     }
 

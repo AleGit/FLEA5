@@ -12,10 +12,10 @@ class YicesContextInternalTests: YicesTestCase {
         let not_x = context.negate(formula: x)
         let not_y = context.negate(formula: y)
 
-        let x_and_y = context.and(lhs: x, rhs: y)
+        let x_and_y = context.formula(x, and: y)
         let ls = context.negate(formula: x_and_y)
-        let rs = context.or(lhs: not_x, rhs: not_y)
-        let de_morgan = context.iff(lhs: ls, rhs: rs)
+        let rs = context.formula(not_x, or: not_y)
+        let de_morgan = context.formula(ls, iff: rs)
         let negated = context.negate(formula: de_morgan)
 
         context.assert(formula: negated)
@@ -34,7 +34,7 @@ class YicesContextInternalTests: YicesTestCase {
         let pfa = context.apply(term: p, args: [fa])
 
         let not = context.negate(formula: pfa)
-        let top = context.or(lhs: pfa, rhs: not)
+        let top = context.formula(pfa, or: not)
 
         context.assert(formula: top)
         XCTAssertTrue(context.isSatisfiable)
