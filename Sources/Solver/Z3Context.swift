@@ -68,6 +68,11 @@ extension Z3.Context {
     func apply(predicate: Z3_func_decl, args: [Z3_ast]) -> Z3_ast {
         apply(predicate, args: args)
     }
+
+
+    func equate(lhs: OpaquePointer, rhs: OpaquePointer) -> OpaquePointer {
+        Z3_mk_eq(context, lhs, rhs)
+    }
 }
 
 extension Z3.Context {

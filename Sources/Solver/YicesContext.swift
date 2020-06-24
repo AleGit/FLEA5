@@ -3,6 +3,7 @@ import Base
 
 public struct Yices {
     public final class Context: SolverContext {
+
         private static var lock: Lock = Base.Mutex()
         private static var contextCount = 0
         let context: OpaquePointer
@@ -108,6 +109,10 @@ extension Yices.Context {
 
     func apply(predicate: term_t, args: [term_t]) -> term_t {
         yices_application(predicate, UInt32(args.count), args)
+    }
+
+    func equate(lhs: term_t, rhs: term_t) -> term_t {
+        yices_eq(lhs, rhs)
     }
 
 }

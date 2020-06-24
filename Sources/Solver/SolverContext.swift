@@ -25,6 +25,7 @@ protocol SolverContext {
 
     func apply(function: Function, args: [Term]) -> Term
     func apply(predicate: Predicate, args: [Term]) -> Formula
+    func equate(lhs: Term, rhs: Term) -> Formula
 
     func negate(formula: Formula) -> Formula
     func conjunct(formulae: [Formula]) -> Formula

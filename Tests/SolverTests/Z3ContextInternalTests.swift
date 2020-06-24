@@ -161,4 +161,25 @@ final class Z3ContextInternalTests: Z3TestCase {
         let s = context.declare(proposition: "r")
         XCTAssertEqual(r, s)
     }
+
+    func testEquation() {
+        let context = Context()
+        let a = context.declare(constant: "a")
+        let b = context.declare(constant: "b")
+        let c = context.declare(constant: "c")
+
+        let ab = context.equate(lhs: a, rhs: b)
+        let bc = context.equate(lhs: b, rhs: c)
+
+        context.assert(formula: ab)
+        context.assert(formula: bc)
+        XCTAssertTrue(context.isSatisfiable, "consistency failure")
+
+        let conjecture = context.equate(lhs: c, rhs: a)
+        let negated = context.negate(formula: conjecture)
+
+        context.assert(formula: negated)
+        XCTAssertFalse(context.isSatisfiable, "transitivity failure")
+
+    }
 }
