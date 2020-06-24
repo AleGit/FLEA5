@@ -4,11 +4,12 @@ import CYices
 @testable import Solver
 
 class YicesContextInternalTests: YicesTestCase {
+    typealias Context = Z3.Context
 
     func testDeMorgan() {
-        let context = createContext()
-        let x = context.declare(proposition: "x")
-        let y = context.declare(proposition: "y")
+        let context = Context()
+        let x = context.declare(proposition: "p")
+        let y = context.declare(proposition: "q")
         let not_x = context.negate(formula: x)
         let not_y = context.negate(formula: y)
 
@@ -25,7 +26,7 @@ class YicesContextInternalTests: YicesTestCase {
     }
 
     func testPfa() {
-        let context = createContext()
+        let context = Context()
 
         let a = context.declare(constant: "a")
         let f = context.declare(function: "f", arity: 1)
@@ -59,7 +60,7 @@ class YicesContextInternalTests: YicesTestCase {
     }
 
     func testConjunction() {
-        let context = createContext()
+        let context = Context()
         let a = context.declare(proposition: "a")
         let b = context.declare(proposition: "b")
         let c = context.declare(proposition: "c")
@@ -76,7 +77,7 @@ class YicesContextInternalTests: YicesTestCase {
     }
 
     func testDisjunction() {
-        let context = createContext()
+        let context = Context()
         let a = context.declare(proposition: "a")
         let b = context.declare(proposition: "b")
         let c = context.declare(proposition: "c")
@@ -102,5 +103,33 @@ class YicesContextInternalTests: YicesTestCase {
 
         context.assert(formula: context.disjunct(formulae: a, nc))
         XCTAssertFalse(context.isSatisfiable)
+    }
+
+    func testMultipleDeclarations() {
+        let context = Context()
+        let f = context.declare(constant: "x")
+        let f0 = context.declare(function: "x", arity: 0)
+        let f1 = context.declare(function: "x", arity: 1)
+        let f2 = context.declare(function: "x", arity: 2)
+
+        let p = context.declare(proposition: "x")
+        let p0 = context.declare(predicate: "x", arity: 0)
+        let p1 = context.declare(predicate: "x", arity: 1)
+        let p2 = context.declare(predicate: "x", arity: 2)
+
+
+        let a = f
+        let b = context.apply(function: f0, args: [Context.Term]())
+        let c = context.apply(function: f1, args: [a])
+        let d = context.apply(function: f2, args: [b, c])
+
+        let pa = p
+        let pb = context.apply(predicate: p0, args: [Context.Term]())
+        let pc = context.apply(predicate: p1, args: [a])
+        let pd = context.apply(predicate: p2, args: [b, c])
+        let pe = context.apply(predicate: p2, args: [a, d])
+        context.assert(formula: context.conjunct(formulae: pa, pb, pc, pd, pe))
+        XCTAssertTrue(context.isSatisfiable)
+
     }
 }
