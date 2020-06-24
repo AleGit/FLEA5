@@ -1,5 +1,5 @@
 import XCTest
 @testable import Utile
 
-class TrieTests : AbstractTestCase {
+class TrieTests : ATestCase {
 }

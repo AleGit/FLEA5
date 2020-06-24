@@ -1,5 +1,5 @@
 import XCTest
 @testable import Utile
 
-class MultisetTests : AbstractTestCase {
+class MultisetTests : ATestCase {
 }

@@ -2,7 +2,7 @@ import XCTest
 import Base
 import Utile
 
-class SequenceTests : AbstractTestCase {
+class SequenceTests : ATestCase {
 
     private static var primes10 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
 

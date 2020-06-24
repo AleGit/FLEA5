@@ -1,7 +1,7 @@
 import XCTest
 @testable import Utile
 
-final class WeakSetTests : AbstractTestCase {
+final class WeakSetTests : ATestCase {
     private class Foo: Hashable, CustomStringConvertible {
         let name: String
 

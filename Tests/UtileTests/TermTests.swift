@@ -1,7 +1,7 @@
 import XCTest
 @testable import Utile
 
-final class TermTests: AbstractTestCase {
+final class TermTests: ATestCase {
     enum `Type` {
         case predicate, function, variable
     }

@@ -3,7 +3,7 @@ import Base
 import CYices
 @testable import Solver
 
-public class AbstractTestCase: XCTestCase {
+public class ATestCase: XCTestCase {
 
     /// set up logging once _before_ all tests of a test class
     public override class func setUp() {
@@ -22,7 +22,7 @@ public class AbstractTestCase: XCTestCase {
     }
 }
 
-public class YicesTestCase: AbstractTestCase {
+public class YicesTestCase: ATestCase {
 
     typealias Context = Yices.Context
 
@@ -41,7 +41,7 @@ public class YicesTestCase: AbstractTestCase {
 
 }
 
-public class Z3TestCase: AbstractTestCase {
+public class Z3TestCase: ATestCase {
 
     typealias Context = Z3.Context
 

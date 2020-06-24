@@ -1,7 +1,7 @@
 import XCTest
 @testable import Base
 
-class TimeTests : AbstractTestCase {
+class TimeTests : ATestCase {
 
     func testMeasure() {
         let f = {

@@ -1,7 +1,7 @@
 import XCTest
 @testable import Utile
 
-final class SubstitutionTests : AbstractTestCase {
+final class SubstitutionTests : ATestCase {
 
     func testApply() {
         let a = TermTests.Node.term(.function, "a", nodes: [TermTests.Node]())

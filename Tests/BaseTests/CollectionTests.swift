@@ -1,7 +1,7 @@
 import XCTest
 import Utile
 
-class CollectionTests: AbstractTestCase {
+class CollectionTests: ATestCase {
     func testArrayDecomposing() {
         let list1 = [1, 2, 3]
         guard let (head1, tail1) = list1.decomposing else {

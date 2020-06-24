@@ -1,7 +1,7 @@
 import XCTest
 @testable import Utile
 
-class PositionTests : AbstractTestCase {
+class PositionTests : ATestCase {
     lazy var p = [5,2,7]
     lazy var r = [5,6]
     lazy var q = [5,2,7,5,6]
