@@ -162,7 +162,7 @@ class YicesContextInternalTests: YicesTestCase {
         XCTAssertEqual(r, s)
     }
 
-    func testEquation() {
+    func testTransitivity() {
         let context = Context()
         let a = context.declare(constant: "a")
         let b = context.declare(constant: "b")
@@ -180,6 +180,34 @@ class YicesContextInternalTests: YicesTestCase {
 
         context.assert(formula: negated)
         XCTAssertFalse(context.isSatisfiable, "transitivity failure")
+    }
+
+    func testSymmetry() {
+        let context = Context()
+        let a = context.declare(constant: "a")
+        let b = context.declare(constant: "b")
+
+        let ab = context.equate(lhs: a, rhs: b)
+        context.assert(formula: ab)
+        XCTAssertTrue(context.isSatisfiable, "consistency failure")
+
+        let conjecture = context.equate(lhs: b, rhs: a)
+        let negated = context.negate(formula: conjecture)
+
+        context.assert(formula: negated)
+        XCTAssertFalse(context.isSatisfiable, "symmetry failure")
+
+    }
+
+    func testReflexivity() {
+        let context = Context()
+        let a = context.declare(constant: "a")
+
+        let conjecture = context.equate(lhs: a, rhs: a)
+        let negated = context.negate(formula: conjecture)
+
+        context.assert(formula: negated)
+        XCTAssertFalse(context.isSatisfiable, "reflexivity failure")
 
     }
 }
