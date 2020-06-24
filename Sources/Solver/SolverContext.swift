@@ -1,6 +1,7 @@
 import Tptp
 
 protocol SolverContext {
+    associatedtype Symbol
     associatedtype Sort
     associatedtype Function
     associatedtype Predicate
@@ -17,10 +18,10 @@ protocol SolverContext {
     var isSatisfiable: Bool { get }
     var model: Model? { get }
 
-    func declare(constant: String) -> Term
-    func declare(proposition: String) -> Formula
-    func declare(function: String, arity: Int) -> Function
-    func declare(predicate: String, arity: Int) -> Predicate
+    func declare(constant: Symbol) -> Term
+    func declare(proposition: Symbol) -> Formula
+    func declare(function: Symbol, arity: Int) -> Function
+    func declare(predicate: Symbol, arity: Int) -> Predicate
 
     func apply(function: Function, args: [Term]) -> Term
     func apply(predicate: Predicate, args: [Term]) -> Formula

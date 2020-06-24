@@ -132,4 +132,33 @@ class YicesContextInternalTests: YicesTestCase {
         XCTAssertTrue(context.isSatisfiable)
 
     }
+
+    func testContradiction() {
+        let context = Context()
+        let x = context.declare(proposition: "p")
+        let y = context.declare(proposition: "p")
+        XCTAssertEqual(x,y)
+
+        let not_y = context.negate(formula: y)
+        context.assert(formula: context.formula(x, and: not_y))
+
+        XCTAssertFalse(context.isSatisfiable)
+        XCTAssertNil(context.model)
+    }
+
+    func testIdentities() {
+        let context = Context()
+        let c = context.declare(constant: "c")
+        let d = context.declare(constant: "c")
+        XCTAssertEqual(c, d)
+        let f = context.declare(function: "f", arity: 1)
+        let g = context.declare(function: "f", arity: 1)
+        XCTAssertEqual(f, g)
+        let p = context.declare(predicate: "p", arity: 1)
+        let q = context.declare(predicate: "p", arity: 1)
+        XCTAssertEqual(p, q)
+        let r = context.declare(proposition: "r")
+        let s = context.declare(proposition: "r")
+        XCTAssertEqual(r, s)
+    }
 }

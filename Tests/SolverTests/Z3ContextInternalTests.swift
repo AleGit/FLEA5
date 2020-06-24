@@ -3,7 +3,6 @@ import Base
 @testable import Solver
 
 final class Z3ContextInternalTests: Z3TestCase {
-    typealias Context = Z3.Context
 
     func testDeMorgan() {
         let context = Context()
@@ -132,5 +131,34 @@ final class Z3ContextInternalTests: Z3TestCase {
         context.assert(formula: context.conjunct(formulae: pa, pb, pc, pd, pe))
         XCTAssertTrue(context.isSatisfiable)
 
+    }
+
+    func testContradiction() {
+        let context = Context()
+        let x = context.declare(proposition: "p")
+        let y = context.declare(proposition: "p")
+        XCTAssertEqual(x,y)
+
+        let not_y = context.negate(formula: y)
+        context.assert(formula: context.formula(x, and: not_y))
+
+        XCTAssertFalse(context.isSatisfiable)
+        XCTAssertNil(context.model)
+    }
+
+    func testIdentities() {
+        let context = Context()
+        let c = context.declare(function: "c", arity: 1)
+        let d = context.declare(function: "c", arity: 1)
+        XCTAssertEqual(c, d)
+        let f = context.declare(function: "f", arity: 1)
+        let g = context.declare(function: "f", arity: 1)
+        XCTAssertEqual(f, g)
+        let p = context.declare(function: "p", arity: 1)
+        let q = context.declare(function: "p", arity: 1)
+        XCTAssertEqual(p, q)
+        let r = context.declare(proposition: "r")
+        let s = context.declare(proposition: "r")
+        XCTAssertEqual(r, s)
     }
 }

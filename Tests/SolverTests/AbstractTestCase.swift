@@ -23,11 +23,14 @@ public class AbstractTestCase: XCTestCase {
 }
 
 public class YicesTestCase: AbstractTestCase {
-    static var context : Yices.Context?
+
+    typealias Context = Yices.Context
+
+    static var context : Context?
 
     public override class func setUp() {
         super.setUp()
-        YicesTestCase.context = Yices.Context()
+        YicesTestCase.context = Context()
     }
 
     /// teardown logging once _after_ all tests of a test class
@@ -39,5 +42,7 @@ public class YicesTestCase: AbstractTestCase {
 }
 
 public class Z3TestCase: AbstractTestCase {
+
+    typealias Context = Z3.Context
 
 }
