@@ -39,8 +39,8 @@ public struct Yices {
             }
         }
 
-        lazy var boolTau: Sort = yices_bool_type()
-        lazy var freeTau: Sort = {
+        lazy var boolTau: type_t = yices_bool_type()
+        lazy var freeTau: type_t = {
             let name = "𝛕"
             var tau = yices_get_type_by_name(name)
             if tau == NULL_TYPE {
@@ -50,8 +50,8 @@ public struct Yices {
             return tau
         }()
 
-        lazy var top: Term = yices_true()
-        lazy var bot: Term = yices_false()
+        lazy var top: term_t = yices_true()
+        lazy var bot: term_t = yices_false()
     }
 }
 
@@ -95,7 +95,7 @@ extension Yices.Context {
 
     func declare(predicate: String, arity: Int) -> type_t {
         let domain = [type_t](repeatElement(self.freeTau, count: arity))
-        let tau = declare(type: "p_\(arity)", domain: domain, range: freeTau)
+        let tau = declare(type: "p_\(arity)", domain: domain, range: boolTau)
         return declare(symbol: "\(predicate)_p\(arity)", tau: tau)
     }
 

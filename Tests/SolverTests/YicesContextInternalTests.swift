@@ -4,7 +4,6 @@ import CYices
 @testable import Solver
 
 class YicesContextInternalTests: YicesTestCase {
-    typealias Context = Z3.Context
 
     func testDeMorgan() {
         let context = Context()
@@ -31,11 +30,14 @@ class YicesContextInternalTests: YicesTestCase {
         let a = context.declare(constant: "a")
         let f = context.declare(function: "f", arity: 1)
         let fa = context.apply(function: f, args: [a])
+
         let p = context.declare(predicate: "p", arity: 1)
         let pfa = context.apply(predicate: p, args: [fa])
 
         let not = context.negate(formula: pfa)
         let top = context.formula(pfa, or: not)
+
+        XCTAssertEqual(top, context.top)
 
         context.assert(formula: top)
         XCTAssertTrue(context.isSatisfiable)
@@ -57,6 +59,8 @@ class YicesContextInternalTests: YicesTestCase {
         context.assert(formula: not)
         XCTAssertFalse(context.isSatisfiable)
         XCTAssertNil(context.model)
+
+
     }
 
     func testConjunction() {
@@ -74,6 +78,7 @@ class YicesContextInternalTests: YicesTestCase {
 
         context.assert(formula: context.conjunct(formulae: na,nb,nc))
         XCTAssertFalse(context.isSatisfiable)
+        XCTAssertNil(context.model)
     }
 
     func testDisjunction() {
@@ -103,6 +108,7 @@ class YicesContextInternalTests: YicesTestCase {
 
         context.assert(formula: context.disjunct(formulae: a, nc))
         XCTAssertFalse(context.isSatisfiable)
+        XCTAssertNil(context.model)
     }
 
     func testMultipleDeclarations() {
