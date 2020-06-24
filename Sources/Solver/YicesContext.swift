@@ -44,7 +44,7 @@ public struct Yices {
             var tau = yices_get_type_by_name(name)
             if tau == NULL_TYPE {
                 tau = yices_new_uninterpreted_type()
-                yices_set_term_name(tau, name)
+                yices_set_type_name(tau, name)
             }
             return tau
         }()
@@ -68,6 +68,15 @@ extension Yices.Context {
         return term
     }
 
+    private func declare(type name: String, domain: [type_t], range: type_t) -> type_t {
+        var tau = yices_get_type_by_name(name)
+        if tau == NULL_TYPE {
+            tau = yices_function_type(UInt32(domain.count), domain, range)
+            yices_set_type_name(tau, name)
+        }
+        return tau
+    }
+
 
     func declare(constant: String) -> term_t {
         declare(symbol: constant, tau: self.freeTau)
@@ -78,14 +87,14 @@ extension Yices.Context {
     }
 
     func declare(function: String, arity: Int) -> type_t {
-        let domain = [Term](repeatElement(self.freeTau, count: arity))
-        let tau = yices_function_type(UInt32(arity), domain, self.freeTau)
+        let domain = [Term](repeatElement(freeTau, count: arity))
+        let tau = declare(type: "f_\(arity)", domain: domain, range: freeTau)
         return declare(symbol: "\(function)_f\(arity)", tau: tau)
     }
 
     func declare(predicate: String, arity: Int) -> type_t {
         let domain = [type_t](repeatElement(self.freeTau, count: arity))
-        let tau = yices_function_type(UInt32(arity), domain, self.boolTau)
+        let tau = declare(type: "p_\(arity)", domain: domain, range: freeTau)
         return declare(symbol: "\(predicate)_p\(arity)", tau: tau)
     }
 
