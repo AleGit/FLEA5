@@ -1,6 +1,6 @@
 import CYices
 
-extension Yices {
+extension Yices.Context {
     final class Model: SolverModel {
 
         private var context: Yices.Context

@@ -20,7 +20,8 @@ class YicesContextInternalTests: YicesTestCase {
 
         context.assert(formula: negated)
 
-        XCTAssertNil( Yices.Model(context: context) )
+        XCTAssertFalse(context.isSatisfiable)
+        XCTAssertNil(context.model)
     }
 
     func testPfa() {

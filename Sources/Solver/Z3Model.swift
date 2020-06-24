@@ -1,6 +1,6 @@
 import CZ3Api
 
-extension Z3 {
+extension Z3.Context {
     final class Model: SolverModel {
         private var context: Z3.Context
         private var model: Z3_model

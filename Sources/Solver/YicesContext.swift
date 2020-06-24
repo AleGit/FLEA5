@@ -122,7 +122,7 @@ extension Yices.Context {
         yices_check_context(context, nil) == STATUS_SAT
     }
 
-    var model: Yices.Model? {
-        Yices.Model(context: self)
+    var model: Model? {
+        Model(context: self)
     }
 }

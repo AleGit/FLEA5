@@ -19,7 +19,8 @@ final class Z3ContextInternalTests: Z3TestCase {
 
         context.assert(formula: negated)
 
-        XCTAssertNil(Z3.Model(context: context))
+        XCTAssertFalse(context.isSatisfiable)
+        XCTAssertNil(context.model)
     }
 
     func testPfa() {

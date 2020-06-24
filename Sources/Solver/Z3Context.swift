@@ -93,8 +93,8 @@ extension Z3.Context {
         Z3_solver_check(context, solver) == Z3_L_TRUE
     }
 
-    var model: Z3.Model? {
-        Z3.Model(context: self)
+    var model: Model? {
+        Model(context: self)
 
     }
 }
