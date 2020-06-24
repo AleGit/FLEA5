@@ -93,35 +93,41 @@ extension Yices.Context {
         yices_application(term, UInt32(args.count), args)
     }
 
+}
+
+extension Yices.Context {
+
     func negate(formula: term_t) -> term_t {
         yices_not(formula)
     }
 
-    func formula(_ lhs: term_t, and rhs: term_t) -> term_t {
-        yices_and2(lhs, rhs)
+    func conjunct(formulae: [term_t]) -> term_t {
+        var args = formulae
+        return yices_and(UInt32(args.count), &args)
     }
 
-    func and(args: [term_t]) -> term_t {
-        return bot
-
-    }
-
-    func formula(_ lhs: term_t, or rhs: term_t) -> term_t {
-        yices_or2(lhs, rhs)
+    func disjunct(formulae: [term_t]) -> term_t {
+        var args = formulae
+        return yices_or(UInt32(args.count), &args)
     }
 
     func formula(_ lhs: term_t, iff rhs: term_t) -> term_t {
         yices_iff(lhs, rhs)
     }
 
-    func assert(formula: term_t) {
-        yices_assert_formula(context, formula)
-    }
-
+//    func formula(_ lhs: term_t, or rhs: term_t) -> term_t {
+//        yices_or2(lhs, rhs)
+//    }
+//    func formula(_ lhs: term_t, and rhs: term_t) -> term_t {
+//        yices_and2(lhs, rhs)
+//    }
 }
 
 extension Yices.Context {
 
+    func assert(formula: term_t) {
+        yices_assert_formula(context, formula)
+    }
 
     var isSatisfiable: Bool {
         yices_check_context(context, nil) == STATUS_SAT

@@ -64,39 +64,35 @@ extension Z3.Context {
         let args :[Z3_ast?] = args
         return Z3_mk_app(context, term, UInt32(args.count), args)
     }
+}
+
+extension Z3.Context {
 
     func negate(formula: Z3_ast) -> Z3_ast {
         Z3_mk_not(context, formula)
     }
 
-    func and(formulas: Z3_ast...) -> Z3_ast {
-        and(formulas: formulas)
-    }
-
-    func formula(_ lhs: Z3_ast, and rhs: Z3_ast) -> Z3_ast {
-        and(formulas: [lhs, rhs])
-    }
-
-    func and(formulas: [Z3_ast]) -> Z3_ast {
-        let args: [Z3_ast?] = formulas
+    func conjunct(formulae: [Z3_ast]) -> Z3_ast {
+        let args: [Z3_ast?] = formulae
         return Z3_mk_and(context, UInt32(args.count), args)
     }
 
-    func formula(_ lhs: Z3_ast, or rhs: Z3_ast) -> Z3_ast {
-        Z3_mk_or(context, 2, [lhs, rhs])
+    func disjunct(formulae: [Z3_ast]) -> Z3_ast {
+        let args: [Z3_ast?] = formulae
+        return Z3_mk_or(context, UInt32(args.count), args)
     }
 
     func formula(_ lhs: Z3_ast, iff rhs: Z3_ast) -> Z3_ast {
         Z3_mk_iff(context, lhs, rhs)
     }
 
-    func assert(formula: Term) {
-        Z3_solver_assert(context, solver, formula)
-    }
-
 }
 
 extension Z3.Context {
+
+    func assert(formula: Term) {
+        Z3_solver_assert(context, solver, formula)
+    }
 
     var isSatisfiable: Bool {
         Z3_solver_check(context, solver) == Z3_L_TRUE

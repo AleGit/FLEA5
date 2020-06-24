@@ -4,6 +4,7 @@ protocol SolverContext {
     associatedtype Sort // Tau, Type
     associatedtype Decl //
     associatedtype Term // AST
+    associatedtype Formula
     associatedtype Model
 
     var boolTau : Sort { get }
@@ -25,21 +26,45 @@ protocol SolverContext {
 
     func apply(term: Term, args: [Term]) -> Term
 
-    func negate(formula: Term) -> Term
-    func formula(_ lhs: Term, and rhs: Term) -> Term
-    func formula(_ lhs: Term, or rhs: Term) -> Term
-    func formula(_ lhs: Term, iff rhs: Term) -> Term
+    func negate(formula: Formula) -> Formula
+    func conjunct(formulae: [Formula]) -> Formula
+    func disjunct(formulae: [Formula]) -> Formula
+    func formula(_ lhs: Formula, iff rhs: Formula) -> Formula
 
     func assert(formula: Term)
 }
 
 extension SolverContext {
-//    func conjunction<S: Sequence>(_ s: S) -> Self.Term where S.Element == Self.Term {
-//        let terms = s.map {
-//            $0
-//        }
-//        return conjunction(terms: terms)
-//    }
+    // conjunction shorthands
+
+    func conjunct(formulae: Self.Formula...) -> Formula {
+        conjunct(formulae: formulae)
+    }
+
+    func conjunct<S: Sequence>(_ sequence: S) -> Self.Formula where S.Element == Self.Formula {
+        conjunct(formulae: sequence.map { $0 })
+    }
+
+    func formula(_ lhs: Formula, and rhs: Formula) -> Formula {
+        conjunct(formulae: lhs, rhs)
+    }
+}
+
+extension SolverContext {
+    // disjunction shorthands
+
+    func disjunct(formulae: Self.Formula...) -> Formula {
+        disjunct(formulae: formulae)
+    }
+
+    func disjunct<S: Sequence>(_ sequence: S) -> Self.Formula where S.Element == Self.Formula {
+        disjunct(formulae: sequence.map { $0 })
+    }
+
+    func formula(_ lhs: Formula, or rhs: Formula) -> Formula {
+        disjunct(formulae: lhs, rhs)
+    }
+
 }
 
 protocol SolverModel {
