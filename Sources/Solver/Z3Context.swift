@@ -61,16 +61,25 @@ extension Z3.Context {
     }
 
     func apply(term: Z3_func_decl, args: [Z3_ast]) -> Z3_ast {
-        var args :[Z3_ast?] = args
+        let args :[Z3_ast?] = args
         return Z3_mk_app(context, term, UInt32(args.count), args)
     }
 
-    func negate(term: Z3_ast) -> Z3_ast {
-        Z3_mk_not(context, term)
+    func negate(formula: Z3_ast) -> Z3_ast {
+        Z3_mk_not(context, formula)
+    }
+
+    func and(formulas: Z3_ast...) -> Z3_ast {
+        and(formulas: formulas)
     }
 
     func and(lhs: Z3_ast, rhs: Z3_ast) -> Z3_ast {
-        Z3_mk_and(context, 2, [lhs, rhs])
+        and(formulas: [lhs, rhs])
+    }
+
+    func and(formulas: [Z3_ast]) -> Z3_ast {
+        let args: [Z3_ast?] = formulas
+        return Z3_mk_and(context, UInt32(args.count), args)
     }
 
     func or(lhs: Z3_ast, rhs: Z3_ast) -> Z3_ast {

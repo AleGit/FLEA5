@@ -93,12 +93,17 @@ extension Yices.Context {
         yices_application(term, UInt32(args.count), args)
     }
 
-    func negate(term: term_t) -> term_t {
-        yices_not(term)
+    func negate(formula: term_t) -> term_t {
+        yices_not(formula)
     }
 
     func and(lhs: term_t, rhs: term_t) -> term_t {
         yices_and2(lhs, rhs)
+    }
+
+    func and(args: [term_t]) -> term_t {
+        return bot
+
     }
 
     func or(lhs: term_t, rhs: term_t) -> term_t {
