@@ -36,15 +36,16 @@ class YicesContextInternalTests: YicesTestCase {
         let top = context.or(lhs: pfa, rhs: not)
 
         context.assert(formula: top)
-        var model: Yices.Model! = Yices.Model(context: context)
-        XCTAssertNotNil(model)
+        XCTAssertTrue(context.isSatisfiable)
+        var model = context.model!
 
         XCTAssertTrue(model.satisfies(formula: top) == true)
         XCTAssertTrue(model.satisfies(formula: pfa) == nil)
         XCTAssertTrue(model.satisfies(formula: not) == nil)
 
         context.assert(formula: pfa)
-        model = Yices.Model(context: context)
+        XCTAssertTrue(context.isSatisfiable)
+        model = context.model!
         XCTAssertNotNil(model)
 
         XCTAssertTrue(model.satisfies(formula: top) == true)
@@ -52,7 +53,7 @@ class YicesContextInternalTests: YicesTestCase {
         XCTAssertTrue(model.satisfies(formula: not) == false)
 
         context.assert(formula: not)
-        model = Yices.Model(context: context)
-        XCTAssertNil(model)
+        XCTAssertFalse(context.isSatisfiable)
+        XCTAssertNil(context.model)
     }
 }

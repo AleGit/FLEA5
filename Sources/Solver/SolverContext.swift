@@ -4,12 +4,16 @@ protocol SolverContext {
     associatedtype Sort // Tau, Type
     associatedtype Decl //
     associatedtype Term // AST
+    associatedtype Model
 
     var boolTau : Sort { get }
     var freeTau : Sort { get }
 
     var bot: Term { get }
     var top: Term { get }
+
+    var isSatisfiable: Bool { get }
+    var model: Model? { get }
 
     func declare(constant: String) -> Term
 

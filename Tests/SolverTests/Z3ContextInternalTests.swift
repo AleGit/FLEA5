@@ -35,15 +35,16 @@ final class Z3ContextInternalTests: Z3TestCase {
         let top = context.or(lhs: pfa, rhs: not)
 
         context.assert(formula: top)
-        var model: Z3.Model! = Z3.Model(context: context)
-        XCTAssertNotNil(model)
+        XCTAssertTrue(context.isSatisfiable)
+        var model = context.model!
 
         XCTAssertTrue(model.satisfies(formula: top) == true)
         XCTAssertTrue(model.satisfies(formula: pfa) == nil)
         XCTAssertTrue(model.satisfies(formula: not) == nil)
 
         context.assert(formula: pfa)
-        model = Z3.Model(context: context)
+        XCTAssertTrue(context.isSatisfiable)
+        model = context.model!
         XCTAssertNotNil(model)
 
         XCTAssertTrue(model.satisfies(formula: top) == true)
@@ -51,8 +52,8 @@ final class Z3ContextInternalTests: Z3TestCase {
         XCTAssertTrue(model.satisfies(formula: not) == false)
 
         context.assert(formula: not)
-        model = Z3.Model(context: context)
-        XCTAssertNil(model)
+        XCTAssertFalse(context.isSatisfiable)
+        XCTAssertNil(context.model)
 
 
     }

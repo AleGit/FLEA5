@@ -86,3 +86,15 @@ extension Z3.Context {
     }
 
 }
+
+extension Z3.Context {
+
+    var isSatisfiable: Bool {
+        Z3_solver_check(context, solver) == Z3_L_TRUE
+    }
+
+    var model: Z3.Model? {
+        Z3.Model(context: self)
+
+    }
+}

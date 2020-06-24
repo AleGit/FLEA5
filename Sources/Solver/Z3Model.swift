@@ -1,12 +1,12 @@
 import CZ3Api
 
-extension Z3{
+extension Z3 {
     final class Model: SolverModel {
         private var context: Z3.Context
         private var model: Z3_model
 
         init?(context: Z3.Context) {
-            guard Z3_solver_check(context.context, context.solver) == Z3_L_TRUE,
+            guard context.isSatisfiable,
                   let model = Z3_solver_get_model(context.context, context.solver) else {
                 return nil
             }

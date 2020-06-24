@@ -7,7 +7,7 @@ extension Yices {
         private var model: OpaquePointer
 
         init?(context: Yices.Context) {
-            guard yices_check_context(context.context, nil) == STATUS_SAT,
+            guard context.isSatisfiable,
                   let model = yices_get_model(context.context, 0)
                     else {
                 return nil

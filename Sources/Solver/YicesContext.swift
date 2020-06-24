@@ -114,3 +114,15 @@ extension Yices.Context {
     }
 
 }
+
+extension Yices.Context {
+
+
+    var isSatisfiable: Bool {
+        yices_check_context(context, nil) == STATUS_SAT
+    }
+
+    var model: Yices.Model? {
+        Yices.Model(context: self)
+    }
+}
