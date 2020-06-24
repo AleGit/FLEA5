@@ -24,7 +24,14 @@ extension Z3{
             guard Z3_model_eval(context.context, model, formula, false, &result) else {
                 return nil
             }
-            return result == context.top
+            switch result {
+            case context.top:
+                return true
+            case context.bot:
+                return false
+            default:
+                return nil // partial model
+            }
         }
     }
 }

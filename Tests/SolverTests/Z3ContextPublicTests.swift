@@ -2,7 +2,7 @@ import Base
 import Solver
 import XCTest
 
-class Z3ContextPublicTests {
+class Z3ContextPublicTests : Z3TestCase{
 
     func testVersion() {
         let expected = "Z3 • 4.8.8.0"

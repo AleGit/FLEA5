@@ -16,7 +16,7 @@ public struct Z3 {
                 Z3_del_config(cfg)
             }
             context = Z3_mk_context(cfg)
-            solver = Z3_mk_solver(cfg)
+            solver = Z3_mk_solver(context)
             Z3_solver_inc_ref(context, solver)
         }
 
@@ -38,13 +38,13 @@ public struct Z3 {
 
 extension Z3.Context {
     func declare(constant: String) -> Z3_ast {
-        let symbol = Z3_mk_string_symbol(self.context, constant)
-        return Z3_mk_const(self.context, symbol, self.freeTau)
+        let symbol = Z3_mk_string_symbol(context, constant)
+        return Z3_mk_const(context, symbol, freeTau)
     }
 
     func declare(proposition: String) -> Z3_ast {
         let symbol = Z3_mk_string_symbol(context, proposition)
-        return Z3_mk_const(context, symbol, freeTau)
+        return Z3_mk_const(context, symbol, boolTau)
     }
 
     func declare(function: String, arity: Int) -> Z3_func_decl {
