@@ -210,4 +210,48 @@ final class Z3ContextInternalTests: Z3TestCase {
         XCTAssertFalse(context.isSatisfiable, "reflexivity failure")
 
     }
+
+    func testFunctionCongruence() {
+        let context = Context()
+        let a = context.declare(constant: "a")
+        let b = context.declare(constant: "b")
+
+        let f = context.declare(function: "f", arity: 1)
+        let fa = context.apply(function: f, args: [a])
+        let fb = context.apply(function: f, args: [b])
+        let ab = context.equate(lhs: a, rhs: b)
+
+        context.assert(formula: ab)
+        XCTAssertTrue(context.isSatisfiable, "consistency failure")
+
+        let conjecture = context.equate(lhs: fa, rhs: fb)
+        let negated = context.negate(formula: conjecture)
+
+        context.assert(formula: negated)
+        XCTAssertFalse(context.isSatisfiable, "congruence failure")
+    }
+
+    func testPredicateCongruence() {
+        let context = Context()
+        let a = context.declare(constant: "a")
+        let b = context.declare(constant: "b")
+
+        let f = context.declare(function: "f", arity: 1)
+        let p = context.declare(predicate: "p", arity: 2)
+        let fa = context.apply(function: f, args: [a])
+        let fb = context.apply(function: f, args: [b])
+        let ab = context.equate(lhs: a, rhs: b)
+
+        let pa = context.apply(predicate: p, args: [fa, b])
+        let pb = context.apply(predicate: p, args: [fb, a])
+
+        context.assert(formula: ab)
+        XCTAssertTrue(context.isSatisfiable, "consistency failure")
+
+        let conjecture = context.formula(pa, iff: pb)
+        let negated = context.negate(formula: conjecture)
+
+        context.assert(formula: negated)
+        XCTAssertFalse(context.isSatisfiable, "congruence failure")
+    }
 }
