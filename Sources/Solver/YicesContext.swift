@@ -8,7 +8,7 @@ public struct Yices {
         let context: OpaquePointer
 
         typealias Sort = type_t
-        typealias Decl = type_t
+        typealias Func = type_t
         typealias Term = term_t
 
         public init() {
@@ -57,15 +57,15 @@ public struct Yices {
 extension Yices.Context {
 
     private func declare(symbol: String, tau: Sort) -> term_t {
-        var c = yices_get_term_by_name(symbol)
-        if c == NULL_TERM {
-            c = yices_new_uninterpreted_term(tau)
-            yices_set_term_name(c, symbol)
+        var term = yices_get_term_by_name(symbol)
+        if term == NULL_TERM {
+            term = yices_new_uninterpreted_term(tau)
+            yices_set_term_name(term, symbol)
         }
         else {
-            Swift.assert(tau == yices_type_of_term(c))
+            Swift.assert(tau == yices_type_of_term(term))
         }
-        return c
+        return term
     }
 
 
@@ -74,23 +74,31 @@ extension Yices.Context {
     }
 
     func declare(proposition: String) -> term_t {
-        declare(symbol: proposition, tau: self.boolTau)
+        declare(symbol: "\(proposition)_p", tau: self.boolTau)
     }
 
     func declare(function: String, arity: Int) -> type_t {
         let domain = [Term](repeatElement(self.freeTau, count: arity))
         let tau = yices_function_type(UInt32(arity), domain, self.freeTau)
-        return declare(symbol: function, tau: tau)
+        return declare(symbol: "\(function)_f\(arity)", tau: tau)
     }
 
     func declare(predicate: String, arity: Int) -> type_t {
         let domain = [type_t](repeatElement(self.freeTau, count: arity))
         let tau = yices_function_type(UInt32(arity), domain, self.boolTau)
-        return declare(symbol: predicate, tau: tau)
+        return declare(symbol: "\(predicate)_p\(arity)", tau: tau)
     }
 
-    func apply(term: term_t, args: [term_t]) -> term_t {
-        yices_application(term, UInt32(args.count), args)
+    private func apply(_ fp: term_t, args: [term_t]) -> term_t {
+        yices_application(fp, UInt32(args.count), args)
+    }
+
+    func apply(function: term_t, args: [term_t]) -> term_t {
+        yices_application(function, UInt32(args.count), args)
+    }
+
+    func apply(predicate: term_t, args: [term_t]) -> term_t {
+        yices_application(predicate, UInt32(args.count), args)
     }
 
 }
@@ -114,13 +122,6 @@ extension Yices.Context {
     func formula(_ lhs: term_t, iff rhs: term_t) -> term_t {
         yices_iff(lhs, rhs)
     }
-
-//    func formula(_ lhs: term_t, or rhs: term_t) -> term_t {
-//        yices_or2(lhs, rhs)
-//    }
-//    func formula(_ lhs: term_t, and rhs: term_t) -> term_t {
-//        yices_and2(lhs, rhs)
-//    }
 }
 
 extension Yices.Context {

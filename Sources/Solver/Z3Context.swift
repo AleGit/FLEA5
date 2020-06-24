@@ -6,10 +6,6 @@ public struct Z3 {
         let context: Z3_context
         let solver: Z3_solver
 
-        typealias Sort = Z3_sort
-        typealias Decl = Z3_func_decl
-        typealias Term = Z3_ast
-
         public init() {
             let cfg = Z3_mk_config()
             defer {
@@ -25,14 +21,14 @@ public struct Z3 {
             Z3_del_context(context)
         }
 
-        lazy var boolTau: Sort = Z3_mk_bool_sort(context)
-        lazy var freeTau: Sort = {
+        lazy var boolTau: Z3_sort = Z3_mk_bool_sort(context)
+        lazy var freeTau: Z3_sort = {
             let symbol = Z3_mk_string_symbol(context, "𝛕")
             return Z3_mk_uninterpreted_sort(context, symbol)
         }()
 
-        lazy var top: Term = Z3_mk_true(context)
-        lazy var bot: Term = Z3_mk_false(context)
+        lazy var top: Z3_ast = Z3_mk_true(context)
+        lazy var bot: Z3_ast = Z3_mk_false(context)
     }
 }
 
@@ -60,9 +56,17 @@ extension Z3.Context {
 
     }
 
-    func apply(term: Z3_func_decl, args: [Z3_ast]) -> Z3_ast {
+    private func apply(_ fp: Z3_func_decl, args: [Z3_ast]) -> Z3_ast {
         let args :[Z3_ast?] = args
-        return Z3_mk_app(context, term, UInt32(args.count), args)
+        return Z3_mk_app(context, fp, UInt32(args.count), args)
+    }
+
+    func apply(function: Z3_func_decl, args: [Z3_ast]) -> Z3_ast {
+        apply(function, args: args)
+    }
+
+    func apply(predicate: Z3_func_decl, args: [Z3_ast]) -> Z3_ast {
+        apply(predicate, args: args)
     }
 }
 
@@ -90,7 +94,7 @@ extension Z3.Context {
 
 extension Z3.Context {
 
-    func assert(formula: Term) {
+    func assert(formula: Z3_ast) {
         Z3_solver_assert(context, solver, formula)
     }
 

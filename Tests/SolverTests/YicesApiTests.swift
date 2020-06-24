@@ -95,24 +95,4 @@ class YicesApiTests: YicesTestCase {
         model = yices_get_model(ctx, 1)
         XCTAssertNil(model) // no model
     }
-
-
-
-    func testConjunction() {
-        let ctx = yices_new_context(nil)
-        defer { yices_free_context(ctx) }
-
-        let bool_sort = yices_bool_type()
-
-        let x = yices_new_uninterpreted_term(bool_sort)
-        let y = yices_new_uninterpreted_term(bool_sort)
-        let z = yices_new_uninterpreted_term(bool_sort)
-        yices_set_term_name(x, "x")
-        yices_set_term_name(y, "y")
-        yices_set_term_name(z, "z")
-
-        var args = [x,y,z]
-        let conj = yices_and(3, &args)
-
-    }
 }

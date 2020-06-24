@@ -1,30 +1,29 @@
 import Tptp
 
 protocol SolverContext {
-    associatedtype Sort // Tau, Type
-    associatedtype Decl //
-    associatedtype Term // AST
+    associatedtype Sort
+    associatedtype Function
+    associatedtype Predicate
+    associatedtype Term
     associatedtype Formula
     associatedtype Model
 
     var boolTau : Sort { get }
     var freeTau : Sort { get }
 
-    var bot: Term { get }
-    var top: Term { get }
+    var bot: Formula { get }
+    var top: Formula { get }
 
     var isSatisfiable: Bool { get }
     var model: Model? { get }
 
     func declare(constant: String) -> Term
+    func declare(proposition: String) -> Formula
+    func declare(function: String, arity: Int) -> Function
+    func declare(predicate: String, arity: Int) -> Predicate
 
-    func declare(proposition: String) -> Term
-
-    func declare(function: String, arity: Int) -> Decl
-
-    func declare(predicate: String, arity: Int) -> Decl
-
-    func apply(term: Term, args: [Term]) -> Term
+    func apply(function: Function, args: [Term]) -> Term
+    func apply(predicate: Predicate, args: [Term]) -> Formula
 
     func negate(formula: Formula) -> Formula
     func conjunct(formulae: [Formula]) -> Formula
@@ -37,11 +36,11 @@ protocol SolverContext {
 extension SolverContext {
     // conjunction shorthands
 
-    func conjunct(formulae: Self.Formula...) -> Formula {
+    func conjunct(formulae: Formula...) -> Formula {
         conjunct(formulae: formulae)
     }
 
-    func conjunct<S: Sequence>(_ sequence: S) -> Self.Formula where S.Element == Self.Formula {
+    func conjunct<S: Sequence>(_ sequence: S) -> Formula where S.Element == Formula {
         conjunct(formulae: sequence.map { $0 })
     }
 
@@ -53,11 +52,11 @@ extension SolverContext {
 extension SolverContext {
     // disjunction shorthands
 
-    func disjunct(formulae: Self.Formula...) -> Formula {
+    func disjunct(formulae: Formula...) -> Formula {
         disjunct(formulae: formulae)
     }
 
-    func disjunct<S: Sequence>(_ sequence: S) -> Self.Formula where S.Element == Self.Formula {
+    func disjunct<S: Sequence>(_ sequence: S) -> Formula where S.Element == Formula {
         disjunct(formulae: sequence.map { $0 })
     }
 

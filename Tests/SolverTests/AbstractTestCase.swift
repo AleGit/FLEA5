@@ -25,6 +25,8 @@ public class AbstractTestCase: XCTestCase {
 public class YicesTestCase: AbstractTestCase {
     static var context : Yices.Context?
 
+    func createContext() -> Yices.Context { Yices.Context() }
+
     public override class func setUp() {
         super.setUp()
         YicesTestCase.context = Yices.Context()
@@ -38,4 +40,7 @@ public class YicesTestCase: AbstractTestCase {
 
 }
 
-public class Z3TestCase: AbstractTestCase { }
+public class Z3TestCase: AbstractTestCase {
+    func createContext() -> Z3.Context { Z3.Context() }
+
+}

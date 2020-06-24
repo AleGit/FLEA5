@@ -28,9 +28,9 @@ final class Z3ContextInternalTests: Z3TestCase {
 
         let a = context.declare(constant: "a")
         let f = context.declare(function: "f", arity: 1)
-        let fa = context.apply(term: f, args: [a])
+        let fa = context.apply(function: f, args: [a])
         let p = context.declare(predicate: "p", arity: 1)
-        let pfa = context.apply(term: p, args: [fa])
+        let pfa = context.apply(predicate: p, args: [fa])
 
         let not = context.negate(formula: pfa)
         let top = context.formula(pfa, or: not)
@@ -57,5 +57,51 @@ final class Z3ContextInternalTests: Z3TestCase {
         XCTAssertNil(context.model)
 
 
+    }
+
+    func testConjunction() {
+        let context = createContext()
+        let a = context.declare(proposition: "a")
+        let b = context.declare(proposition: "b")
+        let c = context.declare(proposition: "c")
+
+        let na = context.negate(formula: a)
+        let nb = context.negate(formula: b)
+        let nc = context.negate(formula: c)
+
+        context.assert(formula: context.conjunct(formulae: a,b,c))
+        XCTAssertTrue(context.isSatisfiable)
+
+        context.assert(formula: context.conjunct(formulae: na,nb,nc))
+        XCTAssertFalse(context.isSatisfiable)
+    }
+
+    func testDisjunction() {
+        let context = createContext()
+        let a = context.declare(proposition: "a")
+        let b = context.declare(proposition: "b")
+        let c = context.declare(proposition: "c")
+
+        let na = context.negate(formula: a)
+        let nb = context.negate(formula: b)
+        let nc = context.negate(formula: c)
+
+        context.assert(formula: context.disjunct(formulae: a,b,c))
+        XCTAssertTrue(context.isSatisfiable)
+
+        context.assert(formula:context.disjunct(formulae: na,nb,nc))
+        XCTAssertTrue(context.isSatisfiable)
+
+        context.assert(formula: context.disjunct(formulae: nb, c))
+        XCTAssertTrue(context.isSatisfiable)
+
+        context.assert(formula: context.disjunct(formulae: na, c))
+        XCTAssertTrue(context.isSatisfiable)
+
+        context.assert(formula: context.disjunct(formulae: b, nc))
+        XCTAssertTrue(context.isSatisfiable)
+
+        context.assert(formula: context.disjunct(formulae: a, nc))
+        XCTAssertFalse(context.isSatisfiable)
     }
 }
