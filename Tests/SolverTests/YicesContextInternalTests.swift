@@ -228,7 +228,7 @@ class YicesContextInternalTests: YicesTestCase {
         let negated = context.negate(formula: conjecture)
 
         context.assert(formula: negated)
-        XCTAssertFalse(context.isSatisfiable, "congruence failure")
+        XCTAssertFalse(context.isSatisfiable, "function congruence failure")
     }
 
     func testPredicateCongruence() {
@@ -252,6 +252,6 @@ class YicesContextInternalTests: YicesTestCase {
         let negated = context.negate(formula: conjecture)
 
         context.assert(formula: negated)
-        XCTAssertFalse(context.isSatisfiable, "congruence failure")
+        XCTAssertFalse(context.isSatisfiable, "predicate congruence failure")
     }
 }

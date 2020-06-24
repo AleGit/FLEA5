@@ -228,7 +228,7 @@ final class Z3ContextInternalTests: Z3TestCase {
         let negated = context.negate(formula: conjecture)
 
         context.assert(formula: negated)
-        XCTAssertFalse(context.isSatisfiable, "congruence failure")
+        XCTAssertFalse(context.isSatisfiable, "function congruence failure")
     }
 
     func testPredicateCongruence() {
@@ -252,6 +252,6 @@ final class Z3ContextInternalTests: Z3TestCase {
         let negated = context.negate(formula: conjecture)
 
         context.assert(formula: negated)
-        XCTAssertFalse(context.isSatisfiable, "congruence failure")
+        XCTAssertFalse(context.isSatisfiable, "predicate congruence failure")
     }
 }
