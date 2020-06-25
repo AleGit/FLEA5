@@ -46,7 +46,7 @@ class MultisetTests : ATestCase {
         }
         XCTAssertEqual(sum2, multiSet.count)
 
-        for (index, occurs) in counts.enumerated() {
+        for (index, _) in counts.enumerated() {
             multiSet.removeAllOf(index)
             XCTAssertEqual(0, multiSet.count(index))
         }
@@ -55,7 +55,44 @@ class MultisetTests : ATestCase {
 }
 
 extension MultisetTests {
-    func testInitWithTuples() {
+    func testInitWithSequence() {
+        let sequence = Utile.Sequence(
+                first: 1,
+                step: { s in
+                    s < 10 ? s+1 : nil
+                }) { s in s % 3 + 2}
+        let multiSet = MultiSet(sequence)
+
+        XCTAssertEqual(0, multiSet.count(1))
+        XCTAssertEqual(3, multiSet.count(2)) //    3, 6, 9  -> 2
+        XCTAssertEqual(4, multiSet.count(3)) // 1, 4, 7, 10 -> 4
+        XCTAssertEqual(3, multiSet.count(4)) // 2, 5, 8     -> 5
+        XCTAssertEqual(0, multiSet.count(5))
+    }
+
+    func fac(n: Int) -> Int {
+        guard n > 1 else { return 1 }
+        let range = 2...n
+        return range.reduce(1) { $0 * $1 }
+    }
+
+    func testInitWithRandomSequence() {
+        let range = 1...10
+        let last = 50
+        let sequence = Utile.Sequence(
+                first: 1,
+                step: { s in
+                    s < last ? s + 1 : nil
+                }) { _ in Int.random(in: range) }
+        let multiSet = MultiSet(sequence)
+
+        XCTAssertEqual(0, multiSet.count(0))
+        XCTAssertEqual(0, multiSet.count(11))
+        XCTAssertEqual(last, multiSet.count)
+        XCTAssertEqual(10, multiSet.distinctCount, "bad luck!")
+    }
+
+    func testInitWithKeyValuePairs() {
         let d = [("a", 20), ("b", 13), ("c",254), ("d", 1)]
         let multiSet = MultiSet(d)
         XCTAssertEqual(20, multiSet.count("a"))
@@ -103,7 +140,7 @@ extension MultisetTests {
 
         var elements = [Int]()
         for (index, occurs) in counts.enumerated() {
-            for i in 0..<occurs {
+            for _ in 0..<occurs {
                 elements.append(index)
             }
         }
