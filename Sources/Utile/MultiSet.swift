@@ -28,27 +28,27 @@ public struct MultiSet<T: Hashable> {
 
     /// Returns `true` if and only if `count == 0`.
     public var isEmpty: Bool {
-        return count == 0
+        count == 0
     }
 
     /// Number of distinct elements stored in the multiset.
     public var distinctCount: Int {
-        return members.count
+         members.count
     }
 
     /// A sequence containing the multiset's distinct elements.
     public var distinctElements: AnySequence<T> {
-        return AnySequence(members.keys)
+         AnySequence(members.keys)
     }
 
     /// Returns `true` if the multiset contains the given element.
     public func contains(_ element: T) -> Bool {
-        return members[element] != nil
+         members[element] != nil
     }
 
     /// Returns the number of occurrences  of an element in the multiset.
     public func count(_ element: T) -> Int {
-        return members[element] ?? 0
+         members[element] ?? 0
     }
 
     // MARK: Adding and Removing Elements
@@ -60,7 +60,7 @@ public struct MultiSet<T: Hashable> {
 
     /// Inserts a number of occurrences of an element into the multiset.
     public mutating func insert(_ element: T, occurrences: Int) {
-        precondition(occurrences >= 1, "Invalid number of occurrences")
+        guard occurrences > 0 else { return }
         let previousNumber = members[element] ?? 0
         members[element] = previousNumber + occurrences
         count += occurrences
@@ -75,16 +75,20 @@ public struct MultiSet<T: Hashable> {
     /// If the multiset contains fewer than this number of occurrences to begin with,
     /// all occurrences will be removed.
     public mutating func remove(_ element: T, occurrences: Int) {
-        precondition(occurrences >= 1, "Invalid number of occurrences")
-        if let currentOccurrences = members[element] {
-            let nRemoved = [currentOccurrences, occurrences].min()!
-            count -= nRemoved
-            let newOcurrencies = currentOccurrences - nRemoved
-            if newOcurrencies == 0 {
-                members.removeValue(forKey: element)
-            } else {
-                members[element] = newOcurrencies
-            }
+        guard let currentOccurrences = members[element], occurrences > 0 else {
+            // remove nothing
+            return
+        }
+
+        if occurrences >= currentOccurrences {
+            // remove all
+            count -= currentOccurrences
+            members.removeValue(forKey: element)
+        }
+        else {
+            // remove some, but not all
+            count -= occurrences
+            members[element] = currentOccurrences - occurrences
         }
     }
 
