@@ -12,12 +12,25 @@ public struct MultiSet<T: Hashable> {
     // MARK: Creating a Multiset
 
     /// Constructs an empty multiset.
-    public init() {}
+    public init() {
+    }
 
     /// Constructs a multiset from a sequence, such as an array.
     public init<S: Swift.Sequence>(_ elements: S) where S.Iterator.Element == T {
         for e in elements {
             insert(e)
+        }
+    }
+
+    public init<S: Swift.Sequence>(_ keyValuePairs: S) where S.Iterator.Element == (T, Int) {
+        for (key, value) in keyValuePairs {
+            insert(key, occurrences: value)
+        }
+    }
+
+    public init(_ dictionary: Dictionary<T, Int>) {
+        for (key, value) in dictionary {
+            insert(key, occurrences: value)
         }
     }
 
@@ -33,22 +46,22 @@ public struct MultiSet<T: Hashable> {
 
     /// Number of distinct elements stored in the multiset.
     public var distinctCount: Int {
-         members.count
+        members.count
     }
 
     /// A sequence containing the multiset's distinct elements.
     public var distinctElements: AnySequence<T> {
-         AnySequence(members.keys)
+        AnySequence(members.keys)
     }
 
     /// Returns `true` if the multiset contains the given element.
     public func contains(_ element: T) -> Bool {
-         members[element] != nil
+        members[element] != nil
     }
 
     /// Returns the number of occurrences  of an element in the multiset.
     public func count(_ element: T) -> Int {
-         members[element] ?? 0
+        members[element] ?? 0
     }
 
     // MARK: Adding and Removing Elements
@@ -60,7 +73,9 @@ public struct MultiSet<T: Hashable> {
 
     /// Inserts a number of occurrences of an element into the multiset.
     public mutating func insert(_ element: T, occurrences: Int) {
-        guard occurrences > 0 else { return }
+        guard occurrences > 0 else {
+            return
+        }
         let previousNumber = members[element] ?? 0
         members[element] = previousNumber + occurrences
         count += occurrences
@@ -84,8 +99,7 @@ public struct MultiSet<T: Hashable> {
             // remove all
             count -= currentOccurrences
             members.removeValue(forKey: element)
-        }
-        else {
+        } else {
             // remove some, but not all
             count -= occurrences
             members[element] = currentOccurrences - occurrences
@@ -94,8 +108,7 @@ public struct MultiSet<T: Hashable> {
 
     /// Removes all occurrences of an element from the multiset, if present.
     public mutating func removeAllOf(_ element: T) {
-        let ocurrences = count(element)
-        return remove(element, occurrences: ocurrences)
+        remove(element, occurrences: count(element))
     }
 
     /// Removes all the elements from the multiset, and by default
@@ -145,7 +158,9 @@ extension MultiSet: CustomStringConvertible {
     /// A string containing a suitable textual
     /// representation of the multiset.
     public var description: String {
-        return "[" + map { "\($0)" }.joined(separator: ", ") + "]"
+        return "[" + map {
+            "\($0)"
+        }.joined(separator: ", ") + "]"
     }
 }
 
@@ -158,6 +173,20 @@ extension MultiSet: ExpressibleByArrayLiteral {
     public init(arrayLiteral elements: T...) {
         self.init(elements)
     }
+}
+
+extension MultiSet: ExpressibleByDictionaryLiteral {
+
+    // MARK: ExpressibleByDictionaryLiteral Protocol Conformance
+
+    public init(dictionaryLiteral elements: (T,Int)...) {
+        self.init()
+        for (element, count) in elements {
+            self.insert(element, occurrences: count)
+        }
+    }
+
+
 }
 
 extension MultiSet: Hashable {
@@ -176,13 +205,8 @@ extension MultiSet: Hashable {
 
 /// Returns `true` if and only if the multisets contain the same number of occurrences per element.
 public func ==<T>(lhs: MultiSet<T>, rhs: MultiSet<T>) -> Bool {
-    if lhs.count != rhs.count || lhs.distinctCount != rhs.distinctCount {
+    guard lhs.count == rhs.count else {
         return false
     }
-    for element in lhs {
-        if lhs.count(element) != rhs.count(element) {
-            return false
-        }
-    }
-    return true
+    return lhs.members == rhs.members
 }
