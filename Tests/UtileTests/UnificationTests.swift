@@ -2,6 +2,7 @@ import XCTest
 @testable import Utile
 
 class UnificationTests : ATestCase {
+    typealias Σ = [Node:Node]
     func testBasics() {
         let a = Node.constant("a")
         let b = Node.constant("b")
@@ -9,30 +10,26 @@ class UnificationTests : ATestCase {
         let fax = Node.function("f", nodes: [a, x])
         let fxa = Node.function("f", nodes: [x, a])
         let fxx = Node.function("f", nodes: [x, x])
+        let gxa = Node.function("g", nodes: [x, a])
 
-        let aa : Dictionary<Node,Node>? = a =?= a
-        XCTAssertNotNil(aa)
-        XCTAssertEqual(0, aa?.count)
 
-        let ab : Dictionary<Node,Node>? = a =?= b
-        let ba : Dictionary<Node,Node>? = b =?= a
-        XCTAssertNil(ab)
-        XCTAssertNil(ba)
+        XCTAssertEqual(Σ(), a =?= a)
 
-        let ax : Dictionary<Node,Node>? = a =?= x
-        let xa : Dictionary<Node,Node>? = x =?= a
-        XCTAssertNotNil(ax)
-        XCTAssertNotNil(xa)
-        XCTAssertEqual(ax, xa)
+        XCTAssertNil(a =?= b as Σ?)
+        XCTAssertNil(b =?= a as Σ?)
 
-        let σ = [ x:a ]
-        XCTAssertEqual(σ, fax =?= fxx)
-        XCTAssertEqual(σ, fax =?= fxa)
+        XCTAssertEqual([x:a], a =?= x)
+        XCTAssertEqual([x:a], a =?= x)
 
-        XCTAssertEqual(σ, fxx =?= fax)
-        XCTAssertEqual(σ, fxx =?= fxa)
+        XCTAssertEqual([ x:a ], fax =?= fxx)
+        XCTAssertEqual([ x:a ], fax =?= fxa)
 
-        XCTAssertEqual(σ, fxa =?= fax)
-        XCTAssertEqual(σ, fxa =?= fxx)
+        XCTAssertEqual([ x:a ], fxx =?= fax)
+        XCTAssertEqual([ x:a ], fxx =?= fxa)
+
+        XCTAssertEqual([ x:a ], fxa =?= fax)
+        XCTAssertEqual([ x:a ], fxa =?= fxx)
+
+        XCTAssertNil( fxa =?= gxa as Σ? )
     }
 }

@@ -1,7 +1,7 @@
 import Base
 
 /// Construct unifier of left-hand side and right-hand side.
-infix operator =?= // : UnificationPrecedence
+infix operator =?= : AdditionPrecedence
 
 /// 'lhs =?= rhs' constructs most common unifier mgu(lhs,rhs)
 /// iff terms lhs and rhs are unifiable.
