@@ -7,29 +7,44 @@ class UnificationTests : ATestCase {
         let a = Node.constant("a")
         let b = Node.constant("b")
         let x = Node.variable("x")
+        let fa = Node.function("f", nodes: [a])
+        let fb = Node.function("f", nodes: [b])
+        let fx = Node.function("f", nodes: [x])
+        let fab = Node.function("f", nodes: [a, b])
         let fax = Node.function("f", nodes: [a, x])
         let fxa = Node.function("f", nodes: [x, a])
         let fxx = Node.function("f", nodes: [x, x])
         let gxa = Node.function("g", nodes: [x, a])
 
+        // trivial cases
+        for t in [a,b,x,fa,fb,fx, fax, fxa, fxx, gxa, fab ] {
+            XCTAssertEqual(Σ(), t =?= t)
+        }
 
-        XCTAssertEqual(Σ(), a =?= a)
+        // simple cases
 
-        XCTAssertNil(a =?= b as Σ?)
-        XCTAssertNil(b =?= a as Σ?)
+        for (lhs, rhs) in [(a,x), (fax, fxx), (fxx, fxa), (fxa, fax) ] {
+            let e = [x:a]
+            XCTAssertEqual(e, lhs =?= rhs, "\(lhs) =?= \(rhs)")
+            XCTAssertEqual(e, rhs =?= lhs, "\(rhs) =?= \(lhs)")
+        }
 
-        XCTAssertEqual([x:a], a =?= x)
-        XCTAssertEqual([x:a], a =?= x)
+        for (lhs, rhs) in [(x, fa)] {
+            let e = [x:fa]
+            XCTAssertEqual(e, lhs =?= rhs, "\(lhs) =?= \(rhs)")
+            XCTAssertEqual(e, rhs =?= lhs, "\(rhs) =?= \(lhs)")
+        }
 
-        XCTAssertEqual([ x:a ], fax =?= fxx)
-        XCTAssertEqual([ x:a ], fax =?= fxa)
+        // not unifiable
 
-        XCTAssertEqual([ x:a ], fxx =?= fax)
-        XCTAssertEqual([ x:a ], fxx =?= fxa)
+        for (lhs, rhs) in [  (a, b),
+                             (x, fx), (x, fax),
+                             (fa,fb), (fxa, gxa),
+        ] {
+            let σ = lhs =?= rhs as Σ?
+            XCTAssertNil(σ, "\(lhs) =?= \(rhs)")
+            XCTAssertEqual(σ, rhs =?= lhs)
 
-        XCTAssertEqual([ x:a ], fxa =?= fax)
-        XCTAssertEqual([ x:a ], fxa =?= fxx)
-
-        XCTAssertNil( fxa =?= gxa as Σ? )
+        }
     }
 }
