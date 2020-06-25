@@ -2,49 +2,28 @@ import XCTest
 @testable import Utile
 
 
-class MultisetTests : ATestCase {
-
-    private func multiset(counts: [Int]) -> MultiSet<Int> {
-        var multiSet = MultiSet<Int>()
-        var counter = 0
-        for (index, count) in counts.enumerated() {
-            counter += count
-            multiSet.insert(index, occurrences: count)
-            XCTAssertEqual(count, multiSet.count(index))
-        }
-        XCTAssertEqual(counter, multiSet.count)
-        return multiSet
-
-    }
+class MultiSetTests: ATestCase {
 
     func testBasics() {
 
-        let counts = [4, 7, 2, 200, 54, 2, 0, 13, 300, 1]
-        let sum = counts.reduce(0) { (a, b) in
-            a + b
-        }
+        let counts = [(0,4), (1,7), (2,2), (3,200), (4,54), (5,2), (6,0), (7,13), (8,300), (9,1)]
 
-        var multiSet = multiset(counts: counts)
-        XCTAssertEqual(sum, multiSet.count)
+        var multiSet = MultiSet(counts)
+        XCTAssertEqual(583, multiSet.count) // 4+7+2+200+54+2+0+13+300+1
+        XCTAssertEqual(9, multiSet.distinctCount) // 0,1,2,3,4,5,7,8,9
 
-        let sum1 = counts.reduce(0) { (a, b) in
-            a + max(b - 1, 0)
+        for (element, occurs) in counts {
+            XCTAssertEqual(occurs, multiSet.count(element), "\(element) \(occurs)")
+            multiSet.remove(element)
+            XCTAssertEqual(max(0, occurs - 1), multiSet.count(element))
         }
-        for (index, occurs) in counts.enumerated() {
-            XCTAssertEqual(occurs, multiSet.count(index))
-            multiSet.remove(index)
-            XCTAssertEqual(max(0, occurs - 1), multiSet.count(index))
-        }
-        XCTAssertEqual(sum1, multiSet.count)
+        XCTAssertEqual(574, multiSet.count) // removed: 0,1,2,3,4,5
 
-        let sum2 = counts.reduce(0) { (a, b) in
-            a + max(b, 1)
+        for (element, occurs) in counts {
+            multiSet.insert(element)
+            XCTAssertEqual(max(occurs, 1), multiSet.count(element), "\(element)")
         }
-        for (index, occurs) in counts.enumerated() {
-            multiSet.insert(index)
-            XCTAssertEqual(max(occurs, 1), multiSet.count(index), "\(index)")
-        }
-        XCTAssertEqual(sum2, multiSet.count)
+        XCTAssertEqual(584, multiSet.count) // inserted 0,1,2,3,4,5,6,7,8,9
 
         for (index, _) in counts.enumerated() {
             multiSet.removeAllOf(index)
@@ -54,7 +33,7 @@ class MultisetTests : ATestCase {
 
 }
 
-extension MultisetTests {
+extension MultiSetTests {
     func testInitWithSequence() {
         let sequence = Utile.Sequence(
                 first: 1,
@@ -113,10 +92,10 @@ extension MultisetTests {
     }
 }
 
-extension MultisetTests {
+extension MultiSetTests {
     func testCustomStringConvertible() {
         let multiSet = ["a", "b", "c", "a", "c", "a"] as MultiSet<String>
-        XCTAssertEqual("[a, a, a, b, c, c]", multiSet.description)
+        XCTAssertEqual("[a, a, a, b, c, c]".count, multiSet.description.count)
 
     }
 
@@ -135,13 +114,13 @@ extension MultisetTests {
     }
 
     func testEquatable() {
-        let counts = [4, 72, 2, 9, 3, 5, 1, 22, 33]
-        let expected = multiset(counts: counts)
+        let counts = [1 : 4, 2:72, 3:2, 4:9, 5:3, 6:5, 7:1, 8:22, 9:33]
+        let expected = MultiSet(counts)
 
         var elements = [Int]()
-        for (index, occurs) in counts.enumerated() {
+        for (element, occurs) in counts {
             for _ in 0..<occurs {
-                elements.append(index)
+                elements.append(element)
             }
         }
         elements.shuffle()
