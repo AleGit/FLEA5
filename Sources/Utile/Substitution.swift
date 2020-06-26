@@ -13,6 +13,15 @@ public protocol Substitution: ExpressibleByDictionaryLiteral, Swift.Sequence, Cu
     var values: Vs { get }
 }
 
+extension Substitution {
+    /// Do the runtime types of keys and values match?
+    var isHomogenous: Bool {
+        return type(of: keys.first) == type(of: values.first)
+    }
+}
+
+
+
 /// A dictionary is a substitution.
 extension Dictionary: Substitution {
     public init(dictionary: [Key: Value]) {
@@ -55,7 +64,7 @@ public func *<N: Term, S: Substitution>(t: N, σ: S) -> N
 }
 
 /// The composition of two term substitutions.
-func *<N: Term, S: Substitution>(lhs: S, rhs: S) -> S?
+public func *<N: Term, S: Substitution>(lhs: S, rhs: S) -> S?
         where N == S.K, N == S.V, S.Iterator == DictionaryIterator<N, N> {
 
     var subs = S()
@@ -64,12 +73,12 @@ func *<N: Term, S: Substitution>(lhs: S, rhs: S) -> S?
     }
     for (key, value) in rhs {
         if let term = subs[key] {
-            // allready set
+            // already set
             guard term == value else {
-                // and different
+                // already set and different
                 return nil
             }
-            // but equal
+            // already set but equal
         } else {
             // not set yet
             subs[key] = value
@@ -104,42 +113,62 @@ postfix func ⊥<N: Term>(t: N) -> N where N.Symbol == String {
 
 /// properties of term substitutions
 extension Substitution where K: Term, V: Term {
-    /// Do the runtime types of keys and values match?
-    private var isHomogenous: Bool {
-        return type(of: keys.first) == type(of: values.first)
-    }
 
     /// Are *variables* mapped to terms?
     private var allKeysAreVariables: Bool {
-        return Array(keys).reduce(true) {
+        keys.reduce(true) {
             $0 && $1.nodes == nil
         }
     }
 
     /// Are terms mapped to *variables*?
     private var allValuesAreVariables: Bool {
-        return Array(values).reduce(true) {
+        values.reduce(true) {
             $0 && $1.nodes == nil
         }
     }
 
     /// Are distinct terms mapped to *distinguishable* terms?
     private var isInjective: Bool {
-        return keys.count == Set(values).count
+        keys.count == Set(values).count
     }
 
     /// A substitution maps variables to terms.
     var isSubstitution: Bool {
-        return allKeysAreVariables
+        allKeysAreVariables
     }
 
     /// A variable substitution maps variables to variables.
     var isVariableSubstitution: Bool {
-        return allKeysAreVariables && allValuesAreVariables
+        allKeysAreVariables && allValuesAreVariables
     }
 
     /// A (variable) renaming maps distinct variables to distinguishable variables.
-    var isRenaming: Bool {
-        return allKeysAreVariables && allValuesAreVariables && isInjective
+    private var isRenaming: Bool {
+        allKeysAreVariables && allValuesAreVariables && isInjective
+    }
+
+    func isRenamingOf(size: Int) -> Bool {
+        keys.count == size && isRenaming
+    }
+}
+
+extension Substitution where Self.Iterator == DictionaryIterator<K,V> {
+
+    /// For substitutions where Self.K == Self.V
+    /// - Returns: a new substitution without identities, e.g. x->x
+    func simplified() -> Self {
+        guard self.isHomogenous else { return self }
+        var dictionary = [K:V]()
+        for (key, value) in self {
+            if let v = value as? Self.K, key == v {
+                // identity, e.g. x->x
+            }
+            else {
+                // e.g. x->y, x->a, x->f(a)
+                dictionary[key] = value
+            }
+        }
+        return Self(dictionary: dictionary)
     }
 }

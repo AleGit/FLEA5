@@ -11,17 +11,17 @@ func =?= <N: Term, S: Substitution>(lhs: N, rhs: N) -> S?
     Syslog.debug { "\(S.self) as unifier" }
     // delete
     if lhs == rhs {
-        return S() // trivially unifiable, empty unifier
+        return lhs.isVariable ? S(dictionary: [lhs :rhs]) : S()
     }
 
     // variable elimination
 
     if lhs.isVariable {
-        guard !rhs.variables.contains(lhs) else { return nil } // occur check
+        if rhs.variables.contains(lhs) { return nil } // occur check
         return S(dictionary: [lhs: rhs])
     }
     if rhs.isVariable {
-        guard !lhs.variables.contains(rhs) else { return nil } // occur check
+        if lhs.variables.contains(rhs) { return nil } // occur check
         return S(dictionary: [rhs: lhs])
     }
 
@@ -36,7 +36,6 @@ func =?= <N: Term, S: Substitution>(lhs: N, rhs: N) -> S?
 
     guard var lnodes = lhs.nodes, var rnodes = rhs.nodes, lnodes.count == rnodes.count
     else {
-        assert(false, "node counts do not match")
         // f(.) =?= f(.,.) -> nil
         return nil
     }
