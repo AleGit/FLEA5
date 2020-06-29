@@ -10,6 +10,10 @@ final class SubstitutionTests : ATestCase {
         XCTAssertTrue([Int: Int]().isHomogenous)
         XCTAssertTrue([String: String]().isHomogenous)
 
+        XCTAssertTrue([N: N]().isHomogenous)
+    }
+
+    func testIsNotHomogenous() {
         XCTAssertFalse(["a": 1].isHomogenous)
         XCTAssertFalse([1: "a"].isHomogenous)
 
@@ -17,26 +21,56 @@ final class SubstitutionTests : ATestCase {
         XCTAssertFalse([String: Int]().isHomogenous)
     }
 
+    func testComposition() {
+        for li in [x,y,z] {
+            for lj in [x,y,z] {
+                for lk in [x,y,z] {
+                    for ri in [x,y,z,a,b,c] {
+                        for rj in [x,y,z,a,b,c] {
+                            for rk in [x,y,z,a,b,c] {
+                                let l = [li:ri]
+                                let m = [lj:rj]
+                                let r = [lk:rk]
+
+                                guard let lm = l * m else {
+                                    XCTAssertEqual(l.first?.key, m.first?.key)
+                                    break
+                                }
+
+                                guard let mr = m * r else {
+                                    XCTAssertEqual(m.first?.key, r.first?.key)
+                                    break
+                                }
+                                XCTAssertEqual(lm * r, l * mr, "\(l) \(m) \(r)")
+
+                            }
+
+                        }
+                    }
+
+                }
+
+            }
+        }
+    }
+
     func testApply() {
-        let a = TermTests.Node.term(.function, "a", nodes: [TermTests.Node]())
-        let y = TermTests.Node.variable("y")
+        let σ = [y: a]
 
-        let s = [y : a]
+        XCTAssertTrue(σ.isSubstitution)
+        XCTAssertFalse(σ.isVariableSubstitution)
 
-        XCTAssertTrue(s.isSubstitution)
-        XCTAssertFalse(s.isVariableSubstitution)
-
-        for f in [ a, y] {
-            XCTAssertEqual(a, f * s, f.description)
+        for t in [a, y] {
+            XCTAssertEqual(a, t * σ, t.description)
         }
 
-        let fay = TermTests.Node.term(.function, "f", nodes: [a,y])
-        let fya = TermTests.Node.term(.function, "f", nodes: [y,a])
-        let fyy = TermTests.Node.term(.function, "f", nodes: [y,y])
-        let faa = TermTests.Node.term(.function, "f", nodes: [a,a])
+        let faa = fxy * [x: a, y: a]
+        let fay = fxy * [x: a]
+        let fya = fxy * [x: y, y: a]
+        let fyy = fxy * [x:y]
 
-        for f in [ faa, fay, fya, fyy] {
-            XCTAssertEqual(faa, f * s, f.description)
+        for t in [faa, fay, fya, fyy] {
+            XCTAssertEqual(faa, t * σ, t.description)
         }
 
     }

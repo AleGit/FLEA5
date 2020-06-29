@@ -64,8 +64,12 @@ public func *<N: Term, S: Substitution>(t: N, σ: S) -> N
 }
 
 /// The composition of two term substitutions.
-public func *<N: Term, S: Substitution>(lhs: S, rhs: S) -> S?
+public func *<N: Term, S: Substitution>(lhs: S?, rhs: S?) -> S?
         where N == S.K, N == S.V, S.Iterator == DictionaryIterator<N, N> {
+
+    guard let lhs = lhs, let rhs = rhs else {
+        return nil
+    }
 
     var subs = S()
     for (key, value) in lhs {

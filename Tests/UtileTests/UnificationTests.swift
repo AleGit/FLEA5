@@ -2,28 +2,8 @@ import XCTest
 @testable import Utile
 
 class UnificationTests: ATestCase {
-    typealias Σ = [Node: Node]
 
     func testBasics() {
-        let x = Node.variable("x")
-        let y = Node.variable("y")
-        let a = Node.constant("a")
-        let b = Node.constant("b")
-
-        let fx = Node.function("f", nodes: [x])
-        let gx = Node.function("f", nodes: [x])
-        let fa = fx * [x: a]
-        let fb = fx * [x: b]
-        let ga = gx * [x: a]
-        let gb = gx * [x: b]
-
-        let fxy = Node.function("f", nodes: [x, y])
-        let gxy = Node.function("g", nodes: [x, y])
-        let fab = fxy * [x: a, y: b]
-        let fax = fxy * [x: a, y: x]
-        let fxa = fxy * [y: a]
-        let fxx = fxy * [y: x]
-        let gxa = gxy * [y: a]
 
         // trivial cases
         var σ = Σ() as Σ
