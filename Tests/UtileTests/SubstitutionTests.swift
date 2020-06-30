@@ -21,7 +21,7 @@ final class SubstitutionTests : ATestCase {
         XCTAssertFalse([String: Int]().isHomogenous)
     }
 
-    func testComposition() {
+    func testSimpleComposition() {
         for li in [x,y,z] {
             for lj in [x,y,z] {
                 for lk in [x,y,z] {
@@ -33,25 +33,37 @@ final class SubstitutionTests : ATestCase {
                                 let r = [lk:rk]
 
                                 guard let lm = l * m else {
-                                    XCTAssertEqual(l.first?.key, m.first?.key)
+                                    XCTAssertEqual(l.first?.key, m.first?.key, "\(l) \(m)")
                                     break
                                 }
 
                                 guard let mr = m * r else {
-                                    XCTAssertEqual(m.first?.key, r.first?.key)
+                                    XCTAssertEqual(m.first?.key, r.first?.key, "\(b) \(r)")
                                     break
                                 }
                                 XCTAssertEqual(lm * r, l * mr, "\(l) \(m) \(r)")
-
                             }
-
                         }
                     }
-
                 }
-
             }
         }
+    }
+
+    func testCompositions() {
+        XCTAssertEqual([x:a], [x:x] * [x: a])
+        XCTAssertEqual([x:a], [x:a] * [x: a])
+
+        XCTAssertEqual([x:x, y:x], [x:y] * [y: x])
+        XCTAssertEqual([x:y, y:y], [y:x] * [x: y])
+
+        XCTAssertEqual([x:a, y:a], [y:x] * [x:y] * [y:a])
+        XCTAssertEqual([x:a, y:a], ([y:x] * [x:y]) * [y:a])
+        XCTAssertEqual([x:a, y:a], [y:x] * ([x:y] * [y:a]))
+
+        XCTAssertNil( [x:a] * [x:b] )
+        XCTAssertNil( [x:a] * [x:x] )
+
     }
 
     func testApply() {

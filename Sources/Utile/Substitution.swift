@@ -76,13 +76,16 @@ public func *<N: Term, S: Substitution>(lhs: S?, rhs: S?) -> S?
         subs[key] = value * rhs
     }
     for (key, value) in rhs {
+        // i.e. key -> value
         if let term = subs[key] {
-            // already set
+            // already set, i.e. key -> term
             guard term == value else {
-                // already set and different
+                // already set and different,
+                // i.e. key -> value != term <- key
                 return nil
             }
-            // already set but equal
+            // already set and equal,
+            // i.e. key -> value == term <- key
         } else {
             // not set yet
             subs[key] = value
