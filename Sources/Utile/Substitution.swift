@@ -15,8 +15,14 @@ public protocol Substitution: ExpressibleByDictionaryLiteral, Swift.Sequence, Cu
 
 extension Substitution {
     /// Do the runtime types of keys and values match?
-    var isHomogenous: Bool {
-        return type(of: keys.first) == type(of: values.first)
+    var isHomogeneous: Bool {
+        type(of: keys.first) == type(of: values.first)
+    }
+}
+
+extension Substitution where K == V {
+    var isHomogeneous: Bool {
+        true
     }
 }
 
@@ -63,8 +69,18 @@ public func *<N: Term, S: Substitution>(t: N, σ: S) -> N
     // explicit sharing for sharing types
 }
 
+public func *<N, S: Substitution>(t: N, σ: S) -> N
+        where N == S.K, N == S.V, S.Iterator == DictionaryIterator<N, N> {
+
+    if let tσ = σ[t] {
+        return tσ // implicit sharing for reference types
+    }
+
+    return t
+}
+
 /// The composition of two term substitutions.
-public func *<N: Term, S: Substitution>(lhs: S?, rhs: S?) -> S?
+public func *<N, S: Substitution>(lhs: S?, rhs: S?) -> S?
         where N == S.K, N == S.V, S.Iterator == DictionaryIterator<N, N> {
 
     guard let lhs = lhs, let rhs = rhs else {
@@ -165,7 +181,7 @@ extension Substitution where Self.Iterator == DictionaryIterator<K,V> {
     /// For substitutions where Self.K == Self.V
     /// - Returns: a new substitution without identities, e.g. x->x
     func simplified() -> Self {
-        guard self.isHomogenous else { return self }
+        guard self.isHomogeneous else { return self }
         var dictionary = [K:V]()
         for (key, value) in self {
             if let v = value as? Self.K, key == v {

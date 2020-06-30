@@ -4,21 +4,21 @@ import XCTest
 final class SubstitutionTests : ATestCase {
 
     func testIsHomogenous() {
-        XCTAssertTrue(["a": "b"].isHomogenous)
-        XCTAssertTrue([1: 1].isHomogenous)
+        XCTAssertTrue(["a": "b"].isHomogeneous)
+        XCTAssertTrue([1: 1].isHomogeneous)
 
-        XCTAssertTrue([Int: Int]().isHomogenous)
-        XCTAssertTrue([String: String]().isHomogenous)
+        XCTAssertTrue([Int: Int]().isHomogeneous)
+        XCTAssertTrue([String: String]().isHomogeneous)
 
-        XCTAssertTrue([N: N]().isHomogenous)
+        XCTAssertTrue([N: N]().isHomogeneous)
     }
 
     func testIsNotHomogenous() {
-        XCTAssertFalse(["a": 1].isHomogenous)
-        XCTAssertFalse([1: "a"].isHomogenous)
+        XCTAssertFalse(["a": 1].isHomogeneous)
+        XCTAssertFalse([1: "a"].isHomogeneous)
 
-        XCTAssertFalse([Int: String]().isHomogenous)
-        XCTAssertFalse([String: Int]().isHomogenous)
+        XCTAssertFalse([Int: String]().isHomogeneous)
+        XCTAssertFalse([String: Int]().isHomogeneous)
     }
 
     func testSimpleComposition() {
@@ -34,11 +34,13 @@ final class SubstitutionTests : ATestCase {
 
                                 guard let lm = l * m else {
                                     XCTAssertEqual(l.first?.key, m.first?.key, "\(l) \(m)")
+                                    XCTAssertNotEqual(l.first?.value, m.first?.value, "\(l) \(m)")
                                     break
                                 }
 
                                 guard let mr = m * r else {
-                                    XCTAssertEqual(m.first?.key, r.first?.key, "\(b) \(r)")
+                                    XCTAssertEqual(m.first?.key, r.first?.key, "\(m) \(r)")
+                                    XCTAssertNotEqual(m.first?.value, r.first?.value, "\(m) \(r)")
                                     break
                                 }
                                 XCTAssertEqual(lm * r, l * mr, "\(l) \(m) \(r)")
@@ -84,7 +86,11 @@ final class SubstitutionTests : ATestCase {
         for t in [faa, fay, fya, fyy] {
             XCTAssertEqual(faa, t * σ, t.description)
         }
+    }
 
+    func testNumbers() {
+        XCTAssertEqual([1:9, 3:9, 5:9, 7: 9], [1:3] * [3:5] * [5:7] * [7:9])
+        XCTAssertEqual(["1":"9", "3":"9", "5":"9", "7":"9"], ["1":"3"] * ["3":"5"] * ["5":"7"] * ["7":"9"])
     }
 }
 
