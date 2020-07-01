@@ -23,7 +23,8 @@ let package: Package = Package(
 
         .package(url:"https://github.com/AleGit/CTptpParsing.git", from: "1.0.0" ),
         .package(url:"https://github.com/AleGit/CYices.git", from: "1.0.0" ),
-        .package(url:"https://github.com/AleGit/CZ3API.git", from: "1.0.0" )
+        .package(url:"https://github.com/AleGit/CZ3API.git", from: "1.0.0" ),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "0.2.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -33,7 +34,9 @@ let package: Package = Package(
         .target(module: .utile,  dependencies: [.base]),
         .target(module: .tptp,   dependencies: [.utile]),
         .target(module: .solver, dependencies: [.tptp]),
-        .target(module: .flea,   dependencies: [.solver]),
+        .target(module: .flea,   dependencies: [.solver, .argumentParserPackage]),
+        // .target(name: "Flea", dependencies: [ "Solver", .product(name: "ArgumentParser", package: "swift-argument-parser")]),
+
 
         // implicit test suite names and dependencies
 
@@ -54,13 +57,25 @@ extension Target {
         case tptp   = "Tptp"   // parsing and data structures for tptp files
         case solver = "Solver" // proving with yices and z3
         case flea   = "Flea"   // command line program definition
+        case argumentParserPackage = "ArgumentParser,swift-argument-parser"
 
         /// the name of this module
         var targetName: String { self.rawValue }
         /// the name of the test suite for this module
         var testTargetName: String { self.targetName + "Tests" }
         /// a dependency on this module (by an other module or test suite)
-        var dependency: Dependency { Dependency(stringLiteral: self.rawValue) }
+        var dependency: Dependency {
+            switch self {
+            case .argumentParserPackage:
+                let a = self.rawValue.split(separator: ",").map { String($0) }
+                assert(a.count == 2 && a[0].count > 4 && a[1].count > 4)
+                return .product(name: a[0], package: a[1])
+            default:
+                return .byName(name: self.rawValue) //
+                // return .target(name: self.rawValue)
+                // return  Dependency(stringLiteral: self.rawValue)
+            }
+        }
     }
 
     /// Factory method that uses module enum values for name and dependencies of a module.
