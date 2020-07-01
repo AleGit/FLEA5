@@ -52,12 +52,12 @@ extension Substitution // K == V not necessary
 ///   are substituted with terms. Here any arbitrary term can be
 ///   substituted with any other term, which can lead to ambiguity.
 /// - where keys are only variables it matches the definition of substitution
-/// - implicit sharing of nodes MAY happen!
+/// - implicit sharing happens
 public func *<N: Term, S: Substitution>(t: N, σ: S) -> N
         where N == S.K, N == S.V, S.Iterator == DictionaryIterator<N, N> {
 
     if let tσ = σ[t] {
-        return tσ // implicit sharing for reference types
+        return tσ // implicit sharing
     }
 
     guard let nodes = t.nodes, nodes.count > 0 else {
@@ -66,7 +66,6 @@ public func *<N: Term, S: Substitution>(t: N, σ: S) -> N
     }
 
     return N.term(t.type, t.symbol, nodes: nodes.map { $0 * σ })
-    // explicit sharing for sharing types
 }
 
 public func *<N, S: Substitution>(t: N, σ: S) -> N
