@@ -8,11 +8,19 @@ extension String {
 
     /// Returns a string where the first and the last character were removed,
     /// e.g. "debug" -> debug
-    var pealing: String {
+    var pealed: String {
+        guard self.count > 1 else {
+            // ""  -> ""
+            // "a" -> ""
+            return ""
+        }
+
+        guard self.first == self.last else {
+            return self
+        }
         let start = self.index(after: self.startIndex)
         let end = self.index(before: self.endIndex)
         let slice = self[start..<end]
-
         return String(slice)
     }
 

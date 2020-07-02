@@ -128,14 +128,14 @@ public struct Syslog {
             let components = entry.components(separatedBy: "::")
 
             guard components.count == 2,
-                let key = components.first?.trimmingWhitespace.pealing,
+                let key = components.first?.trimmingWhitespace.pealed,
                 let last = components.last else {
                 Syslog.prinfo { "invalid CONFIGURATION entry ! \(entry) \(components)" }
                 continue
             }
 
             let lastIndex = last.firstIndex(of: "#") ?? last.endIndex
-            let value = String(last.prefix(upTo: lastIndex)).trimmingWhitespace.pealing
+            let value = String(last.prefix(upTo: lastIndex)).trimmingWhitespace.pealed
             guard let p = Priority(string: value) else {
                 continue
             }
