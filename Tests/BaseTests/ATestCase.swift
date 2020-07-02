@@ -1,7 +1,7 @@
 import XCTest
 import Base
 
-public class ATestCase: XCTestCase {
+class ATestCase: XCTestCase {
     /// set up logging once _before_ all tests of a test class
     public override class func setUp() {
         super.setUp()
