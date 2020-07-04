@@ -32,18 +32,19 @@ class StringTests: ATestCase {
     }
 
     func testPealing() {
-        XCTAssertEqual("", "".pealed)
-        XCTAssertEqual("", "a".pealed)
-        XCTAssertEqual("", "aa".pealed)
-        XCTAssertEqual("a", "aaa".pealed)
-        XCTAssertEqual("", "aaa".pealed.pealed)
-        XCTAssertEqual("aa", "aaaa".pealed)
-        XCTAssertEqual("", "aaaa".pealed.pealed)
+        for s in ["a", "(a)", "([a])", "([{a}])", 
+                  "\"([a])\"", "|\"([a])\"|", "'|\"([a])\"|'", "<'|\"([a])\"|'>"] {
+            XCTAssertEqual("a", s.peeled())
+            XCTAssertEqual(s.peeled(), s.peeled().peeled())
 
-        XCTAssertEqual("ab", "aaba".pealed.pealed)
+            XCTAssertEqual("", s.replacingOccurrences(of: "a", with: "").peeled())
+        }
 
-
-
+        for s in ["a", ")a)", "([a](", "([{a}]|",
+                  "'([a])\"", "|\"([a])\"'", "(|\"([a])\"|'", "<'|\"([a])\"|')"] {
+            XCTAssertEqual(s, s.peeled())
+            XCTAssertEqual(s.peeled(), s.peeled().peeled())
+        }
     }
 
     func testContainsOne() {

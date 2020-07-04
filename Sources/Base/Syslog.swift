@@ -128,14 +128,14 @@ public struct Syslog {
             let components = entry.components(separatedBy: "::")
 
             guard components.count == 2,
-                let key = components.first?.trimmingWhitespace.pealed,
+                let key = components.first?.trimmingWhitespace.peeled(),
                 let last = components.last else {
                 Syslog.prinfo { "invalid CONFIGURATION entry ! \(entry) \(components)" }
                 continue
             }
 
             let lastIndex = last.firstIndex(of: "#") ?? last.endIndex
-            let value = String(last.prefix(upTo: lastIndex)).trimmingWhitespace.pealed
+            let value = String(last.prefix(upTo: lastIndex)).trimmingWhitespace.peeled()
             guard let p = Priority(string: value) else {
                 continue
             }
@@ -153,7 +153,7 @@ public struct Syslog {
             lo: .error, 
             hi: .debug,
             Syslog.configuration?["---"] ?? .error
-        )
+        )! // fatal if .error > .debug
     }()
 
     /// Everything greater MUST NOT be logged.
@@ -163,7 +163,7 @@ public struct Syslog {
             lo: Syslog.minimalLogLevel,
             hi: .debug,
             Syslog.configuration?["+++"] ?? .warning
-        )
+        )! // fatal if minimalLogLevel > .debug
     }()
 
     /// Everything less or equal will be logged.
@@ -173,7 +173,7 @@ public struct Syslog {
             lo: Syslog.minimalLogLevel,
             hi: Syslog.maximalLogLevel,
             Syslog.configuration?["***"] ?? .notice 
-        )
+        )! // fatal if minimalLogLevel > maximalLogLevel
     }()
 
     public static func logLevel(_ filePath: String = #file, _ function: String = #function) -> Priority {
@@ -185,7 +185,7 @@ public struct Syslog {
             ?? Syslog.configuration?[function]                   // "foo()"
             ?? Syslog.configuration?[fileName]                  // "Node.swift"   
             ?? Syslog.defaultLogLevel                           // "***"
-        )
+        )!
     }
 
     private static func loggable(_ priority: Priority, _ file: String, _ function: String, _: Int) -> Bool {

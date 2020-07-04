@@ -35,7 +35,7 @@ extension CommandLine {
         var dictionary = [name: [String]()]
 
         for parameter in CommandLine.parameters {
-            if parameter.hasPrefix("--") {
+            if parameter.hasPrefix("-") {
                 name = parameter
                 if dictionary[name] == nil {
                     dictionary[name] = [String]()
