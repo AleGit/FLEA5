@@ -36,14 +36,20 @@ class StringTests: ATestCase {
                   "\"([a])\"", "|\"([a])\"|", "'|\"([a])\"|'", "<'|\"([a])\"|'>"] {
             XCTAssertEqual("a", s.peeled())
             XCTAssertEqual(s.peeled(), s.peeled().peeled())
-
-            XCTAssertEqual("", s.replacingOccurrences(of: "a", with: "").peeled())
         }
 
         for s in ["a", ")a)", "([a](", "([{a}]|",
                   "'([a])\"", "|\"([a])\"'", "(|\"([a])\"|'", "<'|\"([a])\"|')"] {
             XCTAssertEqual(s, s.peeled())
-            XCTAssertEqual(s.peeled(), s.peeled().peeled())
+            XCTAssertEqual(s, s.peeled().peeled())
+        }
+
+        for s in ["a-z"] {
+            XCTAssertEqual("-", s.peeled(peels: [("a","z")]) )
+        }
+
+        for s in ["a-a"] {
+            XCTAssertEqual("-", s.peeled(peels: [("a","a")]) )
         }
     }
 
