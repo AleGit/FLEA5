@@ -21,6 +21,37 @@ extension String {
         self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     }
 
+    func trimmed(by: (UInt, UInt)) -> String? {
+        guard by.0 + by.1 > 0 else { return self }
+
+        guard self.count >= by.0 + by.1 else { return nil }
+
+        let start = self.index(self.startIndex, offsetBy: Int(by.0))
+        let end = self.index(self.endIndex, offsetBy: -Int(by.1))
+        guard start <= end else { return nil }
+
+        let slice = self[start..<end]
+        return String(slice)
+    }
+
+    func trimmed(by: UInt) -> String? {
+        trimmed(by: (by, by))
+    }
+
+    subscript(_ i: Int) -> Character {
+        let index = self.index(self.startIndex, offsetBy: i)
+        return self[index]
+    }
+    subscript(_ r: Range<Int>) -> Substring {
+        let start = self.index(self.startIndex, offsetBy: r.lowerBound)
+        let end = self.index(self.startIndex, offsetBy: r.upperBound)
+        return self[start..<end]
+    }
+
+    subscript(_ r: ClosedRange<Int>) -> Substring {
+        self[r.lowerBound..<(r.upperBound+1)]
+    }
+
     /// Returns a string where matching first and last character are removed,
     /// e.g. "debug" -> debug, |x| -> x
     func peeled(peels: [Peel] = defaultPeels) -> String {

@@ -24,14 +24,62 @@ class StringTests: ATestCase {
 
 
             """
+    let s5 = "\t \n \rHello, World\t\t  \n \t\t\t"
+    let s6 = "(\t \n \r(Hello, World)\t\t  \n \t\t\t)"
 
     func testTrimmingWhitespace() {
         XCTAssertEqual(s0, s0.trimmingWhitespace)
         XCTAssertEqual("Good Morning Sunshine", s4.trimmingWhitespace)
+        XCTAssertEqual("Hello, World", s5.trimmingWhitespace)
+        XCTAssertEqual("Hello, World", s5.peeled().trimmingWhitespace.peeled())
+    }
+
+    func testTrimmed() {
+        XCTAssertEqual("","".trimmed(by: (0,0)))
+        XCTAssertNil("".trimmed(by: (1,0)))
+        XCTAssertNil("".trimmed(by: (1,1)))
+        XCTAssertNil("".trimmed(by: (0,1)))
+
+
+        XCTAssertEqual("x","x".trimmed(by: (0,0)))
+        XCTAssertEqual("","x".trimmed(by: (1,0)))
+        XCTAssertNil("".trimmed(by: (1,1)))
+        XCTAssertEqual("","x".trimmed(by: (0,1)))
 
     }
 
-    func testPealing() {
+    func testIndex() {
+        XCTAssertEqual("a","abc"[0])
+        XCTAssertEqual("b","abc"[1])
+        XCTAssertEqual("c","abc"[2])
+    }
+
+
+    func testRange() {
+
+        XCTAssertEqual("", "abc"[0..<0])
+        XCTAssertEqual("a", "abc"[0..<1])
+        XCTAssertEqual("ab", "abc"[0..<2])
+        XCTAssertEqual("abc", "abc"[0..<3])
+        XCTAssertEqual("", "abc"[1..<1])
+        XCTAssertEqual("b", "abc"[1..<2])
+        XCTAssertEqual("bc", "abc"[1..<3])
+        XCTAssertEqual("", "abc"[2..<2])
+        XCTAssertEqual("c", "abc"[2..<3])
+
+
+        XCTAssertEqual("abc"[0...0], "abc"[0..<1])
+        XCTAssertEqual("abc"[0...1], "abc"[0..<2])
+        XCTAssertEqual("abc"[0...2], "abc"[0..<3])
+
+        XCTAssertEqual("abc"[1...1], "abc"[1..<2])
+        XCTAssertEqual("abc"[1...2], "abc"[1..<3])
+
+        XCTAssertEqual("abc"[2...2], "abc"[2..<3])
+
+    }
+
+    func testPealed() {
         for s in ["a", "(a)", "([a])", "([{a}])", 
                   "\"([a])\"", "|\"([a])\"|", "'|\"([a])\"|'", "<'|\"([a])\"|'>"] {
             XCTAssertEqual("a", s.peeled())
