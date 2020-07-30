@@ -81,11 +81,10 @@ extension FileTests {
     }
 
     func testPUZ001p1() {
-        let problemName = "PUZ001+1"
 
-        guard let file1 = Tptp.File(problem: problemName),
+        guard let file1 = Tptp.File(problem: "PUZ001+1"),
               let node1 = Tptp.Term.create(file: file1) else {
-            XCTFail(problemName)
+            XCTFail()
             return
         }
         print(1, "•", node1.symbol)
@@ -120,7 +119,10 @@ extension FileTests {
     }
 
     func testPUZ006m1() {
-        let file = Tptp.File(problem: "PUZ006-1")!
+        guard let file = Tptp.File(problem: "PUZ006-1") else {
+            XCTFail()
+            return
+        }
 
         XCTAssertTrue(file.path!.hasSuffix("TPTP/Problems/PUZ/PUZ006-1.p"))
         XCTAssertTrue(file.root!.symbol!.hasSuffix("TPTP/Problems/PUZ/PUZ006-1.p"))
