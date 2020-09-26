@@ -1,7 +1,14 @@
 import XCTest
 
-import FLEA5Tests
+import BaseTests
+import SolverTests
+import TptpTests
+import UtileTests
 
 var tests = [XCTestCaseEntry]()
-tests += FLEA5Tests.allTests()
+tests += BaseTests.__allTests()
+tests += SolverTests.__allTests()
+tests += TptpTests.__allTests()
+tests += UtileTests.__allTests()
+
 XCTMain(tests)
