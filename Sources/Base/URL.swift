@@ -125,14 +125,14 @@ extension URL {
         }
 
         // ~/TPTP in the home directory has a medium priority
-        if let url = URL.homeDirectoryURL?.appending(component: "/TPTP"),
+        if let url = URL.homeDirectoryURL?.appending(component: "TPTP"),
             url.isAccessibleDirectory {
             Syslog.notice { "fallback to \(url.relativeString)" }
             return url
         }
 
         // ~/Downloads/TPTP has a very low priority
-        if let url = URL.homeDirectoryURL?.appending(component: "/Downloads/TPTP"),
+        if let url = URL.homeDirectoryURL?.appending(component: "Downloads/TPTP"),
             url.isAccessibleDirectory {
             Syslog.notice { "fallback to \(url.relativeString)" }
             return url

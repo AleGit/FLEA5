@@ -81,6 +81,8 @@ extension FileTests {
     }
 
     func testPUZ001p1() {
+        print("->", #function)
+        defer { print("<-", #function) }
 
         guard let file1 = Tptp.File(problem: "PUZ001+1"),
               let node1 = Tptp.Term.create(file: file1) else {
@@ -114,6 +116,33 @@ extension FileTests {
 
 
 
+
+
+
+    }
+
+    func testAxiom() {
+        print("->", #function)
+        defer { print("<-", #function) }
+
+        let terms = [
+            "file:///Users/alexander/TPTP/Axioms/PUZ001-0.ax",
+            "http://www.tptp.org/cgi-bin/SeeTPTP?Category=Axioms&File=PUZ001-0.ax"
+        ].map {
+            string -> Tptp.Term? in
+            print(string)
+            guard let url = URL(string: string),
+            let file = Tptp.File(url: url),
+            let term = Tptp.Term.create(file: file) else {
+                return nil
+            }
+            return term
+        }.compactMap { $0 }
+        XCTAssertEqual(2, terms.count)
+
+        print(terms.first?.symbol)
+        print(terms.last?.symbol)
+        XCTAssertEqual(terms.first?.nodes?.first, terms.last?.nodes?.first)
 
 
     }
