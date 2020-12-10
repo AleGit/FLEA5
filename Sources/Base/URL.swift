@@ -138,6 +138,13 @@ extension URL {
             return url
         }
 
+        // ~/UIBK/TPTP-v7.4.0 has the lowest priority
+        if let url = URL.homeDirectoryURL?.appending(component: "UIBK/TPTP-v7.4.0"),
+            url.isAccessibleDirectory {
+            Syslog.notice { "fallback to \(url.relativeString)" }
+            return url
+        }
+
         Syslog.warning { "Accessible TPTP library directory path could not be found." }
 
         return nil

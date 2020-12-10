@@ -21,9 +21,9 @@ let package: Package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
 
-        .package(url:"https://github.com/AleGit/CTptpParsing.git", from: "1.0.0" ),
-        .package(url:"https://github.com/AleGit/CYices.git", from: "1.0.0" ),
-        .package(url:"https://github.com/AleGit/CZ3API.git", from: "1.0.0" ),
+        .package(url:"https://github.com/AleGit/CTptpParsing.git", .branch("develop") ),
+        .package(url:"https://github.com/AleGit/CYices.git", .branch("develop") ),
+        .package(url:"https://github.com/AleGit/CZ3API.git", .branch("master") ),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.2.0")
     ],
     targets: [

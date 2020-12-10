@@ -258,9 +258,10 @@ extension Syslog {
         priority: Priority, args: CVarArg...,
         message: () -> String
     ) {
-        withVaList(args) {
-            vsyslog(priority.priority, message(), $0)
-        }
+        // TODO:
+        // withVaList(args) {
+        //     vsyslog(priority.priority, message(), $0)
+        // }
     }
 
     private static func log(

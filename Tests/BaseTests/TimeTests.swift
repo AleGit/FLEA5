@@ -14,6 +14,6 @@ class TimeTests : ATestCase {
             return f()
         }
 
-        XCTAssertTrue(inner.absolute < outer.absolute)
+        XCTAssertTrue(inner.absolute < outer.absolute, "\(inner.absolute) ≥ \(outer.absolute)")
     }
 }
