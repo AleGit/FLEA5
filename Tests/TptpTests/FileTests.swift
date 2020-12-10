@@ -140,8 +140,8 @@ extension FileTests {
         }.compactMap { $0 }
         XCTAssertEqual(2, terms.count)
 
-        print(terms.first?.symbol)
-        print(terms.last?.symbol)
+        print(terms.first?.symbol ?? "symbol n/a")
+        print(terms.last?.symbol ?? "symbol n/a")
         XCTAssertEqual(terms.first?.nodes?.first, terms.last?.nodes?.first)
 
 
