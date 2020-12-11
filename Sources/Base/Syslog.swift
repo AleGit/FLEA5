@@ -260,7 +260,7 @@ extension Syslog {
     ) {
         #if arch(x86_64)
         withVaList(args) {
-            vsyslog(priority.priority, message(), args)
+            vsyslog(priority.priority, message(), $0)
         }
         #elseif arch(arm64)
         // TODO: use vsyslog on arm 64
