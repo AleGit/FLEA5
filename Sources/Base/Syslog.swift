@@ -263,8 +263,28 @@ extension Syslog {
             vsyslog(priority.priority, message(), $0)
         }
         #elseif arch(arm64)
-        // TODO: use vsyslog on arm 64
-        print(priority, message(), args, separator: " +1+ ")
+        print(Date(), priority, message(), args, separator: " + ")
+
+        /*
+        ```
+        vsyslog(priority.priority, message(), args)
+        ```
+
+        cannot convert value of type '[CVarArg]' to expected argument type '__darwin_va_list?' (aka 'Optional<UnsafeMutablePointer<Int8>>')
+        */ 
+
+
+        /*
+        ```
+        withVaList(args) {
+            vsyslog(priority.priority, message(), $0)
+        }
+        ```
+
+        cannot convert value of type 'CVaListPointer' to expected argument type '__darwin_va_list?' (aka 'Optional<UnsafeMutablePointer<Int8>>')
+        */
+
+        // vsyslog(priority.priority, "Hello, World!", nil)
         #endif
     }
 
