@@ -5,8 +5,7 @@
 /// members are allowed to appear more than once. It's possible to convert a multiset
 /// to a set: `let set = Set(multiset)`
 ///
-/// Conforms to `Sequence`, `ExpressibleByArrayLiteral` and
-///  `Hashable`.
+/// Conforms to `Sequence`, `ExpressibleByArrayLiteral` and `Hashable`.
 public struct MultiSet<T: Hashable> {
 
     // MARK: Creating a Multiset
