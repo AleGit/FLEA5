@@ -34,6 +34,7 @@ let package: Package = Package(
         .target(module: .utile,  dependencies: [.base]),
         .target(module: .tptp,   dependencies: [.utile]),
         .target(module: .solver, dependencies: [.tptp]),
+        // .target(name: "Solver", dependencies: ["Tptp"]),
         .target(module: .flea,   dependencies: [.solver, .argumentParserPackage]),
         // .target(name: "Flea", dependencies: [ "Solver", .product(name: "ArgumentParser", package: "swift-argument-parser")]),
 
@@ -60,7 +61,10 @@ extension Target {
         case argumentParserPackage = "ArgumentParser,swift-argument-parser"
 
         /// the name of this module
-        var targetName: String { self.rawValue }
+        var targetName: String { 
+            assert(self != .argumentParserPackage, "argument parser must not be a target")
+            return self.rawValue 
+        }
         /// the name of the test suite for this module
         var testTargetName: String { self.targetName + "Tests" }
         /// a dependency on this module (by an other module or test suite)
@@ -69,6 +73,8 @@ extension Target {
             case .argumentParserPackage:
                 let a = self.rawValue.split(separator: ",").map { String($0) }
                 assert(a.count == 2 && a[0].count > 4 && a[1].count > 4)
+                assert(a[0] == "ArgumentParser", "wrong argument parser name")
+                assert(a[1] == "swift-argument-parser", "wrong argument parser package")
                 return .product(name: a[0], package: a[1])
             default:
                 return .byName(name: self.rawValue) //

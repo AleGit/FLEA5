@@ -1,102 +1,115 @@
-# FLEA5
-Simple First Order Prover with Equality
+# FLEA5 – First Order Prover with Equality
 
-_in development_
+Author: Alexander Maringele
 
-## Prerequesites
+_sitll in development_
 
-- [Yices](http://yices.csl.sri.com)
+1 Prerequesites
 
-```Bash
-$ brew install SRI-CSL/sri-csl/yices2
-$ yices --version
-Yices 2.6.1
-Copyright SRI International.
-Linked with GMP 6.1.2
-Copyright Free Software Foundation, Inc.
-Build date: 2019-09-01
-Platform: x86_64-apple-darwin18.7.0 (release)
+- [Swift](https://swift.org) 5.3 (Compiler etc.)
+- [Git](https://git-scm.com) 2.24
+- [pkc-config](https://www.freedesktop.org/wiki/Software/pkg-config/) 0.92
+- [Yices2](https://yices.csl.sri.com) 2.6.2 (SAT and SMT Solver)
+- [Z3](https://github.com/Z3Prover/z3) 4.8.9 (SAT and SMT Solver)
 
-$ find /usr/local -name "yices*h"
-/usr/local/include/yices.h             # Linux and macOS
-/usr/local/include/yices_limits.h      # Linux and macOS
-/usr/local/include/yices_types.h       # Linux and macOS
-/usr/local/include/yices_exit_codes.h  # Linux and macOS
 
-$ find /usr/local -name "liyices*"
-/usr/local/lib/libyices.so             # Linux only
-/usr/local/lib/libyices.dylib          # macOS only
-/usr/local/lib/libyices.2.dylib        # macOS only
+We can easily check if the necessary development tools and libraries are already installed.
+
+```zsh
+% swift --version           # Swift 5.3 or newer, clang 12 or newer
+% git --version             # Git 2.24 or newer
+% pkg-config --version      # 0.92 or newer
+% yices --verison           # 2.6.2 or newer
+% z3 --version              # 4.8.9 or newer
 ```
 
-- [Z3](https://github.com/Z3Prover/z3)
+If not see Readme-macOS.md and Readme-Ubuntu.md for installation hints.
 
-```
-$ git clone https://github.com/Z3Prover/z3.git
-$ cd z3
-$ CXX=clang++ CC=clang python scripts/mk_make.py
-$ cd build
-$ make
-$ sudo make install
-$ Z3 --version
-Z3 version 4.8.6 - 64 bit
 
-$ find /usr/local -name "z3*h"
-/usr/local/include/z3_rcf.h
-/usr/local/include/z3_macros.h
-/usr/local/include/z3_polynomial.h
-/usr/local/include/z3++.h
-/usr/local/include/z3_algebraic.h
-/usr/local/include/z3_fpa.h
-/usr/local/include/z3_optimization.h
-/usr/local/include/z3.h
-/usr/local/include/z3_ast_containers.h
-/usr/local/include/z3_v1.h
-/usr/local/include/z3_api.h
-/usr/local/include/z3_version.h
-/usr/local/include/z3_fixedpoint.h
-/usr/local/include/z3_spacer.h
+2 Download Thousand Problems for Theorem Provers (TPTP)
 
-$ find /usr/local -name "libz3*"
-/usr/local/lib/libz3.dylib      # macOS only
-```
-
-- [Swift](https://swift.org/)
-```
-$ swift --version
-Apple Swift version 5.0.1 (swiftlang-1001.0.82.4 clang-1001.0.46.5)
-Target: x86_64-apple-darwin18.7.0
-```
-
-- [CTptpParsing](/https://github.com/AleGit/CTptpParsing)
-
-    The tptp parsing library can easily be build and installed.
-```Bash
-$ git clone https://github.com/AleGit/CTptpParsing.git
-$ cd CTptpParsing
-$ sudo make install
-
-$ find /usr/local -name "Prlc*h"
-/usr/local/include/PrlcCore.h           # linux, macOS
-/usr/local/include/PrlcData.h           # linux, macOS
-/usr/local/include/PrlcMacros.h         # linux, macOS
-/usr/local/include/PrlcPaser.h          # linux, macOS
-
-$ find /usr/local -name "libTptpParsing*"
-/usr/lib/lib/libTtptpParsing.so         # linux
-/usr/local/lib/libTptpParinsg.dylib     # macOS
-/usr/local/lib/pkgconfig/TptpParsing.pc # macOS
-```
 
 - [TPTPLibary](http://www.tptp.org)
 
-Download and unpack TPTP-v7.m.n.tgz.
-Create a symbolic link to the unpacked folder into your home directory.
-```
+Download and unpack TPTP-v7.m.n.tz 
+Rename the unpacked folder into your home directory.
+
+```zsh
+% curl http://www.tptp.org/TPTP/Distribution/TPTP-v7.4.0.tgz --output TPTP-v7.4.0.tgz
+% tar -xf TPTP-v7.4.0.tgz
+% mv TPTP-v7.4.0 ~/TPTP
+% rm TPTP-v7.4.0.tgz
+
 $ ln -s /path/to/TPTP-v7.m.n ~/TPTP
 $ ls ~/TPTP/
 Axioms          Documents       Generators      Problems        Scripts         TPTP2X
 ```
 
-FLEA will search for Axioms and Problems in `~/TPTP/Axioms` and `~/TPTP/Problems`.
+FLEA will search for Axioms and Problems in 
+
+- `~/TPTP/Axioms` and `~/TPTP/Problems`
+- `~/Downloads/TPTP/Axioms` and `~/Downloads/TPTP/Problems`
+
+by default.
+
+3 Install the TPTP Parsing Library
+
+The [tptp parsing library](https://github.com/AleGit/CTptpParsing) - written in C with Bison and Flex - is provided by the author and can easily be installed on macOS and Ubuntu.
+
+```zsh
+% # Ubuntu Linux, macOS
+% git clone https://github.com/AleGit/CTptpParsing.git
+% cd CTptpParsing
+% sudo make install
+
+% find /usr -name "Prlc*h"          # TODO: Ubuntu Linux
+% find /usr/local -name "Prlc*h"    # macOS 11 on Intel or ARM
+/path/to/include/PrlcMacros.h     
+/path/to/include/PrlcData.h
+/path/to/include/PrlcCore.h
+/path/to/include/PrlcParser.h
+
+% find /usr -name "*TptpParsing*"           # TODO: Ubuntu Linux
+% find /usr/local -name "*TptpParsing*"     # macOS 11 on Intel or ARM
+/path/to/lib/pkgconfig/TptpParsing.pc       # macOS 12 (ARM and Intel)
+/path/to/lib/libTptpParsing.dylib           # macOS 12 (ARM and Intel)
+/path/to/lib/libTptpParsing.a               # TODO: Ubuntu Linux
+```
+
+After installation (`sudo make install`) the pkg-config command should yield the following paths for the parsing library.
+
+```zsh
+% pkg-config tptpparsing --cflags --libs
+-I/usr/local/include -L/usr/local/lib   # macOS 11 (ARM or Intel)
+-I/usr/include -L/usr/lib               # Ubuntu (TODO: CHECK)
+```
+
+Now the pkg-config must yield correct paths to header and library files of Yices2 and Z3.
+
+```zsh
+% pkg-config yices --cflags --libs
+-I/opt/homebrew/include -L/opt/homebrew/lib     # macOS 11 on ARM
+-I/us#r/local/include -L/opt/homebrew/lib        # macOS 11 on Intel
+-I/usr/include -L/opt/homebrew/lib              # TODO: Ubuntu Linux
+
+% pkg-config z3api --cflags --libs
+-I/opt/homebrew/include -L/opt/homebrew/lib     # macOS 11 on ARM
+-I/usr/local/include -L/opt/homebrew/lib        # macOS 11 on Intel
+-I/usr/include -L/opt/homebrew/lib              # TODO: buntu Linux
+```
+
+4 Download, run and test FLEA.
+
+```zsh
+% git clone https://github.com/AleGit/FLEA5.git
+Cloning into FLEA5 ...
+% cd FLEA5
+% git checkout develop
+% swift run
+FLEA - First order Logic with Equality Attester (FLEA)
+...
+% swift test
+...
+Executed ... tests, with 0 failures (0 unexpected) in ... (...) seconds.
+```
 
