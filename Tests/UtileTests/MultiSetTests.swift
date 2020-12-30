@@ -9,21 +9,23 @@ class MultiSetTests: ATestCase {
         let counts = [(0,4), (1,7), (2,2), (3,200), (4,54), (5,2), (6,0), (7,13), (8,300), (9,1)]
 
         var multiSet = MultiSet(counts)
-        XCTAssertEqual(583, multiSet.count) // 4+7+2+200+54+2+0+13+300+1
-        XCTAssertEqual(9, multiSet.distinctCount) // 0,1,2,3,4,5,7,8,9
+        XCTAssertEqual(9, multiSet.distinctCount)   // 0,1,2,  3, 4,5, , 7,  8,9
+        XCTAssertEqual(583, multiSet.count)         // 4+7+2+200+54+2+0+13+300+1
 
         for (element, occurs) in counts {
-            XCTAssertEqual(occurs, multiSet.count(element), "\(element) \(occurs)")
+            XCTAssertEqual(occurs, multiSet.count(element), "\((element,occurs))")
             multiSet.remove(element)
             XCTAssertEqual(max(0, occurs - 1), multiSet.count(element))
         }
-        XCTAssertEqual(574, multiSet.count) // removed: 0,1,2,3,4,5
+        XCTAssertEqual(8, multiSet.distinctCount)   // 0,1,2,  3, 4,5, , 7,  8,
+        XCTAssertEqual(574, multiSet.count)         // 3+6+1+199+53+1+0+12+299+0
 
         for (element, occurs) in counts {
             multiSet.insert(element)
-            XCTAssertEqual(max(occurs, 1), multiSet.count(element), "\(element)")
+            XCTAssertEqual(max(occurs, 1), multiSet.count(element), "\((element,occurs))")
         }
-        XCTAssertEqual(584, multiSet.count) // inserted 0,1,2,3,4,5,6,7,8,9
+        XCTAssertEqual(10, multiSet.distinctCount)  // 0,1,2,  3, 4,5,6, 7,  8,9
+        XCTAssertEqual(584, multiSet.count)         // 4+7+2+200+54+2+1+13+300+1
 
         for (index, _) in counts.enumerated() {
             multiSet.removeAllOf(index)
@@ -35,6 +37,7 @@ class MultiSetTests: ATestCase {
 
 extension MultiSetTests {
     func testInitWithSequence() {
+        // insert numbers 1 to 10 modulo 3 + 2 into multiset
         let sequence = Utile.Sequence(
                 first: 1,
                 step: { s in
@@ -56,6 +59,7 @@ extension MultiSetTests {
     }
 
     func testInitWithRandomSequence() {
+        // insert 50 random numbers from 1 to 10 into multiset
         let range = 1...10
         let last = 50
         let sequence = Utile.Sequence(
@@ -72,9 +76,9 @@ extension MultiSetTests {
     }
 
     func testInitWithKeyValuePairs() {
-        let d = [("a", 20), ("b", 13), ("c",254), ("d", 1)]
+        let d = [("a", 20), ("b", 13), ("c",254), ("d", 1), ("a", 1)]
         let multiSet = MultiSet(d)
-        XCTAssertEqual(20, multiSet.count("a"))
+        XCTAssertEqual(21, multiSet.count("a")) // 20 + 1
         XCTAssertEqual(13, multiSet.count("b"))
         XCTAssertEqual(254 , multiSet.count("c"))
         XCTAssertEqual(1 , multiSet.count("d"))
@@ -96,7 +100,7 @@ extension MultiSetTests {
     func testCustomStringConvertible() {
         let multiSet = ["a", "b", "c", "a", "c", "a"] as MultiSet<String>
         XCTAssertEqual("[a, a, a, b, c, c]".count, multiSet.description.count)
-
+        XCTAssertEqual("[a, a, a, b, c, c]", multiSet.description)
     }
 
     func testExpressibleByArrayLiteral() {
