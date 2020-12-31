@@ -5,7 +5,7 @@ import XCTest
 
 @testable import Tptp
 
-public class ProblemTests: AbstractTestCase {
+public class ProblemTests: ATestCase {
 
   func testPUZ001m1() {
     guard let file = Tptp.File(problem: "PUZ001-1"),
@@ -30,7 +30,7 @@ public class ProblemTests: AbstractTestCase {
     }
   }
 
-  func testHWV134m1() {
+  func _testHWV134m1() {
     guard let tptpFile = Tptp.File(problem: "HWV134-1"),
       let tptpFileNode = Tptp.Term.create(file: tptpFile),
       let nodes = tptpFileNode.nodes

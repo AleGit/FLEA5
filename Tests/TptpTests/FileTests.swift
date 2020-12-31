@@ -5,7 +5,7 @@ import CTptpParsing
 
 @testable import Tptp
 
-public class FileTests: AbstractTestCase {
+public class FileTests: ATestCase {
 
     /// set up logging once _before_ all tests of a test class
     public override class func setUp() {

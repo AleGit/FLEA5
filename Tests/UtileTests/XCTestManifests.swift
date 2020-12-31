@@ -86,6 +86,8 @@ extension TrieTests {
     // to regenerate.
     static let __allTests__TrieTests = [
         ("testTest", testTest),
+        ("testTrieClass", testTrieClass),
+        ("testTrieStruct", testTrieStruct),
     ]
 }
 
