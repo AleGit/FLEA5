@@ -23,7 +23,7 @@ let package: Package = Package(
     .package(url: "https://github.com/AleGit/CTptpParsing.git", .branch("develop")),
     .package(url: "https://github.com/AleGit/CYices.git", .branch("develop")),
     .package(url: "https://github.com/AleGit/CZ3API.git", .branch("master")),
-    .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
+    // .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"), // unused logging API
     .package(url: "https://github.com/apple/swift-argument-parser", from: "0.2.0"),
     .package(url: "https://github.com/apple/swift-algorithms", from: "0.0.1"),
   ],
@@ -45,7 +45,7 @@ let package: Package = Package(
     .testTarget(module: .utile),
     .testTarget(module: .tptp),
     .testTarget(module: .solver),
-    .testTarget(module: .swiftLogging),
+    // .testTarget(module: .swiftLogging),
     .testTarget(module: .swiftArgumentParser),
     .testTarget(module: .swiftAlgorithms),
   ]
