@@ -3,7 +3,9 @@ import Base
 import XCTest
 import CTptpParsing
 
+#if os(Linux)
 import FoundationNetworking
+#endif
 
 @testable import Tptp
 
