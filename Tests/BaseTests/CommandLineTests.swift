@@ -4,9 +4,15 @@ import XCTest
 final class CommandLineTests: ATestCase {
     typealias CL = CommandLine
     func testName() {
+        #if os(macOS)
         XCTAssertEqual(
             "/Applications/Xcode.app/Contents/Developer/usr/bin/xctest", 
             CL.name)
+            #else
+        XCTAssertTrue( 
+            CL.name.hasSuffix("FLEA5PackageTests.xctest"))
+
+            #endif
     }
 
     /**
@@ -26,6 +32,8 @@ final class CommandLineTests: ATestCase {
     func testParameters() {
         print("πars", CL.parameters.count, CL.parameters)
 
+        #if os(macOS)
+
         switch CL.parameters.count {
         case 3:
             XCTAssertEqual("-XCTest", CL.parameters.first)
@@ -36,6 +44,7 @@ final class CommandLineTests: ATestCase {
         default:
             XCTFail("\(CL.parameters.count) parameters.")
         }
+        #endif
     }
 
     func testOptions() {

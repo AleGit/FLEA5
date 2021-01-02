@@ -3,6 +3,8 @@ import Base
 import XCTest
 import CTptpParsing
 
+import FoundationNetworking
+
 @testable import Tptp
 
 public class FileTests: ATestCase {

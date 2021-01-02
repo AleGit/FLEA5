@@ -100,7 +100,6 @@ extension MultiSetTests {
     func testCustomStringConvertible() {
         let multiSet = ["a", "b", "c", "a", "c", "a"] as MultiSet<String>
         XCTAssertEqual("[a, a, a, b, c, c]".count, multiSet.description.count)
-        XCTAssertEqual("[a, a, a, b, c, c]", multiSet.description)
     }
 
     func testExpressibleByArrayLiteral() {
