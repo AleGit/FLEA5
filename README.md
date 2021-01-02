@@ -6,9 +6,10 @@ _sitll in development_
 
 1 Prerequesites
 
-- [Swift](https://swift.org) 5.3 (Compiler etc.)
 - [Git](https://git-scm.com) 2.24
+- [clang](http://clang.llvm.org)
 - [pkc-config](https://www.freedesktop.org/wiki/Software/pkg-config/) 0.92
+- [Swift](https://swift.org) 5.3 (Compiler etc.)
 - [Yices2](https://yices.csl.sri.com) 2.6.2 (SAT and SMT Solver)
 - [Z3](https://github.com/Z3Prover/z3) 4.8.9 (SAT and SMT Solver)
 
