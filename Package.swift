@@ -5,7 +5,7 @@ import PackageDescription
 
 /// __Dependency directed down graph:__
 /// ```
-///         flea -> swift argument parser
+///         flea -> (swift argument parser)
 ///            \
 ///        solver
 ///       /  /   \
@@ -13,7 +13,7 @@ import PackageDescription
 ///             /  \
 ///      parsing  utile -> swift algorithms
 ///                  \
-///                  base -> swift logging
+///                  base -> (swift logging)
 /// ```
 let package: Package = Package(
   name: "FLEA5",
@@ -23,7 +23,7 @@ let package: Package = Package(
     .package(url: "https://github.com/AleGit/CTptpParsing.git", .branch("develop")),
     .package(url: "https://github.com/AleGit/CYices.git", .branch("develop")),
     .package(url: "https://github.com/AleGit/CZ3API.git", .branch("master")),
-    // .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"), // unused logging API
+    .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
     .package(url: "https://github.com/apple/swift-argument-parser", from: "0.2.0"),
     .package(url: "https://github.com/apple/swift-algorithms", from: "0.0.1"),
   ],
@@ -32,29 +32,30 @@ let package: Package = Package(
     // Targets can depend on other targets in this package, and on products in packages which this package depends on.
 
     .target(module: .base, dependencies: []),
-    .target(module: .utile, dependencies: [.base]),
-    .target(module: .tptp, dependencies: [.utile]),
+    .target(module: .utile, dependencies: [.base, .swiftLogging]),
+    .target(module: .tptp, dependencies: [.utile, .swiftAlgorithms]),
     .target(module: .solver, dependencies: [.tptp]),
     // .target(name: "Solver", dependencies: ["Tptp"]),
-    .target(module: .flea, dependencies: [.solver]),
+    .target(module: .flea, dependencies: [.solver, .swiftArgumentParser]),
     // .target(name: "Flea", dependencies: [ "Solver", .product(name: "ArgumentParser", package: "swift-argument-parser")]),
 
     // implicit test suite names and dependencies
 
+    .testTarget(module: .swiftLogging),
+    .testTarget(module: .swiftArgumentParser),
+    .testTarget(module: .swiftAlgorithms),
     .testTarget(module: .base),
     .testTarget(module: .utile),
     .testTarget(module: .tptp),
     .testTarget(module: .solver),
-    // .testTarget(module: .swiftLogging),
-    .testTarget(module: .swiftArgumentParser),
-    .testTarget(module: .swiftAlgorithms),
+    .testTarget(module: .flea),
   ]
 )
 
 extension Target {
   /// Since string literals are used multiple times for names and dependencies
   /// we introduce module enum values for all our modules and test suits
-  /// to avoid typos and enables easier renaming.
+  /// for avoiding typos and enabling easier renaming.
   enum Module: String {
     case base = "Base"  // extensions of Foundation and swift standard library
     case utile = "Utile"  // protocols and structs ("abstract data types")
