@@ -26,6 +26,7 @@ extension URL {
         // Choose logging file name by process name
         let directory = "Configs/"
         let name = URL(fileURLWithPath: CommandLine.name).lastPathComponent
+        print(name, CommandLine.name)
         let suffix = ".logging"
 
         var paths = [
