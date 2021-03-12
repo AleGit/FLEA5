@@ -1,24 +1,27 @@
-Ubuntu 20.4 LTS
+# *FLEA* tools and libraries installation hints for Ubuntu Linux
 
-```zsh
-# install git version contorl
+1. Install general tools
+
+1.1. Install developer tools
+
+- git version control
+
+```bash
 % sudo apt install git
 % git --version
 git version 2.25.1
 
-# install clang (includes pkg-config)
-$ sudo apt install clang
-$ clang --version; echo; pkg-config --version
-clang verison 10.0.0-4ubuntu1
-Target: x86_64-pc-linux-gnu
-Thread model: posix
-InstalledDir: /usr/bin
+- Install clang and pkg-config
 
-0.29.1
+% sudo apt install clang
+% clang --version; 
+% pkg-config --version
+```
 
-# Install Apple Swift 5.3.x Prequisites
+- install Apple Swift 5.3.x Prequisites
 
-$ sudo apt-get install \
+```bash
+% sudo apt install \
           binutils \
           git \
           gnupg2 \
@@ -35,8 +38,16 @@ $ sudo apt-get install \
           tzdata \
           zlib1g-dev
 
-sudo apt install make bison flex
+- install build tools for the parsing library
+% sudo apt install \
+          make \
+          bison \
+          flex
+```
 
+1.2 Install Apple Swift
+
+```bash
 # Download Swift from https://swift.org/download/ 
 # and follow the instructions on https://swift.org/download/#linux
 # Hint: Use `sudo` in front of the commands.
@@ -45,26 +56,33 @@ sudo apt install make bison flex
 $ swift --version
 Swift version 5.3.2 (swift-5.3.2-RELEASE)
 Target: x86_64-unkonwn-linux.gnu
-
-# Intall Z4 Prover
-# Download z3 4.8.8.9 from https://githumb/Z3Prover/releases
-
-
-
-
-# Download and extract
-# yices-2.6.2-x86_64-pc-linux-gnu-static-gmp.tar.gz
-# to folder
-# yices-2.6.2
-
-% cd yices-2.6.2
-% sudo ./install-yices
-Installing Yices in /usr/local
-
-find /usr/local -iname "*yices*"
-
-
-
-
-
 ```
+
+2. Install [Yices2](http://yices.csl.sri.com)
+
+2.1. Install with package manager
+
+```bash
+% sudo add-apt-repository ppa:sri-csl/formal-methods
+% sudo apt-get update
+% sudo apt-get install yices2
+% yices --version                   # TODO: Ubuntu Linux
+
+2.2. Build form source code or download and install binaries.
+
+See [https://yices.csl.sri.com](https://yices.csl.sri.com) for instructions.
+
+
+3. Install [Z3](https://github.com/Z3Prover/z3/wiki)
+
+3.1. Install with package manager
+
+3.2. Build from source or download and install binaries
+
+See [Z3](https://github.com/Z3Prover/z3) for instructions.
+
+- [Source Code](https://github.com/Z3Prover/z3)
+
+- [Releases](https://github.com/Z3Prover/z3/releases)
+
+
