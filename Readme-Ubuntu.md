@@ -1,26 +1,13 @@
-# *FLEA* tools and libraries installation hints for Ubuntu Linux
+# *FLEA* tools and libraries installation hints
 
-1. Install general tools
+## Ubuntu 20.04 Linux
 
-1.1. Install developer tools
+### Install general tools
 
-- git version control
-
-```bash
-% sudo apt install git
-% git --version
-git version 2.25.1
-
-- Install clang and pkg-config
-
-% sudo apt install clang
-% clang --version; 
-% pkg-config --version
-```
-
-- install Apple Swift 5.3.x Prequisites
+* Install dependencies
 
 ```bash
+# install required dependencies
 % sudo apt install \
           binutils \
           git \
@@ -38,20 +25,17 @@ git version 2.25.1
           tzdata \
           zlib1g-dev
 
-- install build tools for the parsing library
-% sudo apt install \
-          make \
-          bison \
-          flex
+# install build tools to the parsing library
+% sudo apt install clang make bison flex
 ```
 
-1.2 Install Apple Swift
+* Install [Apple Swift](https://swift.org/download/ )
+
+Follow the instructions on https://swift.org/download/#linux
 
 ```bash
-# Download Swift from https://swift.org/download/ 
-# and follow the instructions on https://swift.org/download/#linux
 # Hint: Use `sudo` in front of the commands.
-# Put director into path.
+# Put swift directory into path.
 
 $ swift --version
 Swift version 5.3.2 (swift-5.3.2-RELEASE)
