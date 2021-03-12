@@ -112,6 +112,8 @@ public struct Syslog {
         Syslog.prinfo(condition: Syslog.openVerbosely) {  "Reading Configuration started." }
         defer { Syslog.prinfo(condition: Syslog.openVerbosely) { "Reading configuration finished." } }
 
+        print("••• >>> ••• Logging config file path: '\(URL.loggingConfigurationURL?.path ?? "N/A"))' ••• <<< •••")
+
         // read configuration file line by line, but
         // ignore comments (#...) and empty lines (whitespace only)
         guard let entries = URL.loggingConfigurationURL?.path.lines(predicate: {
